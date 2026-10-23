@@ -1,0 +1,13 @@
+# Large files and PDFs
+*.pdf
+__pycache__/
+*.pyc
+
+# OS & Logs
+.DS_Store
+Thumbs.db
+*.log
+
+# Git & Vercel
+.vercel
+node_modules

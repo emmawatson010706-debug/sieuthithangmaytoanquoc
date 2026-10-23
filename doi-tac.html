@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi" class="w-full overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kêu Gọi Xưởng Sản Xuất & Đối Tác Cung Ứng Thang Máy Toàn Quốc | Siêu Thị Thang Máy Toàn Quốc</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            navy: {
+              800: '#0f2766',
+              900: '#0a1945',
+              950: '#050c26',
+            },
+            accent: {
+              red: '#dc2626',
+              orange: '#ea580c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #b45309 100%);
+    }
+    @keyframes marqueeMove {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marqueeMove 32s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+  
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen overflow-x-hidden w-full pb-16 lg:pb-0">
+
+  <!-- ==================== TOP BAR HOTLINE ==================== -->
+  <div class="hidden md:block bg-navy-950 text-white text-[11px] py-1.5 px-3 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1.5">
+      <div class="flex items-center gap-2">
+        <span class="bg-gold-500 text-navy-950 px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider whitespace-nowrap">
+          SÀN THANG MÁY SỐ 1 VIỆT NAM
+        </span>
+        <span class="hidden md:inline text-slate-200">Kênh kết nối các nhà máy sản xuất, xưởng cơ khí cabin & tổng kho máy kéo trên 34 tỉnh thành</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-300 font-semibold whitespace-nowrap">
+        <a href="doi-tac.html" class="text-gold-400 font-bold">🤝 Đưa thang máy lên sàn</a>
+        <span>|</span>
+        <a href="chiet-khau.html" class="hover:text-gold-400">💰 Hoa hồng 10% cho KTS & Nhà Thầu</a>
+        <span>|</span>
+        <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Kỹ Sư Vẽ CAD</a>
+        <span>|</span>
+        <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Vẽ CAD & Giá</a>
+        <span>|</span>
+        <a href="tap-chi.html" class="text-yellow-300 hover:underline">📰 Tạp Chí Thang Máy</a>
+        <span>|</span>
+        <a href="tel:0914587575" class="text-white hover:text-gold-400 font-black flex items-center gap-1">
+          <span>Hotline: <strong class="text-gold-400 font-black text-xs">0914.587.575</strong></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ĐỒNG BỘ NHẤT QUÁN 100% ==================== -->
+  <header class="bg-navy-900 text-white sticky top-0 z-40 shadow-lg border-b border-navy-800">
+    <div class="max-w-7xl mx-auto px-3 py-2.5">
+      <div class="flex items-center justify-between gap-3 sm:gap-6">
+        
+        <!-- LOGO SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC -->
+        <a href="index.html" class="flex items-center gap-2.5 flex-shrink-0">
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center font-black text-navy-950 text-base sm:text-xl shadow flex-shrink-0">
+            🛗
+          </div>
+          <div class="whitespace-nowrap flex-shrink-0">
+            <div class="text-[9px] sm:text-[10px] font-bold text-gold-400 uppercase tracking-wider leading-none">SIÊU THỊ THƯƠNG MẠI</div>
+            <div class="text-xs sm:text-base font-black text-white tracking-tight uppercase leading-tight sm:leading-snug">THANG MÁY TOÀN QUỐC</div>
+          </div>
+        </a>
+
+        <!-- Quick Nav -->
+        <nav class="hidden md:flex items-center gap-5 text-xs font-bold whitespace-nowrap">
+          <a href="index.html" class="hover:text-gold-400 transition">Trang Chủ</a>
+          <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Kỹ Sư Vẽ CAD</a>
+        <span>|</span>
+        <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Vẽ CAD & Giá</a>
+        <span>|</span>
+        <a href="tap-chi.html" class="text-sky-400 hover:text-gold-400 transition font-bold">📰 Tạp Chí Thang Máy</a>
+          <a href="index.html#san-pham" class="hover:text-gold-400 transition">Dòng Thang Máy</a>
+          <a href="thiet-ke-cad.html" class="text-gold-400 hover:underline transition">📐 Vẽ CAD & Báo Giá</a>
+          <a href="chiet-khau.html" class="hover:text-gold-400 transition">Chính Sách KTS & Thầu</a>
+          <a href="doi-tac.html" class="text-gold-400 font-black transition">Hợp Tác Lên Sàn</a>
+          <a href="dat-hang.html" class="hover:text-gold-400 transition">Đặt Lịch Khảo Sát</a>
+        </nav>
+
+        <!-- Action -->
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Kỹ Sư Vẽ CAD</a>
+        <span>|</span>
+        <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Vẽ CAD & Giá</a>
+        <span>|</span>
+        <a href="tap-chi.html" class="text-yellow-300 hover:underline">📰 Tạp Chí Thang Máy</a>
+        <span>|</span>
+        <a href="tel:0914587575" class="gold-gradient hover:opacity-95 text-navy-950 font-black px-4 py-2 rounded-lg text-xs shadow flex items-center gap-1.5 whitespace-nowrap">
+            <span>📞</span>
+            <span class="hidden sm:inline">Admin:</span>
+            <span>0914.587.575</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== DÒNG CHỮ CHẠY HOA HỒNG CHIẾT KHẤU 10% ==================== -->
+  <div class="bg-gradient-to-r from-red-900 via-amber-700 to-red-900 text-white text-xs font-bold py-2 overflow-hidden border-b border-gold-500/40 shadow-sm flex items-center">
+    <div class="bg-navy-950 text-gold-400 px-3 py-1 font-black text-[10px] uppercase tracking-wider rounded-r-lg shadow flex items-center gap-1.5 flex-shrink-0 z-20 border-r border-gold-500/50">
+      <span class="animate-pulse">🔥</span> CHÍNH SÁCH ĐỐI TÁC:
+    </div>
+    <div class="overflow-hidden flex-1 relative">
+      <div class="animate-marquee flex items-center gap-8 pl-4">
+        <span>⭐ <strong>CHIẾT KHẤU HOA HỒNG 10%</strong> DÀNH CHO KIẾN TRÚC SƯ, KỸ SƯ KẾT CẤU & TỔNG THẦU XÂY DỰNG TRÊN 34 tỉnh thành TOÀN QUỐC</span>
+        <span class="text-gold-300">•</span>
+        <span>💰 <strong>QUYẾT TOÁN HOA HỒNG NGAY</strong> KHI KÝ HỢP ĐỒNG (TỪ 15.000.000 ₫ ĐẾN 40.000.000 ₫ / CÂY THANG)</span>
+        <span class="text-gold-300">•</span>
+        <span>📐 <strong>MIỄN PHÍ 100%</strong> TRỌN BỘ THƯ VIỆN CAD, REVIT BIM & PHỐI CẢNH 3D HỐ THANG CHO HỒ SƠ CẤP PHÉP XÂY DỰNG</span>
+        <span class="text-gold-300">•</span>
+        <span>🛡️ <strong>BẢO HÀNH CHÍNH HÃNG 36 THÁNG</strong> • CỨU HỘ KHẨN CẤP 24/7 TOÀN QUỐC</span>
+        <span class="text-gold-300">•</span>
+        <span>📞 <strong>HOTLINE KỸ SƯ TRƯỞNG TOÀN QUỐC: 0914.587.575</strong> (ZALO 24/7)</span>
+        <span class="text-gold-300">•</span>
+        <span>⭐ <strong>CHIẾT KHẤU HOA HỒNG 10%</strong> DÀNH CHO KIẾN TRÚC SƯ, KỸ SƯ KẾT CẤU & TỔNG THẦU XÂY DỰNG TRÊN 34 tỉnh thành TOÀN QUỐC</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HERO BREADCRUMB ==================== -->
+  <div class="relative bg-navy-950 text-white py-10 px-4 border-b border-gold-600/30 overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center opacity-30 filter blur-[4px] pointer-events-none" style="background-image: url('images/hero_blurred_elevator.jpg');"></div>
+    <div class="absolute inset-0 bg-navy-950/80 z-0"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto space-y-2.5">
+      <div class="inline-block bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-3 py-1 rounded text-xs font-black uppercase tracking-wider">
+        MỞ RỘNG MẠNG LƯỚI CUNG ỨNG NGHÀNH THANG MÁY TOÀN QUỐC
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-white leading-tight">
+        Kêu Gọi Nhà Sản Xuất, Gia Công Cơ Khí & Đại Lý Linh Kiện Đưa Hàng Lên Sàn
+      </h1>
+      <p class="text-slate-300 text-xs sm:text-sm max-w-3xl leading-relaxed">
+        <strong>sieuthithangmaytoanquoc.com</strong> là nền tảng thương mại điện tử chuyên ngành thang máy hàng đầu Việt Nam. Chúng tôi kết nối các xưởng cơ khí cabin, đơn vị nhập khẩu máy kéo, nhà sản xuất tủ điện và các kỹ sư cơ điện chuyên nghiệp trên 34 tỉnh thành.
+      </p>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-8 space-y-8">
+
+    <!-- ==================== 4 ĐỐI TÁC TRỌNG TÂM ==================== -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 hover:border-gold-500 transition">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xl">
+          🏭
+        </div>
+        <h3 class="font-bold text-navy-950 text-sm">Xưởng Gia Công Cơ Khí & Cabin</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Đơn vị gia công cơ khí khung hố thang bằng thép hình (I, U, V), chấn dập Inox gương, Inox sọc nhuyễn, kính cường lực an toàn cho thang máy.
+        </p>
+        <span class="inline-block text-[11px] font-bold text-gold-600">Bao tiêu sản lượng ổn định &gt;</span>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 hover:border-gold-500 transition">
+        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-xl">
+          ⚙️
+        </div>
+        <h3 class="font-bold text-navy-950 text-sm">Tổng Kho Máy Kéo Động Cơ</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Nhập khẩu và phân phối trực tiếp động cơ có hộp số và không hộp số: Fuji (Nhật Bản, Hàn Quốc, Malaysia), Montanari (Ý), Torin, Ziehl-Abegg (Đức).
+        </p>
+        <span class="inline-block text-[11px] font-bold text-blue-600">Đầy đủ CO/CQ xuất xưởng &gt;</span>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 hover:border-gold-500 transition">
+        <div class="w-10 h-10 rounded-xl bg-green-100 text-green-800 flex items-center justify-center text-xl">
+          ⚡
+        </div>
+        <h3 class="font-bold text-navy-950 text-sm">Nhà Cung Cấp Tủ Điện & Vi Xử Lý</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Hệ thống điều khiển vi xử lý Step, Monarch (NICE 3000+), Yaskawa, biến tần Fuji Frenic Lift, hệ thống cứu hộ tự động ARD khi mất điện.
+        </p>
+        <span class="inline-block text-[11px] font-bold text-green-600">Bảo hành linh kiện chính hãng &gt;</span>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 hover:border-gold-500 transition">
+        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center text-xl">
+          🛡️
+        </div>
+        <h3 class="font-bold text-navy-950 text-sm">Trung Tâm Kiểm Định Kỹ Thuật</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Các cơ quan, trung tâm kiểm định an toàn kỹ thuật nhà nước, cấp giấy phép vận hành và tem kiểm định định kỳ thang máy tại 34 tỉnh thành.
+        </p>
+        <span class="inline-block text-[11px] font-bold text-purple-600">Quy trình cấp phép nhanh &gt;</span>
+      </div>
+
+    </div>
+
+    <!-- ==================== LỢI ÍCH KHI LÊN SÀN ==================== -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <div class="lg:col-span-6 space-y-4">
+        <span class="bg-blue-100 text-blue-800 text-xs font-black px-2.5 py-1 rounded uppercase tracking-wider">
+          QUYỀN LỢI ĐỐI TÁC CUNG ỨNG
+        </span>
+        <h2 class="text-xl sm:text-2xl font-black text-navy-950">
+          Tại Sao Các Xưởng Sản Xuất Nên Phối Hợp Cùng Siêu Thị Thang Máy Toàn Quốc?
+        </h2>
+        
+        <ul class="space-y-3 text-xs text-slate-700">
+          <li class="flex items-start gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-gold-100 text-gold-700 font-black flex items-center justify-center flex-shrink-0">1</span>
+            <div>
+              <strong>Tiếp cận hàng nghìn công trình mỗi năm:</strong> Sàn kết nối trực tiếp với các chủ đầu tư biệt thự, nhà phố, khách sạn trên khắp 34 tỉnh thành cả nước.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-gold-100 text-gold-700 font-black flex items-center justify-center flex-shrink-0">2</span>
+            <div>
+              <strong>Đội ngũ kỹ sư khảo sát & lắp đặt tận nơi:</strong> Bạn chỉ việc tập trung vào năng lực sản xuất gia công hoặc nhập khẩu. Toàn bộ khâu đo đạc hố giếng, lắp ráp cơ khí, kéo cáp, cài đặt tủ điện do đội ngũ kỹ sư Siêu thị phụ trách.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-gold-100 text-gold-700 font-black flex items-center justify-center flex-shrink-0">3</span>
+            <div>
+              <strong>Thanh toán nhanh gọn, giải ngân dứt điểm:</strong> Tạm ứng theo từng giai đoạn sản xuất và thanh toán ngay khi bàn giao thiết bị về công trình.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-gold-100 text-gold-700 font-black flex items-center justify-center flex-shrink-0">4</span>
+            <div>
+              <strong>Quảng bá thương hiệu miễn phí:</strong> Hình ảnh thiết bị, mẫu mã cabin của đơn vị bạn sẽ được đưa lên trang chủ sàn thương mại điện tử lớn nhất toàn quốc.
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-6 bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4">
+        <h3 class="text-sm font-black text-navy-950 uppercase border-b pb-2 flex items-center gap-2">
+          <span>📋</span> Tiêu Chuẩn Sản Phẩm & Thiết Bị Được Lên Kệ
+        </h3>
+
+        <div class="space-y-3 text-xs text-slate-600">
+          <div class="p-3 bg-white rounded-lg border border-slate-200">
+            <span class="font-bold text-navy-950">✓ Nguồn gốc xuất xứ rõ ràng:</span> Có đầy đủ tờ khai hải quan, CO/CQ (đối với hàng nhập khẩu) hoặc chứng chỉ xuất xưởng của nhà máy cơ khí đạt chuẩn ISO.
+          </div>
+          <div class="p-3 bg-white rounded-lg border border-slate-200">
+            <span class="font-bold text-navy-950">✓ Đạt quy chuẩn an toàn QCVN 02:2019/BLĐTBXH:</span> Đầy đủ thiết bị an toàn thắng cơ Governor, công tắc hành trình, giới hạn chống vượt tốc, cảm biến cửa tầng.
+          </div>
+          <div class="p-3 bg-white rounded-lg border border-slate-200">
+            <span class="font-bold text-navy-950">✓ Cam kết bảo hành & hỗ trợ linh kiện thay thế:</span> Tối thiểu 12 - 24 tháng, cam kết cung cấp phụ tùng thay thế sẵn có trong vòng 10 năm.
+          </div>
+        </div>
+
+        <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-xs">
+          <strong>Liên hệ trực tiếp Ban Phát Triển Đối Tác Toàn Quốc:</strong> Gọi ngay cho Giám Đốc Kỹ Thuật qua số <strong class="text-red-600">0914.587.575</strong> để sắp xếp lịch hẹn làm việc.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== FORM ĐĂNG KÝ NHÀ CUNG ỨNG ==================== -->
+    <div class="relative bg-navy-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-gold-500/40 overflow-hidden">
+      <div class="absolute inset-0 bg-cover bg-center opacity-30 filter blur-[4px] pointer-events-none" style="background-image: url('images/hero_blurred_elevator.jpg');"></div>
+      <div class="absolute inset-0 bg-navy-950/85 z-0"></div>
+
+      <div class="relative z-10 max-w-3xl mx-auto space-y-6">
+        
+        <div class="text-center space-y-2">
+          <span class="bg-gold-500 text-navy-950 text-xs font-black px-3 py-1 rounded uppercase tracking-wider">
+            ĐĂNG KÝ HỢP TÁC DOANH NGHIỆP TOÀN QUỐC
+          </span>
+          <h3 class="text-xl sm:text-3xl font-black text-white">
+            Gửi Hồ Sơ Năng Lực & Đăng Ký Đưa Hàng Lên Kệ
+          </h3>
+          <p class="text-xs text-slate-300">
+            Điền thông tin bên dưới hoặc gửi hồ sơ chào giá qua Zalo: <strong class="text-gold-400">0914.587.575</strong>
+          </p>
+        </div>
+
+        <form onsubmit="handleSupplierSubmit(event)" class="bg-white text-slate-800 rounded-xl p-6 shadow-2xl space-y-4 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Tên công ty / Xưởng sản xuất *</label>
+              <input required type="text" id="suppCompany" placeholder="Ví dụ: Công ty Cơ Khí Thang Máy ABC" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-gold-600">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Họ tên người phụ trách kinh doanh *</label>
+              <input required type="text" id="suppContact" placeholder="Ví dụ: Ông Trần Quốc Toàn" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-gold-600">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Số điện thoại / Zalo *</label>
+              <input required type="tel" id="suppPhone" placeholder="Ví dụ: 0914xxxxxx" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-gold-600">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Chủng loại sản phẩm cung cấp</label>
+              <select id="suppType" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-gold-600">
+                <option value="cabin">Gia công Cabin & Khung thép định hình</option>
+                <option value="motor">Động cơ máy kéo (Fuji, Montanari, Ziehl-Abegg...)</option>
+                <option value="controller">Tủ điện điều khiển & Bo mạch vi xử lý</option>
+                <option value="glass">Kính cường lực & vách nhôm kính thang máy</option>
+                <option value="parts">Linh kiện ray dẫn hướng, cáp tải, nút bấm, cửa tầng</option>
+                <option value="service">Dịch vụ kiểm định kỹ thuật an toàn</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Địa chỉ trụ sở / Xưởng sản xuất (Tỉnh/Thành)</label>
+            <input required type="text" id="suppAddress" placeholder="Ví dụ: Hà Nội, TP.HCM, Bình Dương, Hải Phòng, Nghệ An..." class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-gold-600">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Năng lực sản xuất / Chính sách đại lý đề xuất</label>
+            <textarea id="suppDetails" rows="3" placeholder="Ví dụ: Năng lực chấn gấp Inox 20 cabin/tháng, sẵn sàng cung cấp mẫu thực tế..." class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:border-gold-600"></textarea>
+          </div>
+
+          <button type="submit" class="w-full gold-gradient hover:opacity-95 text-navy-950 font-black py-3 rounded-xl uppercase tracking-wider text-xs shadow-lg transition">
+            GỬI ĐĂNG KÝ HỢP TÁC CUNG ỨNG
+          </button>
+        </form>
+
+        <div id="suppSuccessMsg" class="hidden p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-lg font-bold text-center">
+          ✓ Cảm ơn quý đối tác đã đăng ký! Ban Quản Trị Siêu Thị Thang Máy Toàn Quốc sẽ liên hệ làm việc trong vòng 24 giờ.
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-navy-950 text-white border-t border-gold-600/30 pt-10 pb-6 text-xs mt-12">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded gold-gradient flex items-center justify-center text-navy-950 font-black">
+            🛗
+          </div>
+          <span class="font-black text-sm text-gold-400 uppercase">SIÊU THỊ THANG MÁY TOÀN QUỐC</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Đơn vị tiên phong số hóa sàn thương mại và phân phối thang máy gia đình, thang máy vách kính, thang khách sạn hàng đầu tại Việt Nam.
+        </p>
+        <div class="pt-1">
+          <span class="font-bold text-white">Hotline Admin: </span>
+          <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Kỹ Sư Vẽ CAD</a>
+        <span>|</span>
+        <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Vẽ CAD & Giá</a>
+        <span>|</span>
+        <a href="tap-chi.html" class="text-yellow-300 hover:underline">📰 Tạp Chí Thang Máy</a>
+        <span>|</span>
+        <a href="tel:0914587575" class="text-gold-400 font-black text-sm">0914.587.575</a>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-gold-400 uppercase tracking-wider text-xs">Dòng Sản Phẩm Chính</h4>
+        <ul class="space-y-1.5 text-slate-300">
+          <li><a href="index.html#san-pham" class="hover:text-gold-400">Thang máy gia đình Homelift mini</a></li>
+          <li><a href="san-pham.html" class="hover:text-gold-400">Thang máy vách kính quan sát biệt thự</a></li>
+          <li><a href="index.html#san-pham" class="hover:text-gold-400">Thang máy khách sạn & văn phòng</a></li>
+          <li><a href="index.html#san-pham" class="hover:text-gold-400">Động cơ Fuji, Montanari, Ziehl-Abegg</a></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-gold-400 uppercase tracking-wider text-xs">Chính Sách & Hợp Tác</h4>
+        <ul class="space-y-1.5 text-slate-300">
+          <li><a href="chiet-khau.html" class="hover:text-gold-400">Chính sách hoa hồng 10% KTS toàn quốc</a></li>
+          <li><a href="doi-tac.html" class="hover:text-gold-400 text-gold-400 font-bold">Kêu gọi xưởng sản xuất cơ khí & đại lý</a></li>
+          <li><a href="dat-hang.html" class="hover:text-gold-400">Đăng ký kỹ sư đo đạc hố thang miễn phí</a></li>
+          <li><a href="index.html#du-toan" class="hover:text-gold-400">Công cụ tính dự toán báo giá trực tuyến</a></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-gold-400 uppercase tracking-wider text-xs">Khu Vực Phục Vụ</h4>
+        <p class="text-slate-400 leading-relaxed text-xs">
+          Thường trực khảo sát và phục vụ trên 34 tỉnh thành: Hà Nội, TP.HCM, Đà Nẵng, Hải Phòng, Cần Thơ, Nghệ An, Hà Tĩnh, Quảng Ninh, Bình Dương, Đồng Nai...
+        </p>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-navy-800 text-center text-slate-500 text-[11px]">
+      © 2026 Siêu thị Thương Mại Thang Máy Toàn Quốc - sieuthithangmaytoanquoc.com - Hotline Admin: 0914.587.575. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    function handleSupplierSubmit(e) {
+      e.preventDefault();
+      document.getElementById('suppSuccessMsg').classList.remove('hidden');
+      e.target.reset();
+    }
+  </script>
+
+</body>
+</html>

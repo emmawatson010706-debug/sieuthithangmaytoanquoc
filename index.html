@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="vi" class="w-full overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siêu Thị Thương Mại Thang Máy Toàn Quốc - Sàn Phân Phối Thang Máy Số 1 Việt Nam</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            navy: {
+              800: '#0f2766',
+              900: '#0a1945',
+              950: '#050c26',
+            },
+            accent: {
+              red: '#dc2626',
+              orange: '#ea580c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .lift-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .lift-card:hover {
+      box-shadow: 0 14px 28px -4px rgba(15, 39, 102, 0.18);
+      transform: translateY(-4px);
+      border-color: #d97706;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #b45309 100%);
+    }
+    @keyframes marqueeMove {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marqueeMove 32s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+  
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  </style>
+
+
+
+</head>
+<body class="antialiased flex flex-col min-h-screen overflow-x-hidden pb-16 lg:pb-0 w-full">
+
+  <!-- ==================== MENU 3 GẠCH (GỌN GÀNG, BỀ NGANG 320PX CHUẨN ĐẸP) ==================== -->
+  <div id="drawerOverlay" onclick="toggleDrawer(false)" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity"></div>
+  
+  <aside id="drawerSidebar" class="fixed top-0 bottom-0 left-0 w-72 max-w-[78vw] bg-white z-50 shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="bg-navy-950 text-white p-4 flex items-center justify-between border-b border-gold-600/40">
+      <div class="flex items-center gap-2">
+        <span class="text-xl text-gold-400">☰</span>
+        <span class="font-black text-xs uppercase tracking-wider text-gold-400">DANH MỤC THANG MÁY</span>
+      </div>
+      <button onclick="toggleDrawer(false)" class="text-white text-xl font-bold w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center">✕</button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4 space-y-5 text-xs">
+      
+      <!-- 1. CHỦNG LOẠI THANG MÁY -->
+      <div class="space-y-1.5">
+        <h3 class="font-black text-navy-950 uppercase tracking-wider text-xs border-b pb-1.5 flex items-center justify-between">
+          <span>🏗️ CHỦNG LOẠI THANG MÁY</span>
+        </h3>
+        <div class="space-y-1 font-semibold text-slate-700">
+          <button onclick="filterLifts('all')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50 text-gold-700 font-black">★ Tất cả dòng thang máy</button>
+          <button onclick="filterLifts('homelift')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50">🏡 Thang máy gia đình (Homelift mini)</button>
+          <button onclick="filterLifts('thang-kinh')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50">✨ Thang máy vách kính quan sát (Biệt thự)</button>
+          <button onclick="filterLifts('khach-san')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50">🏨 Thang máy tải khách (Khách sạn, Tòa nhà)</button>
+          <button onclick="filterLifts('thang-hang')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50">📦 Thang máy tải hàng & Gara ô tô</button>
+          <button onclick="filterLifts('benh-vien')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50">🏥 Thang máy bệnh viện (Băng ca y tế)</button>
+          <button onclick="filterLifts('linh-kien')" class="w-full text-left py-2 px-2.5 rounded hover:bg-amber-50">⚙️ Kho linh kiện, máy kéo & tủ điện</button>
+        </div>
+      </div>
+
+      <!-- 2. ĐỘNG CƠ & CÔNG NGHỆ -->
+      <div class="space-y-1.5">
+        <h3 class="font-black text-navy-950 uppercase tracking-wider text-xs border-b pb-1.5">
+          ⚙️ HÃNG ĐỘNG CƠ MÁY KÉO
+        </h3>
+        <div class="grid grid-cols-2 gap-1.5 font-bold text-slate-700">
+          <button onclick="filterLifts('Fuji')" class="p-2 rounded border border-slate-200 hover:border-gold-600 hover:bg-amber-50 text-left">Fuji Nhật Bản</button>
+          <button onclick="filterLifts('Montanari')" class="p-2 rounded border border-slate-200 hover:border-gold-600 hover:bg-amber-50 text-left">Montanari (Ý)</button>
+          <button onclick="filterLifts('Mitsubishi')" class="p-2 rounded border border-slate-200 hover:border-gold-600 hover:bg-amber-50 text-left">Mitsubishi</button>
+          <button onclick="filterLifts('Ziehl-Abegg')" class="p-2 rounded border border-slate-200 hover:border-gold-600 hover:bg-amber-50 text-left">Ziehl-Abegg (Đức)</button>
+        </div>
+      </div>
+
+      <!-- 3. LIÊN KẾT NHANH TẠP CHÍ & BẢNG GIÁ -->
+      <div class="space-y-1.5 pt-2 border-t border-slate-200">
+        <h3 class="font-black text-navy-950 uppercase tracking-wider text-xs pb-1">
+          📚 CHUYÊN MỤC HỮU ÍCH
+        </h3>
+        <div class="space-y-1 font-bold text-slate-700">
+          <a href="thiet-ke-cad.html" class="block py-2 px-2.5 rounded bg-amber-50 text-gold-800 font-bold hover:bg-amber-100">📐 Kỹ Sư Auto-CAD & Dự Toán Giá Tự Động</a>
+          <a href="tap-chi.html" class="block py-2 px-2.5 rounded bg-blue-50 text-blue-900 hover:bg-blue-100">📰 Tạp Chí Thang Máy (Kỹ Thuật & Xu Hướng)</a>
+          <a href="#bang-gia-nhanh" onclick="toggleDrawer(false)" class="block py-2 px-2.5 rounded bg-amber-50 text-amber-900 hover:bg-amber-100">💰 Bảng Tra Cứu Giá Nhanh Khách Hàng</a>
+          <a href="chiet-khau.html" class="block py-2 px-2.5 rounded hover:bg-slate-100">💎 Hoa Hồng 10% Cho KTS & Nhà Thầu</a>
+        </div>
+      </div>
+
+      <!-- Hotline Kỹ Sư Trưởng Toàn Quốc -->
+      <div class="p-3.5 bg-navy-950 text-white rounded-xl border border-gold-500/40 space-y-1.5 shadow-lg">
+        <div class="text-gold-400 font-black text-xs uppercase">Kỹ Sư Trưởng Toàn Quốc:</div>
+        <a href="tel:0914587575" class="text-lg font-black text-white hover:text-gold-400 block tracking-wide">0914.587.575</a>
+        <p class="text-[11px] text-slate-300">Khảo sát giếng thang & tư vấn bản vẽ móng miễn phí tại 34 tỉnh thành.</p>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ==================== TOP BAR GỌN GÀNG, KHÔNG XUỐNG DÒNG ==================== -->
+  <div class="hidden md:block bg-navy-950 text-white text-[11px] py-1.5 px-3 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1.5">
+      <div class="flex items-center gap-2 overflow-hidden">
+        <span class="bg-gold-500 text-navy-950 px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider whitespace-nowrap flex-shrink-0">
+          HOT DEAL 2027
+        </span>
+        <span class="text-slate-200 font-semibold truncate text-[11px] whitespace-nowrap">
+          🔥 Tổng Kho Thang Máy Nhập Khẩu Trực Tiếp • Khảo Sát & Lắp Đặt Tận Nơi 34 Tỉnh Thành
+        </span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-300 font-semibold whitespace-nowrap flex-shrink-0">
+        <a href="thiet-ke-cad.html" class="text-gold-400 font-bold hover:underline">📐 Kỹ Sư Vẽ CAD & Báo Giá</a>
+        <span>|</span>
+        <a href="tap-chi.html" class="text-yellow-300 hover:underline">📰 Tạp Chí Thang Máy</a>
+        <span>|</span>
+        <a href="doi-tac.html" class="text-gold-400 hover:underline">🤝 Đưa thang lên sàn</a>
+        <span>|</span>
+        <a href="chiet-khau.html" class="hover:text-gold-400">💰 Hoa hồng 10% KTS</a>
+        <span>|</span>
+        <a href="tel:0914587575" class="text-white hover:text-gold-400 font-black flex items-center gap-1">
+          <span>Hotline: <strong class="text-gold-400 font-black text-xs">0914.587.575</strong></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN HEADER SANG TRỌNG HOÀNG GIA ==================== -->
+  <header class="bg-navy-900 text-white sticky top-0 z-40 shadow-lg border-b border-navy-800">
+    <div class="max-w-7xl mx-auto px-3 py-2.5">
+      <div class="flex items-center justify-between gap-3 sm:gap-6">
+        
+        <!-- NÚT 3 GẠCH -->
+        <button onclick="toggleDrawer(true)" class="flex items-center justify-center gap-1.5 bg-navy-800 hover:bg-navy-700 w-9 h-9 sm:w-auto sm:px-3 sm:py-2 rounded-lg text-xs font-black border border-gold-500/30 text-gold-400 shadow-sm flex-shrink-0 transition">
+          <span class="text-lg leading-none">☰</span>
+          <span class="hidden sm:inline uppercase tracking-wider text-[11px]">DANH MỤC THANG</span>
+        </button>
+
+        <!-- LOGO SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC (ĐỒNG NHẤT KHÔNG XUỐNG DÒNG) -->
+        <a href="index.html" class="flex items-center gap-2.5 flex-shrink-0">
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center font-black text-navy-950 text-base sm:text-xl shadow flex-shrink-0">
+            🛗
+          </div>
+          <div class="whitespace-nowrap flex-shrink-0">
+            <div class="text-[9px] sm:text-[10px] font-bold text-gold-400 uppercase tracking-wider leading-none">SIÊU THỊ THƯƠNG MẠI</div>
+            <div class="text-xs sm:text-base font-black text-white tracking-tight uppercase leading-tight sm:leading-snug">THANG MÁY TOÀN QUỐC</div>
+          </div>
+        </a>
+
+        <!-- THANH TÌM KIẾM DÒNG THANG & LINH KIỆN -->
+        <div class="flex-1 max-w-xl mx-2 hidden md:block">
+          <div class="relative bg-white rounded-lg p-1 shadow flex items-center">
+            <input
+              id="mainSearchInput"
+              type="text"
+              placeholder="Tìm kiếm: Thang máy kính, Homelift 350kg, động cơ Fuji, thang khách sạn..."
+              class="w-full px-3 py-1.5 text-xs text-slate-900 focus:outline-none"
+              onkeypress="if(event.key === 'Enter') handleSearch()"
+            />
+            <button
+              onclick="handleSearch()"
+              class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-navy-950 px-4 py-1.5 rounded-md text-xs font-black flex items-center gap-1.5 transition flex-shrink-0 shadow"
+            >
+              <span>Tìm kiếm</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- NÚT KHẢO SÁT & ZALO -->
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <a href="tap-chi.html" class="hidden lg:flex items-center gap-1.5 bg-navy-800 hover:bg-navy-700 border border-gold-500/40 text-gold-400 px-3 py-2 rounded-lg text-xs font-bold shadow whitespace-nowrap">
+            📰 Tạp Chí
+          </a>
+          <a href="https://zalo.me/0914587575" target="_blank" class="hidden sm:flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg text-xs font-bold shadow whitespace-nowrap">
+            Zalo: 0914.587.575
+          </a>
+          <button onclick="scrollToEstimator()" class="bg-gradient-to-r from-accent-red to-orange-600 text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-[11px] sm:text-xs font-black shadow hover:opacity-95 transition whitespace-nowrap flex-shrink-0">
+            ⚡ TÍNH GIÁ<span class="hidden sm:inline"> 30S</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- THANH MENU CHÍNH CÁC DÒNG THANG -->
+    <nav class="bg-navy-950/90 text-xs border-t border-slate-800 overflow-x-auto no-scrollbar w-full">
+      <div class="max-w-7xl mx-auto px-3 flex items-center gap-1 whitespace-nowrap py-1.5 font-bold">
+        <button onclick="filterLifts('all')" class="px-3 py-1 rounded text-white bg-navy-800 text-gold-400">★ Tất cả thang máy</button>
+        <button onclick="filterLifts('homelift')" class="px-3 py-1 rounded text-slate-300 hover:text-white hover:bg-navy-800">🏡 Thang máy gia đình</button>
+        <button onclick="filterLifts('thang-kinh')" class="px-3 py-1 rounded text-slate-300 hover:text-white hover:bg-navy-800">✨ Thang kính quan sát</button>
+        <button onclick="filterLifts('khach-san')" class="px-3 py-1 rounded text-slate-300 hover:text-white hover:bg-navy-800">🏨 Thang khách sạn / Tòa nhà</button>
+        <button onclick="filterLifts('thang-hang')" class="px-3 py-1 rounded text-slate-300 hover:text-white hover:bg-navy-800">📦 Thang tải hàng & Gara ô tô</button>
+        <a href="#bang-gia-nhanh" class="px-3 py-1 rounded text-amber-300 hover:bg-navy-800">📊 Bảng giá nhanh</a>
+        <a href="thiet-ke-cad.html" class="px-3 py-1 rounded text-gold-400 bg-navy-800 font-black hover:bg-gold-600 hover:text-navy-950 transition">📐 Kỹ Sư CAD & Dự Toán</a>
+        <a href="tap-chi.html" class="px-3 py-1 rounded text-sky-400 hover:bg-navy-800">📰 Tạp Chí Thang Máy</a>
+        <a href="chiet-khau.html" class="px-3 py-1 rounded text-gold-400 hover:bg-navy-800">💰 Hoa hồng 10% KTS</a>
+        <a href="doi-tac.html" class="px-3 py-1 rounded text-green-400 hover:bg-navy-800">🤝 Đưa thang lên sàn</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== DÒNG CHỮ CHẠY HOA HỒNG CHIẾT KHẤU 10% ==================== -->
+  <div class="bg-gradient-to-r from-red-900 via-amber-700 to-red-900 text-white text-xs font-bold py-2 overflow-hidden border-b border-gold-500/40 shadow-sm flex items-center">
+    <div class="bg-navy-950 text-gold-400 px-3 py-1 font-black text-[10px] uppercase tracking-wider rounded-r-lg shadow flex items-center gap-1.5 flex-shrink-0 z-20 border-r border-gold-500/50">
+      <span class="animate-pulse">🔥</span> CHÍNH SÁCH ĐỐI TÁC:
+    </div>
+    <div class="overflow-hidden flex-1 relative">
+      <div class="animate-marquee flex items-center gap-8 pl-4">
+        <span>⭐ <strong>CHIẾT KHẤU HOA HỒNG 10%</strong> DÀNH CHO KIẾN TRÚC SƯ, KỸ SƯ KẾT CẤU & TỔNG THẦU XÂY DỰNG TRÊN 34 TỈNH THÀNH TOÀN QUỐC</span>
+        <span class="text-gold-300">•</span>
+        <span>💰 <strong>QUYẾT TOÁN HOA HỒNG NGAY</strong> KHI KÝ HỢP ĐỒNG (TỪ 15.000.000 ₫ ĐẾN 40.000.000 ₫ / CÂY THANG)</span>
+        <span class="text-gold-300">•</span>
+        <span>📐 <strong>MIỄN PHÍ 100%</strong> TRỌN BỘ THƯ VIỆN CAD, REVIT BIM & PHỐI CẢNH 3D HỐ THANG CHO HỒ SƠ CẤP PHÉP XÂY DỰNG</span>
+        <span class="text-gold-300">•</span>
+        <span>🛡️ <strong>BẢO HÀNH CHÍNH HÃNG 36 THÁNG</strong> • BẢO TRÌ 1 THÁNG/LẦN • ĐỘI CỨU HỘ KHẨN CẤP THƯỜNG TRỰC 24/7</span>
+        <span class="text-gold-300">•</span>
+        <span>📞 <strong>HOTLINE KỸ SƯ TRƯỞNG TOÀN QUỐC: 0914.587.575</strong> (ZALO KẾT NỐI 24/7)</span>
+        <span class="text-gold-300">•</span>
+        <span>⭐ <strong>CHIẾT KHẤU HOA HỒNG 10%</strong> DÀNH CHO KIẾN TRÚC SƯ, KỸ SƯ KẾT CẤU & TỔNG THẦU XÂY DỰNG TRÊN 34 TỈNH THÀNH TOÀN QUỐC</span>
+        <span class="text-gold-300">•</span>
+        <span>💰 <strong>QUYẾT TOÁN HOA HỒNG NGAY</strong> KHI KÝ HỢP ĐỒNG (TỪ 15.000.000 ₫ ĐẾN 40.000.000 ₫ / CÂY THANG)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BANNER HERO: KHUNG CHÍNH CÓ HÌNH ẢNH THANG MÁY MỜ ==================== -->
+  <section class="max-w-7xl mx-auto w-full px-2 sm:px-4 pt-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-stretch">
+      
+      <!-- KHUNG TRUNG TÂM CHÍNH (CÓ HÌNH NỀN THANG MÁY MỜ HIỆN RÕ SANG TRỌNG) -->
+      <div class="lg:col-span-2 relative rounded-2xl overflow-hidden shadow-2xl p-6 sm:p-10 text-white bg-navy-950 flex flex-col justify-between min-h-[380px]">
+        
+        <!-- HÌNH ẢNH THANG MÁY MỜ NGHỆ THUẬT LÀM NỀN -->
+        <div class="absolute inset-0 bg-cover bg-center opacity-65 scale-105 pointer-events-none" style="background-image: url('images/hero_blurred_elevator.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/70 to-navy-950/80 z-10"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:18px_18px] opacity-15 z-10"></div>
+
+        <div class="relative z-20 space-y-3.5 max-w-xl">
+          <div class="inline-flex items-center gap-2 bg-gradient-to-r from-gold-500 to-gold-600 text-navy-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow">
+            ★ SÀN THƯƠNG MẠI THANG MÁY TOÀN QUỐC • 34 TỈNH THÀNH
+          </div>
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
+            Giải Pháp Thang Máy Toàn Diện Cho Biệt Thự, Nhà Phố & Dự Án
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+            Quy tụ đầy đủ các dòng: <strong>Thang máy kính quan sát Panoramic, Homelift mini không hố PIT, Thang tải khách tốc độ cao Fuji Nhật Bản & Montanari Ý</strong>. Khảo sát giếng thang, tư vấn bản vẽ móng và báo giá dự toán miễn phí tận nơi trên toàn quốc.
+          </p>
+          
+          <div class="pt-2 flex flex-wrap gap-3">
+            <button onclick="scrollToEstimator()" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-navy-950 font-black px-4 py-3 sm:px-6 rounded-xl text-xs uppercase shadow-lg transition text-center leading-snug">
+              ⚡ TÍNH DỰ TOÁN BÁO GIÁ TRONG 30S
+            </button>
+            <a href="tel:0914587575" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-4 py-3 sm:px-5 rounded-xl text-xs backdrop-blur-sm transition flex items-center justify-center gap-2 text-center leading-snug">
+              <span>📞 Hotline Toàn Quốc: 0914.587.575</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- HÀNG HUY HIỆU CAM KẾT (KHÔNG ĐÈ LÊN KHUNG NÀO) -->
+        <div class="relative z-20 pt-6 mt-4 border-t border-white/15 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+          <div class="flex items-center gap-1.5 text-gold-300 font-bold">
+            <span>🛡️</span>
+            <span>Bảo hành chính hãng 24 - 36 tháng</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-slate-200 font-medium">
+            <span>⚡</span>
+            <span>Cứu hộ tự động ARD khi mất điện</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-slate-200 font-medium">
+            <span>📍</span>
+            <span>Kỹ sư trực 24/7 tại 34 tỉnh thành</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2 Banner bên cạnh -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+        
+        <div class="rounded-2xl p-5 bg-gradient-to-br from-amber-600 to-gold-700 text-white shadow-lg flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] font-black uppercase bg-black/20 px-2 py-0.5 rounded text-white">DÀNH CHO KIẾN TRÚC SƯ & TỔNG THẦU</span>
+            <h3 class="text-base font-black mt-2 leading-snug">Chiết Khấu Hoa Hồng 10% (15Tr - 40Tr / Cây Thang)</h3>
+            <p class="text-xs text-amber-100 mt-1">Cung cấp trọn bộ CAD, Revit BIM hố thang, dầm giằng cho hồ sơ xin cấp phép xây dựng.</p>
+          </div>
+          <a href="chiet-khau.html" class="mt-4 text-xs font-black text-navy-950 bg-white py-2 px-3 rounded-lg text-center uppercase tracking-wider hover:bg-amber-100 transition shadow">
+            Xem chính sách hoa hồng KTS &gt;
+          </a>
+        </div>
+
+        <div class="rounded-2xl p-5 bg-navy-900 border border-slate-700 text-white shadow-lg flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] font-black uppercase bg-gold-500 text-navy-950 px-2 py-0.5 rounded">HỢP TÁC NHÀ MÁY & TỔNG KHO</span>
+            <h3 class="text-base font-black mt-2 leading-snug">Kêu Gọi Các Hãng & Xưởng Đưa Thang Lên Kệ</h3>
+            <p class="text-xs text-slate-300 mt-1">Kết nối mạng lưới tiêu thụ trực tiếp tới các công trình xây dựng đang triển khai trên 34 tỉnh thành.</p>
+          </div>
+          <a href="doi-tac.html" class="mt-4 text-xs font-black text-gold-400 border border-gold-500/50 py-2 px-3 rounded-lg text-center uppercase tracking-wider hover:bg-gold-500 hover:text-navy-950 transition">
+            Đăng ký đưa mẫu lên sàn &gt;
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== MỤC THAM KHẢO TÍNH GIÁ NHANH DÀNH CHO KHÁCH HÀNG (MỤC RẤT QUAN TRỌNG) ==================== -->
+  <section id="bang-gia-nhanh" class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-8">
+    <div class="bg-white rounded-2xl border-2 border-gold-500/70 p-6 sm:p-8 shadow-md space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-1 rounded uppercase tracking-wider">
+            DÀNH CHO KHÁCH HÀNG THAM KHẢO
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-navy-950 mt-1.5 uppercase">
+            Bảng Tra Cứu Dự Toán Giá Nhanh Theo Mô Hình Nhà 2027
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Mức giá hoàn thiện trọn gói tham khảo (Bao gồm Khung giếng + Kính / Inox + Máy kéo + Lắp đặt & Kiểm định bàn giao)
+          </p>
+        </div>
+        <div class="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+          <span>🛡️ Cam kết giá gốc không phát sinh</span>
+        </div>
+      </div>
+
+      <!-- 4 GÓI THAM KHẢO GIÁ NHANH -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+        
+        <!-- Gói 1: Nhà Cải Tạo / Nhà Ống -->
+        <div class="rounded-xl border border-blue-200 bg-blue-50/50 p-4 space-y-3 flex flex-col justify-between hover:border-blue-500 transition">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="bg-blue-600 text-white font-black text-[10px] px-2 py-0.5 rounded uppercase">TIẾT KIỆM DIỆN TÍCH</span>
+              <span class="text-slate-500 text-[11px]">3 - 5 Tầng</span>
+            </div>
+            <h3 class="font-black text-sm text-navy-950">Homelift Mini Nhà Cải Tạo</h3>
+            <p class="text-[11px] text-slate-600">Thích hợp lắp giếng trời hoặc góc thang bộ. Hố PIT siêu nông 250mm không đào móng.</p>
+            
+            <div class="bg-white p-2.5 rounded-lg border border-blue-100 space-y-1">
+              <div class="text-[10px] text-slate-500 font-bold">Khoảng giá dự toán trọn gói:</div>
+              <div class="text-xl font-black text-blue-700">250Tr - 320Tr ₫</div>
+            </div>
+
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Tải trọng: <strong>250kg - 350kg</strong> (3 - 4 người)</li>
+              <li>• Kích thước hố: chỉ từ <strong>1200 x 1200mm</strong></li>
+              <li>• Động cơ: <strong>Fuji Nhật Bản</strong> điện 220V</li>
+            </ul>
+          </div>
+
+          <button onclick="selectPackage('homelift', 4, 350, 'fuji')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-xs transition">
+            Tính Chi Tiết Cấu Hình Này &gt;
+          </button>
+        </div>
+
+        <!-- Gói 2: Biệt Thự Vách Kính Panoramic -->
+        <div class="rounded-xl border-2 border-gold-500 bg-amber-50/60 p-4 space-y-3 flex flex-col justify-between relative shadow-sm">
+          <div class="absolute -top-2.5 right-3 bg-red-600 text-white font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">
+            PHỔ BIẾN NHẤT
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="bg-amber-500 text-navy-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">ĐẲNG CẤP BIỆT THỰ</span>
+              <span class="text-slate-500 text-[11px]">3 - 6 Tầng</span>
+            </div>
+            <h3 class="font-black text-sm text-navy-950">Thang Kính Quan Sát Panoramic</h3>
+            <p class="text-[11px] text-slate-600">Vách kính cường lực 4 mặt trong suốt lấy sáng, khung thép sơn tĩnh điện sang trọng.</p>
+            
+            <div class="bg-white p-2.5 rounded-lg border border-gold-200 space-y-1">
+              <div class="text-[10px] text-amber-800 font-bold">Khoảng giá dự toán trọn gói:</div>
+              <div class="text-xl font-black text-red-600">360Tr - 460Tr ₫</div>
+            </div>
+
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Tải trọng: <strong>350kg - 450kg</strong> (5 - 6 người)</li>
+              <li>• Kích thước hố: <strong>1400 x 1400mm</strong></li>
+              <li>• Động cơ: <strong>Fuji / Montanari Ý</strong> êm ái</li>
+            </ul>
+          </div>
+
+          <button onclick="selectPackage('thang-kinh', 4, 450, 'fuji')" class="w-full gold-gradient text-navy-950 font-black py-2 rounded-lg text-xs transition shadow">
+            Tính Chi Tiết Cấu Hình Này &gt;
+          </button>
+        </div>
+
+        <!-- Gói 3: Khách Sạn & Tòa Nhà Văn Phòng -->
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 space-y-3 flex flex-col justify-between hover:border-emerald-500 transition">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="bg-emerald-600 text-white font-black text-[10px] px-2 py-0.5 rounded uppercase">DỰ ÁN KINH DOANH</span>
+              <span class="text-slate-500 text-[11px]">5 - 9 Tầng</span>
+            </div>
+            <h3 class="font-black text-sm text-navy-950">Thang Tải Khách Tốc Độ Cao</h3>
+            <p class="text-[11px] text-slate-600">Phục vụ khách sạn, căn hộ mini, văn phòng cho thuê với cường độ vận hành liên tục.</p>
+            
+            <div class="bg-white p-2.5 rounded-lg border border-emerald-100 space-y-1">
+              <div class="text-[10px] text-slate-500 font-bold">Khoảng giá dự toán trọn gói:</div>
+              <div class="text-xl font-black text-emerald-700">450Tr - 680Tr ₫</div>
+            </div>
+
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Tải trọng: <strong>630kg - 1000kg</strong> (8 - 13 người)</li>
+              <li>• Tốc độ: <strong>1.5m/s - 1.75m/s</strong></li>
+              <li>• Động cơ: <strong>Montanari Ý</strong> nhập khẩu</li>
+            </ul>
+          </div>
+
+          <button onclick="selectPackage('khach-san', 6, 630, 'montanari')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 rounded-lg text-xs transition">
+            Tính Chi Tiết Cấu Hình Này &gt;
+          </button>
+        </div>
+
+        <!-- Gói 4: Thang Nhập Khẩu Nguyên Chiếc Châu Âu -->
+        <div class="rounded-xl border border-purple-200 bg-purple-50/50 p-4 space-y-3 flex flex-col justify-between hover:border-purple-500 transition">
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="bg-purple-700 text-white font-black text-[10px] px-2 py-0.5 rounded uppercase">SIÊU CAO CẤP</span>
+              <span class="text-slate-500 text-[11px]">3 - 6 Tầng</span>
+            </div>
+            <h3 class="font-black text-sm text-navy-950">Thang Nhập Khẩu Châu Âu</h3>
+            <p class="text-[11px] text-slate-600">Đồng bộ 100% nguyên chiếc, tiêu chuẩn an toàn châu Âu EN 81-20/50 nghiêm ngặt.</p>
+            
+            <div class="bg-white p-2.5 rounded-lg border border-purple-100 space-y-1">
+              <div class="text-[10px] text-slate-500 font-bold">Khoảng giá dự toán trọn gói:</div>
+              <div class="text-xl font-black text-purple-800">750Tr - 1.1 Tỷ ₫</div>
+            </div>
+
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Đầy đủ chứng chỉ <strong>CO/CQ Hải Quan</strong></li>
+              <li>• Cabin <strong>Inox gương vàng hoàng gia</strong></li>
+              <li>• Vận hành êm ái tuyệt đối dưới 45dB</li>
+            </ul>
+          </div>
+
+          <button onclick="selectPackage('nhap-khau', 4, 450, 'montanari')" class="w-full bg-purple-800 hover:bg-purple-900 text-white font-bold py-2 rounded-lg text-xs transition">
+            Tính Chi Tiết Cấu Hình Này &gt;
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+    <!-- ==================== HỆ THỐNG AUTO-CAD & DỰ TOÁN BÁO GIÁ THANG MÁY TỰ ĐỘNG ==================== -->
+  <section id="du-toan" class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-4">
+    <div class="relative bg-gradient-to-br from-navy-900 via-navy-950 to-slate-950 rounded-2xl p-4 sm:p-7 border-2 border-gold-500 shadow-2xl space-y-6 overflow-hidden">
+      
+      <!-- HÌNH ẢNH THANG MÁY MỜ LÀM NỀN TRUNG TÂM -->
+      <div class="absolute inset-0 bg-cover bg-center opacity-30 scale-105 pointer-events-none" style="background-image: url('images/calc_blurred_elevator.jpg');"></div>
+      <div class="absolute inset-0 bg-navy-950/80 z-0"></div>
+
+      <!-- HEADER CỦA CÔNG CỤ -->
+      <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-slate-700/80 pb-4">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 bg-gold-500 text-navy-950 text-[10px] font-black px-2.5 py-0.5 rounded uppercase tracking-wider">
+            <span>📐 ĐỘT PHÁ CÔNG NGHỆ 2027</span> • KỸ SƯ AUTOCAD ẢO
+          </div>
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-white uppercase tracking-tight">
+            Kỹ Sư Auto-CAD & Dự Toán Giá Thang Máy Nhanh
+          </h2>
+          <p class="text-xs text-slate-300">
+            Nhập kích thước hố thực tế của nhà bạn — Hệ thống tự động vẽ bản vẽ kỹ thuật CAD 2D thời gian thực và bóc tách dự toán trọn gói.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <a href="thiet-ke-cad.html" class="bg-navy-800 hover:bg-gold-600 text-gold-400 hover:text-navy-950 border border-gold-500/50 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow whitespace-nowrap">
+            🔍 Mở Trình Vẽ CAD Toàn Màn Hình
+          </a>
+        </div>
+      </div>
+
+      <!-- GRID 2 CỘT: CỘT TRÁI (THÔNG SỐ) - CỘT PHẢI (MÀN HÌNH BẢN VẼ AUTOCAD) -->
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start text-xs">
+        
+        <!-- CỘT TRÁI (5 CỘT): FORM THÔNG SỐ -->
+        <div class="lg:col-span-5 bg-navy-900/90 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-slate-700 space-y-4">
+          <div class="font-black text-gold-400 uppercase tracking-wider text-xs border-b border-slate-700 pb-2 flex items-center justify-between">
+            <span>1. KÍCH THƯỚC HỐ THANG THỰC TẾ</span>
+            <span class="text-[10px] text-slate-400 font-normal">Kéo thanh trượt để chỉnh</span>
+          </div>
+
+          <!-- Rộng W -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <label class="text-slate-300 font-bold">Chiều rộng hố (W):</label>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="homeStepDim('homeInputW', -50)" class="w-6 h-6 flex items-center justify-center rounded bg-navy-800 hover:bg-navy-700 text-gold-400 border border-slate-700 font-black text-xs active:scale-95 transition select-none">-</button>
+                <span id="homeValW" class="font-mono font-black text-gold-400 bg-navy-950 px-2 py-0.5 rounded border border-slate-700 min-w-[65px] text-center">1400 mm</span>
+                <button type="button" onclick="homeStepDim('homeInputW', 50)" class="w-6 h-6 flex items-center justify-center rounded bg-navy-800 hover:bg-navy-700 text-gold-400 border border-slate-700 font-black text-xs active:scale-95 transition select-none">+</button>
+              </div>
+            </div>
+            <input type="range" id="homeInputW" min="1000" max="2200" step="50" value="1400" oninput="homeUpdateCad()" class="w-full cursor-pointer accent-amber-500">
+          </div>
+
+          <!-- Sâu D -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <label class="text-slate-300 font-bold">Chiều sâu hố (D):</label>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="homeStepDim('homeInputD', -50)" class="w-6 h-6 flex items-center justify-center rounded bg-navy-800 hover:bg-navy-700 text-gold-400 border border-slate-700 font-black text-xs active:scale-95 transition select-none">-</button>
+                <span id="homeValD" class="font-mono font-black text-gold-400 bg-navy-950 px-2 py-0.5 rounded border border-slate-700 min-w-[65px] text-center">1450 mm</span>
+                <button type="button" onclick="homeStepDim('homeInputD', 50)" class="w-6 h-6 flex items-center justify-center rounded bg-navy-800 hover:bg-navy-700 text-gold-400 border border-slate-700 font-black text-xs active:scale-95 transition select-none">+</button>
+              </div>
+            </div>
+            <input type="range" id="homeInputD" min="1000" max="2200" step="50" value="1450" oninput="homeUpdateCad()" class="w-full cursor-pointer accent-amber-500">
+          </div>
+
+          <!-- Pit & OH -->
+          <div class="grid grid-cols-2 gap-3 pt-1 border-t border-slate-700/60">
+            <div class="space-y-1">
+              <label class="text-slate-300 font-bold block">Hố PIT:</label>
+              <select id="homeInputPit" onchange="homeUpdateCad()" class="w-full bg-navy-950 text-white border border-slate-600 rounded-lg p-2 font-bold focus:outline-none focus:border-gold-500">
+                <option value="250">250 mm (Siêu nông)</option>
+                <option value="350" selected>350 mm (Homelift)</option>
+                <option value="500">500 mm (Nhà phố)</option>
+                <option value="1200">1200 mm (Tiêu chuẩn)</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <label class="text-slate-300 font-bold block">Tum OH:</label>
+              <select id="homeInputOh" onchange="homeUpdateCad()" class="w-full bg-navy-950 text-white border border-slate-600 rounded-lg p-2 font-bold focus:outline-none focus:border-gold-500">
+                <option value="2800">2800 mm (Tum thấp)</option>
+                <option value="3200" selected>3200 mm (Biệt thự)</option>
+                <option value="3600">3600 mm (Tiêu chuẩn)</option>
+                <option value="4200">4200 mm (Cao tầng)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Stops & Type -->
+          <div class="grid grid-cols-2 gap-3 pt-1 border-t border-slate-700/60">
+            <div class="space-y-1">
+              <label class="text-slate-300 font-bold block">Số tầng (Stops):</label>
+              <select id="homeInputStops" onchange="homeUpdateCad()" class="w-full bg-navy-950 text-white border border-slate-600 rounded-lg p-2 font-bold focus:outline-none focus:border-gold-500">
+                <option value="3">3 Tầng</option>
+                <option value="4" selected>4 Tầng</option>
+                <option value="5">5 Tầng</option>
+                <option value="6">6 Tầng</option>
+                <option value="7">7 Tầng</option>
+              </select>
+            </div>
+            <div class="space-y-1">
+              <label class="text-slate-300 font-bold block">Động cơ:</label>
+              <select id="homeInputMotor" onchange="homeUpdateCad()" class="w-full bg-navy-950 text-white border border-slate-600 rounded-lg p-2 font-bold focus:outline-none focus:border-gold-500">
+                <option value="fuji" selected>Fuji Nhật Bản</option>
+                <option value="montanari">Montanari Ý</option>
+                <option value="ziehl">Ziehl-Abegg Đức</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Chủng loại thang -->
+          <div class="space-y-1 pt-1 border-t border-slate-700/60">
+            <label class="text-slate-300 font-bold block">Dòng thang & Kết cấu vách:</label>
+            <select id="homeInputType" onchange="homeUpdateCad()" class="w-full bg-navy-950 text-white border border-slate-600 rounded-lg p-2 font-bold focus:outline-none focus:border-gold-500">
+              <option value="thang-kinh" selected>✨ Thang Kính Panoramic Biệt Thự (Khung Thép CNC)</option>
+              <option value="homelift">🏡 Thang Gia Đình Homelift Mini (Inox Hoàng Gia)</option>
+              <option value="khach-san">🏨 Thang Tải Khách Khách Sạn (Hố Bê Tông)</option>
+              <option value="nhap-khau">👑 Thang Nhập Khẩu Nguyên Chiếc Châu Âu</option>
+            </select>
+          </div>
+
+          <!-- Thông số kỹ thuật cabin tính toán tự động -->
+          <div class="p-3 bg-navy-950 rounded-lg border border-slate-800 space-y-1 font-mono text-[11px] text-slate-300">
+            <div class="flex justify-between">
+              <span>Cabin lọt lòng:</span>
+              <strong id="homeCalcCabin" class="text-green-400 font-bold">1000 x 1150 mm</strong>
+            </div>
+            <div class="flex justify-between">
+              <span>Cửa thông thủy OP:</span>
+              <strong id="homeCalcDoor" class="text-pink-400 font-bold">700 x 2100 mm</strong>
+            </div>
+            <div class="flex justify-between">
+              <span>Tải trọng thiết kế:</span>
+              <strong id="homeCalcCap" class="text-gold-400 font-bold">350 kg (4 - 5 người)</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CỘT PHẢI (7 CỘT): MÀN HÌNH AUTOCAD BẢN VẼ THỜI GIAN THỰC -->
+        <div class="lg:col-span-7 bg-navy-950 rounded-xl border border-gold-500/60 overflow-hidden shadow-xl flex flex-col">
+          
+          <!-- AutoCAD Toolbar -->
+          <div class="bg-navy-900 px-3 py-2 flex items-center justify-between border-b border-slate-800 text-[11px]">
+            <div class="flex items-center gap-1.5 font-mono text-gold-400 font-bold">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+              <span>BẢN VẼ AUTOCAD THỜI GIAN THỰC</span>
+            </div>
+            <!-- 4 Tab Mặt Cắt Kỹ Thuật Độc Quyền -->
+            <div class="flex items-center gap-1 bg-navy-950 p-1 rounded-lg border border-slate-700 overflow-x-auto no-scrollbar scroll-smooth">
+              <button id="homeTabPlan" onclick="homeSwitchCad('plan')" class="px-2 py-1 rounded text-[10px] font-bold bg-gold-500 text-navy-950 transition whitespace-nowrap">
+                📐 1. Mặt Bằng (Plan)
+              </button>
+              <button id="homeTabSec" onclick="homeSwitchCad('section')" class="px-2 py-1 rounded text-[10px] font-bold text-slate-300 hover:text-white transition whitespace-nowrap">
+                📏 2. Các Tầng (Shaft)
+              </button>
+              <button id="homeTabCab" onclick="homeSwitchCad('cabin')" class="px-2 py-1 rounded text-[10px] font-bold text-slate-300 hover:text-white transition whitespace-nowrap">
+                🚪 3. Cabin & Cửa
+              </button>
+              <button id="homeTabPit" onclick="homeSwitchCad('pit')" class="px-2 py-1 rounded text-[10px] font-bold text-slate-300 hover:text-white transition whitespace-nowrap">
+                🧱 4. Đáy Hố PIT
+              </button>
+            </div>
+          </div>
+
+          <!-- Màn hình bản vẽ -->
+          <div class="cad-canvas-container p-3 flex items-center justify-center min-h-[340px] relative select-none">
+            
+            <!-- 1. Plan SVG -->
+            <div id="homeCadPlanView" class="w-full flex items-center justify-center">
+              <svg id="homeSvgPlan" viewBox="0 0 540 400" class="w-full max-w-[460px] h-auto drop-shadow-md">
+                <!-- Live SVG rendered by JS -->
+              </svg>
+            </div>
+
+            <!-- 2. Section SVG -->
+            <div id="homeCadSecView" class="w-full items-center justify-center hidden">
+              <svg id="homeSvgSec" viewBox="0 0 540 480" class="w-full max-w-[460px] h-auto drop-shadow-md">
+                <!-- Live SVG rendered by JS -->
+              </svg>
+            </div>
+
+            <!-- 3. Cabin SVG -->
+            <div id="homeCadCabView" class="w-full items-center justify-center hidden">
+              <svg id="homeSvgCab" viewBox="0 0 540 420" class="w-full max-w-[460px] h-auto drop-shadow-md">
+                <!-- Live SVG rendered by JS -->
+              </svg>
+            </div>
+
+            <!-- 4. Pit SVG -->
+            <div id="homeCadPitView" class="w-full items-center justify-center hidden">
+              <svg id="homeSvgPit" viewBox="0 0 540 400" class="w-full max-w-[460px] h-auto drop-shadow-md">
+                <!-- Live SVG rendered by JS -->
+              </svg>
+            </div>
+
+            <!-- Ghi chú khung tên bản vẽ -->
+            <div class="absolute bottom-2 right-2 bg-navy-950/90 p-1.5 rounded border border-slate-800 text-[9px] font-mono text-right text-slate-300 max-w-[180px] sm:max-w-none leading-tight">
+              <div>Đơn vị: mm • Tỷ lệ: 1:25</div>
+              <div class="text-gold-400 font-bold">Hotline: 0914.587.575</div>
+            </div>
+
+          </div>
+
+          <!-- Nút tải & gửi Zalo -->
+          <div class="bg-navy-900/95 p-2.5 flex items-center justify-between gap-2 border-t border-slate-800 text-xs">
+            <span class="text-[11px] text-slate-400">Bản vẽ tự động co giãn theo số đo vừa nhập.</span>
+            <div class="flex gap-2">
+              <button onclick="homeDownloadCad()" class="bg-navy-800 hover:bg-navy-700 text-gold-400 border border-gold-500/40 px-3 py-1 rounded-lg text-xs font-bold transition">
+                📥 Tải Bản Vẽ (SVG)
+              </button>
+              <button onclick="homeSendZalo()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-lg text-xs font-bold transition">
+                💬 Gửi Zalo Kỹ Sư Trưởng
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- KẾT QUẢ DỰ TOÁN HIỂN THỊ TRỰC TIẾP (BÓC TÁCH CHI TIẾT) -->
+      <div class="relative z-10 bg-navy-950/95 backdrop-blur-md p-5 sm:p-6 rounded-2xl border border-gold-500/50 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="space-y-1.5 text-center md:text-left">
+          <span class="text-xs text-slate-400 uppercase tracking-widest font-bold">MỨC GIÁ DỰ TOÁN TRỌN GÓI THEO BẢN VẼ KỸ THUẬT:</span>
+          <div class="text-3xl sm:text-4xl font-black text-gold-400" id="estimatedPriceText">
+            335.000.000 ₫ - 375.000.000 ₫
+          </div>
+          <div class="text-xs text-slate-300 flex flex-wrap items-center gap-2 justify-center md:justify-start pt-1">
+            <span class="inline-flex items-center gap-1.5 bg-navy-900 border border-slate-700/80 px-2.5 py-1 rounded-lg whitespace-nowrap shadow-sm">
+              <span class="text-green-400 font-bold">✓</span>
+              <span>Kích thước hố: <strong id="shaftSizeText" class="text-white font-bold">1400mm x 1450mm</strong></span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 bg-navy-900 border border-slate-700/80 px-2.5 py-1 rounded-lg whitespace-nowrap shadow-sm">
+              <span class="text-gold-400 font-bold">✓</span>
+              <span id="homePitBadge">Hố PIT: <strong class="text-white font-bold">350mm (Đệm PU)</strong></span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 bg-navy-900 border border-slate-700/80 px-2.5 py-1 rounded-lg whitespace-nowrap shadow-sm">
+              <span class="text-blue-400 font-bold">✓</span>
+              <span>Động cơ: <strong id="homeMotorBadge" class="text-white font-bold">Fuji PMSM Nhật Bản</strong></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <a href="dat-hang.html" class="w-full sm:w-auto bg-gradient-to-r from-accent-red to-orange-600 hover:opacity-95 text-white font-black px-4 py-3 sm:px-6 sm:py-3.5 rounded-xl text-xs sm:text-sm uppercase tracking-wide text-center shadow-lg transition block leading-snug">
+            📐 Đặt Lịch Khảo Sát Hố Thang (Miễn Phí)
+          </a>
+          <a href="thiet-ke-cad.html" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-gold-500/50 text-gold-400 font-bold px-4 py-3 sm:px-5 sm:py-3.5 rounded-xl text-xs sm:text-sm text-center transition block leading-snug">
+            📋 Mở Bảng Bóc Tách BOQ Chi Tiết
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== CÁC DÒNG THANG MÁY TIÊU BIỂU TOÀN QUỐC (ẢNH THỰC TẾ ĐÃ XÓA LOGO) ==================== -->
+  <section class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-6 space-y-4">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+      <div>
+        <div class="text-gold-700 font-black text-xs uppercase tracking-wider">SHOWROOM TRỰC TUYẾN TOÀN QUỐC</div>
+        <h2 id="catalogTitle" class="text-xl sm:text-2xl font-black text-navy-950 uppercase">
+          CÁC DÒNG THANG MÁY TIÊU BIỂU TOÀN QUỐC
+        </h2>
+      </div>
+      <div class="text-xs text-slate-500">
+        Đầy đủ chứng nhận kiểm định an toàn & CO/CQ nhập khẩu chính hãng
+      </div>
+    </div>
+
+    <!-- Lưới sản phẩm thang máy với ảnh thật sạch không logo -->
+    <div id="elevatorGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Rendered by JavaScript -->
+    </div>
+  </section>
+
+  <!-- ==================== SHOWROOM MẪU CABIN THỰC TẾ (ĐÃ XÓA SẠCH LOGO) ==================== -->
+  <section class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-8">
+    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <span class="text-xs font-black text-gold-600 uppercase tracking-widest">BỘ SƯU TẬP MẪU CABIN 2027</span>
+        <h3 class="text-xl sm:text-2xl font-black text-navy-950 uppercase">
+          Mẫu Cabin Thang Máy Thực Tế Trích Xuất Từ Catalogue
+        </h3>
+        <p class="text-xs text-slate-500">
+          Hình ảnh thiết kế thực tế các dòng Cabin: Inox gương vàng hoa văn cổ điển, Vách kính cường lực toàn cảnh, Inox sọc nhuyễn và Hợp kim sang trọng (ảnh đã xử lý xóa sạch logo).
+        </p>
+      </div>
+
+      <!-- Grid 6 mẫu cabin ảnh thật sạch đẹp -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+        
+        <div class="group rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition shadow-sm bg-slate-50 flex flex-col justify-between">
+          <div class="aspect-[3/4] overflow-hidden bg-slate-900">
+            <img src="images/cabin_1.png" alt="Mẫu Cabin 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-2.5 text-center">
+            <div class="font-bold text-navy-950 text-[11px]">Cabin Model HDE-01</div>
+            <div class="text-[10px] text-gold-700 font-semibold">Inox Gương Vàng Khắc Hoa Văn</div>
+          </div>
+        </div>
+
+        <div class="group rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition shadow-sm bg-slate-50 flex flex-col justify-between">
+          <div class="aspect-[3/4] overflow-hidden bg-slate-900">
+            <img src="images/cabin_2.png" alt="Mẫu Cabin 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-2.5 text-center">
+            <div class="font-bold text-navy-950 text-[11px]">Cabin Model HDE-02</div>
+            <div class="text-[10px] text-gold-700 font-semibold">Vách Kính Quan Sát 360°</div>
+          </div>
+        </div>
+
+        <div class="group rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition shadow-sm bg-slate-50 flex flex-col justify-between">
+          <div class="aspect-[3/4] overflow-hidden bg-slate-900">
+            <img src="images/cabin_3.png" alt="Mẫu Cabin 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-2.5 text-center">
+            <div class="font-bold text-navy-950 text-[11px]">Cabin Model HDE-03</div>
+            <div class="text-[10px] text-gold-700 font-semibold">Inox Sọc Nhuyễn & Gương Trắng</div>
+          </div>
+        </div>
+
+        <div class="group rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition shadow-sm bg-slate-50 flex flex-col justify-between">
+          <div class="aspect-[3/4] overflow-hidden bg-slate-900">
+            <img src="images/cabin_4.png" alt="Mẫu Cabin 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-2.5 text-center">
+            <div class="font-bold text-navy-950 text-[11px]">Cabin Model HDE-04</div>
+            <div class="text-[10px] text-gold-700 font-semibold">Hoàng Gia Khắc Ăn Mòn</div>
+          </div>
+        </div>
+
+        <div class="group rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition shadow-sm bg-slate-50 flex flex-col justify-between">
+          <div class="aspect-[3/4] overflow-hidden bg-slate-900">
+            <img src="images/cabin_5.png" alt="Mẫu Cabin 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-2.5 text-center">
+            <div class="font-bold text-navy-950 text-[11px]">Cabin Model HDE-05</div>
+            <div class="text-[10px] text-gold-700 font-semibold">Tân Cổ Điển Biệt Thự</div>
+          </div>
+        </div>
+
+        <div class="group rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition shadow-sm bg-slate-50 flex flex-col justify-between">
+          <div class="aspect-[3/4] overflow-hidden bg-slate-900">
+            <img src="images/cabin_6.png" alt="Mẫu Cabin 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-2.5 text-center">
+            <div class="font-bold text-navy-950 text-[11px]">Cabin Model HDE-06</div>
+            <div class="text-[10px] text-gold-700 font-semibold">Hiện Đại Khách Sạn Cao Cấp</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center pt-2">
+        <a href="san-pham.html" class="inline-flex items-center gap-2 gold-gradient text-navy-950 font-black px-6 py-2.5 rounded-xl text-xs uppercase shadow hover:opacity-95 transition">
+          <span>📖</span> Xem Chi Tiết Catalogue Đầy Đủ & Báo Giá
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TẠP CHÍ THANG MÁY (CHUYÊN MỤC KIẾN THỨC CHUYÊN SÂU TỪ KỸ SƯ TRƯỞNG) ==================== -->
+  <section class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-8">
+    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="bg-blue-600 text-white text-[10px] font-black px-2.5 py-1 rounded uppercase tracking-wider">
+            GÓC KỸ THUẬT & TƯ VẤN CHUYÊN GIA
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-navy-950 mt-1.5 uppercase">
+            Tạp Chí Thang Máy • Kiến Thức & Xu Hướng 2027
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Được biên soạn bởi các kỹ sư thang máy hàng đầu Việt Nam.
+          </p>
+        </div>
+        <a href="tap-chi.html" class="text-xs font-bold text-gold-600 hover:text-gold-700 hover:underline flex items-center gap-1">
+          Xem tất cả bài viết trên Tạp chí &gt;
+        </a>
+      </div>
+
+      <!-- Grid 3 bài viết nổi bật trên Tạp chí -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        
+        <!-- Bài 1 -->
+        <article class="rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="aspect-[16/9] bg-slate-900 overflow-hidden relative">
+              <img src="images/cabin_2.png" alt="Thiết kế hố PIT siêu nông" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase">KỸ THUẬT HỐ THANG</span>
+            </div>
+            <div class="p-4 space-y-2">
+              <div class="text-[11px] text-slate-400">Ngày đăng: 23/10/2026 • Bởi Kỹ Sư Trưởng</div>
+              <h3 class="font-black text-sm text-navy-950 group-hover:text-gold-600 transition line-clamp-2">
+                Cẩm Nang Xử Lý Hố PIT Siêu Nông (Từ 250mm) Cho Nhà Phố Cải Tạo: Tránh Triệt Để Móng Bè & Bể Nước Ngầm
+              </h3>
+              <p class="text-slate-600 leading-relaxed line-clamp-3">
+                Phân tích giải pháp kết cấu khung thép giếng thang và cơ chế treo động cơ không phòng máy, giúp gia chủ lắp đặt thang máy vào khoảng giếng trời mà không cần đục phá nền móng.
+              </p>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <a href="bai-viet.html?id=1" class="text-gold-600 font-bold hover:underline inline-flex items-center gap-1">
+              Đọc toàn bộ bài phân tích &gt;
+            </a>
+          </div>
+        </article>
+
+        <!-- Bài 2 -->
+        <article class="rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="aspect-[16/9] bg-slate-900 overflow-hidden relative">
+              <img src="images/cabin_3.png" alt="So sánh động cơ thang máy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <span class="absolute top-2 left-2 bg-blue-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase">CÔNG NGHỆ ĐỘNG CƠ</span>
+            </div>
+            <div class="p-4 space-y-2">
+              <div class="text-[11px] text-slate-400">Ngày đăng: 22/10/2026 • Bởi Chuyên Gia Cơ Điện</div>
+              <h3 class="font-black text-sm text-navy-950 group-hover:text-gold-600 transition line-clamp-2">
+                So Sánh Chi Tiết Động Cơ Fuji (Nhật Bản) vs Montanari (Ý) vs Ziehl-Abegg (Đức): Loại Nào Êm Và Bền Nhất?
+              </h3>
+              <p class="text-slate-600 leading-relaxed line-clamp-3">
+                Đánh giá chỉ số tiêu thụ điện năng kWh, độ ồn decibel (dB), tuổi thọ nam châm vĩnh cửu PMSM và chi phí thay thế linh kiện sau 10 năm vận hành thực tế.
+              </p>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <a href="bai-viet.html?id=2" class="text-gold-600 font-bold hover:underline inline-flex items-center gap-1">
+              Đọc toàn bộ bài phân tích &gt;
+            </a>
+          </div>
+        </article>
+
+        <!-- Bài 3 -->
+        <article class="rounded-xl border border-slate-200 overflow-hidden hover:border-gold-500 transition flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="aspect-[16/9] bg-slate-900 overflow-hidden relative">
+              <img src="images/cabin_1.png" alt="Quy chuẩn an toàn thang máy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <span class="absolute top-2 left-2 bg-amber-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase">AN TOÀN KỸ THUẬT</span>
+            </div>
+            <div class="p-4 space-y-2">
+              <div class="text-[11px] text-slate-400">Ngày đăng: 21/10/2026 • Bởi Ban Kỹ Thuật Thang Máy</div>
+              <h3 class="font-black text-sm text-navy-950 group-hover:text-gold-600 transition line-clamp-2">
+                Quy Chuẩn An Toàn QCVN 02:2019/BLĐTBXH: 5 Thiết Bị An Toàn Bắt Buộc Phải Có Khi Nghiệm Thu Thang Máy
+              </h3>
+              <p class="text-slate-600 leading-relaxed line-clamp-3">
+                Cảnh báo những rủi ro khi mua thang máy giá rẻ bị cắt giảm bộ khống chế vượt tốc Governor, mành quang điện Photocell chống kẹt cửa và hệ thống cứu hộ tự động ARD.
+              </p>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <a href="bai-viet.html?id=3" class="text-gold-600 font-bold hover:underline inline-flex items-center gap-1">
+              Đọc toàn bộ bài phân tích &gt;
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC ==================== -->
+  <footer class="bg-navy-950 text-slate-400 text-xs py-10 border-t border-slate-800 mt-10">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl text-gold-400">🛗</span>
+          <span class="text-white font-black text-sm uppercase">Siêu thị Thang máy Toàn Quốc</span>
+        </div>
+        <p class="text-[11px] leading-relaxed text-slate-400">
+          Hệ thống sàn thương mại điện tử và phân phối thang máy gia đình, thang vách kính, thang khách sạn, linh kiện máy kéo hàng đầu tại Việt Nam, phục vụ khách hàng trên 34 tỉnh thành.
+        </p>
+        <div class="pt-1">
+          <span class="text-white font-bold">Hotline Kỹ Sư Trưởng Toàn Quốc: </span>
+          <a href="tel:0914587575" class="text-gold-400 font-black text-sm">0914.587.575</a>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-white font-bold uppercase text-xs tracking-wider">Dòng Sản Phẩm Chính</h4>
+        <ul class="space-y-1.5 text-slate-300">
+          <li><button onclick="filterLifts('homelift')" class="hover:text-gold-400">Thang máy gia đình Homelift mini</button></li>
+          <li><button onclick="filterLifts('thang-kinh')" class="hover:text-gold-400">Thang máy vách kính quan sát biệt thự</button></li>
+          <li><button onclick="filterLifts('khach-san')" class="hover:text-gold-400">Thang máy tải khách khách sạn & văn phòng</button></li>
+          <li><button onclick="filterLifts('thang-hang')" class="hover:text-gold-400">Thang máy tải hàng & nâng ô tô</button></li>
+          <li><button onclick="filterLifts('linh-kien')" class="hover:text-gold-400">Động cơ máy kéo Fuji, Montanari Ý</button></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-white font-bold uppercase text-xs tracking-wider">Chính Sách & Tạp Chí</h4>
+        <ul class="space-y-1.5 text-slate-300">
+          <li><a href="tap-chi.html" class="hover:text-gold-400 text-sky-400 font-bold">📰 Tạp Chí Thang Máy (Kiến thức kỹ thuật)</a></li>
+          <li><a href="#bang-gia-nhanh" class="hover:text-gold-400">Bảng tra cứu giá nhanh khách hàng</a></li>
+          <li><a href="chiet-khau.html" class="hover:text-gold-400 text-gold-400 font-bold">Chính sách hoa hồng 10% KTS toàn quốc</a></li>
+          <li><a href="doi-tac.html" class="hover:text-gold-400">Kêu gọi xưởng sản xuất cơ khí & đại lý</a></li>
+          <li><a href="dat-hang.html" class="hover:text-gold-400">Đăng ký kỹ sư đo đạc hố thang miễn phí</a></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-white font-bold uppercase text-xs tracking-wider">Mạng Lưới Phục Vụ 34 Tỉnh Thành</h4>
+        <p class="text-[11px] leading-relaxed text-slate-300">
+          Đội ngũ kỹ sư khảo sát, lắp đặt và bảo hành trực 24/7 tại 3 miền:
+        </p>
+        <ul class="space-y-1 text-[11px] text-slate-300">
+          <li>• <strong>Miền Bắc:</strong> Hà Nội, Hải Phòng, Quảng Ninh, Bắc Ninh, Hưng Yên...</li>
+          <li>• <strong>Miền Trung:</strong> Nghệ An, Hà Tĩnh, Thanh Hóa, Đà Nẵng, Huế, Khánh Hòa...</li>
+          <li>• <strong>Miền Nam:</strong> TP. Hồ Chí Minh, Bình Dương, Đồng Nai, Cần Thơ, Bà Rịa - Vũng Tàu...</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 pt-8 mt-8 border-t border-slate-800 text-center text-slate-500 text-[11px]">
+      © 2026 Siêu thị Thương Mại Thang Máy Toàn Quốc - sieuthithangmaytoanquoc.com - Hotline Admin: 0914.587.575. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT XỬ LÝ LỌC & DỰ TOÁN ==================== -->
+  <script>
+    const elevators = [
+      {
+        id: 'lift-1',
+        name: 'Thang Máy Gia Đình Homelift Fuji 300kg (Hố PIT Nông 25cm)',
+        category: 'homelift',
+        categoryName: 'Thang máy gia đình',
+        capacity: '300kg (3 - 4 người)',
+        speed: '30m - 45m/phút',
+        motor: 'Fuji Không Hộp Số (Công nghệ Nhật Bản)',
+        stops: '3 - 5 Tầng',
+        pit: 'Chỉ 250mm (Không cần đào sâu, bảo vệ móng nhà)',
+        priceRange: '260.000.000 ₫ - 310.000.000 ₫',
+        badge: 'BÁN CHẠY NHẤT NHÀ PHỐ',
+        highlights: 'Tiết kiệm 40% điện năng, chạy êm ái, phù hợp nhà cải tạo kích thước hố chỉ từ 1200x1200mm.',
+        image: 'images/cabin_1.png'
+      },
+      {
+        id: 'lift-2',
+        name: 'Thang Máy Vách Kính Biệt Thự Panoramic Fuji 350kg - 450kg',
+        category: 'thang-kinh',
+        categoryName: 'Thang máy kính biệt thự',
+        capacity: '350kg - 450kg (5 - 6 người)',
+        speed: '60m/phút (1m/s)',
+        motor: 'Fuji / Montanari Ý không hộp số',
+        stops: '3 - 6 Tầng',
+        pit: '300mm - 400mm',
+        priceRange: '330.000.000 ₫ - 420.000.000 ₫',
+        badge: 'ĐẲNG CẤP BIỆT THỰ',
+        highlights: '4 mặt kính cường lực trong suốt, lấy sáng toàn bộ ngôi nhà, khung nhôm định hình mạ Anode sang trọng.',
+        image: 'images/cabin_2.png'
+      },
+      {
+        id: 'lift-3',
+        name: 'Thang Máy Khách Sạn & Tòa Nhà 630kg Montanari (Nhập Khẩu Ý)',
+        category: 'khach-san',
+        categoryName: 'Thang tải khách',
+        capacity: '630kg (8 - 9 người)',
+        speed: '60m - 90m/phút (1.5m/s)',
+        motor: 'Montanari Made in Italy chính hãng nguyên chiếc',
+        stops: '5 - 9 Tầng',
+        pit: '1000mm - 1200mm tiêu chuẩn',
+        priceRange: '390.000.000 ₫ - 490.000.000 ₫',
+        badge: 'KHÁCH SẠN & TÒA NHÀ',
+        highlights: 'Chịu tải cường độ cao liên tục, cabin Inox sọc nhuyễn kết hợp gương vàng, kiểm định an toàn nghiêm ngặt.',
+        image: 'images/cabin_3.png'
+      },
+      {
+        id: 'lift-4',
+        name: 'Thang Máy Tải Khách Mitsubishi Liên Doanh 450kg Tiêu Chuẩn',
+        category: 'khach-san',
+        categoryName: 'Thang tải khách',
+        capacity: '450kg (6 người)',
+        speed: '60m/phút',
+        motor: 'Mitsubishi Nhật Bản / Thái Lan',
+        stops: '4 - 7 Tầng',
+        pit: '800mm',
+        priceRange: '320.000.000 ₫ - 380.000.000 ₫',
+        badge: 'BỀN BỈ NỒI ĐỒNG CỐI ĐÁ',
+        highlights: 'Dòng thang quốc dân được tin dùng toàn quốc, chi phí bảo trì thấp, độ bền trên 20 năm.',
+        image: 'images/cabin_4.png'
+      },
+      {
+        id: 'lift-5',
+        name: 'Thang Máy Tải Hàng & Nâng Ô Tô 1000kg - 2000kg Gara / Xưởng',
+        category: 'thang-hang',
+        categoryName: 'Thang tải hàng',
+        capacity: '1000kg - 2000kg',
+        speed: '30m/phút',
+        motor: 'Động cơ Torin / Mitsubishi chịu tải nặng',
+        stops: '2 - 5 Tầng',
+        pit: '500mm',
+        priceRange: '230.000.000 ₫ - 360.000.000 ₫',
+        badge: 'NHÀ HÀNG & GARA',
+        highlights: 'Sàn tôn gân chống trượt, cửa mở 4 cánh rộng rãi, chuyên chở xe ô tô hoặc hàng hóa pallet lớn.',
+        image: 'images/cabin_5.png'
+      },
+      {
+        id: 'lift-6',
+        name: 'Máy Kéo Thang Máy Fuji Không Hộp Số (Linh Kiện Nhập Khẩu)',
+        category: 'linh-kien',
+        categoryName: 'Linh kiện thang máy',
+        capacity: 'Đồng bộ từ 350kg - 1000kg',
+        speed: 'Tương thích mọi biến tần Yaskawa, Inovance',
+        motor: 'Fuji Synchronous Gearless',
+        stops: 'Tùy chỉnh',
+        pit: 'Tiêu chuẩn',
+        priceRange: 'Giá sỉ tận kho cho xưởng & thợ',
+        badge: 'SẴN KHO TOÀN QUỐC',
+        highlights: 'Nhập khẩu chính ngạch đầy đủ CO/CQ, vận hành siêu êm không tiếng ồn, không cần tra dầu định kỳ.',
+        image: 'images/cabin_6.png'
+      }
+    ];
+
+    let currentFilterTag = 'all';
+
+    function toggleDrawer(open) {
+      const drawer = document.getElementById('drawerSidebar');
+      const overlay = document.getElementById('drawerOverlay');
+      if (open) {
+        drawer.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        drawer.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function scrollToEstimator() {
+      document.getElementById('du-toan').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function filterLifts(tag) {
+      currentFilterTag = tag;
+      toggleDrawer(false);
+
+      const titleMap = {
+        'all': 'TẤT CẢ CÁC DÒNG THANG MÁY TOÀN QUỐC',
+        'homelift': 'THANG MÁY GIA ĐÌNH (HOMELIFT MINI)',
+        'thang-kinh': 'THANG MÁY VÁCH KÍNH BIỆT THỰ PANORAMIC',
+        'khach-san': 'THANG MÁY TẢI KHÁCH KHÁCH SẠN & TÒA NHÀ',
+        'thang-hang': 'THANG MÁY TẢI HÀNG & NÂNG Ô TÔ',
+        'benh-vien': 'THANG MÁY BỆNH VIỆN BĂNG CA Y TẾ',
+        'linh-kien': 'KHO LINH KIỆN & MÁY KÉO CHÍNH HÃNG',
+        'Fuji': 'DÒNG THANG ĐỘNG CƠ FUJI NHẬT BẢN',
+        'Montanari': 'DÒNG THANG ĐỘNG CƠ MONTANARI (Ý)',
+        'Mitsubishi': 'DÒNG THANG MITSUBISHI LIÊN DOANH',
+        'Ziehl-Abegg': 'DÒNG THANG ĐỘNG CƠ ZIEHL-ABEGG (ĐỨC)',
+        '250kg': 'THANG MÁY TẢI TRỌNG 250KG - 300KG',
+        '350kg': 'THANG MÁY TẢI TRỌNG 350KG - 450KG',
+        '630kg': 'THANG MÁY TẢI TRỌNG 630KG',
+        '1000kg': 'THANG MÁY TẢI TRỌNG 800KG - 1000KG'
+      };
+
+      document.getElementById('catalogTitle').textContent = titleMap[tag] || `DANH MỤC LỌC: ${tag.toUpperCase()}`;
+      renderElevatorGrid();
+      document.getElementById('catalogTitle').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderElevatorGrid() {
+      let list = elevators;
+      if (currentFilterTag !== 'all') {
+        list = list.filter(item => 
+          item.category.includes(currentFilterTag) ||
+          item.motor.toLowerCase().includes(currentFilterTag.toLowerCase()) ||
+          item.capacity.toLowerCase().includes(currentFilterTag.toLowerCase())
+        );
+      }
+
+      const grid = document.getElementById('elevatorGrid');
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500 font-bold bg-white rounded-xl">Không tìm thấy dòng thang máy nào khớp với bộ lọc. Vui lòng gọi Admin 0914.587.575 để được báo giá tùy chỉnh.</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(item => `
+        <div class="lift-card flex flex-col justify-between">
+          <div>
+            <div class="relative aspect-[4/3] bg-navy-950 overflow-hidden">
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+              <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-black/40"></div>
+              
+              <div class="absolute top-3 left-3 right-3 flex justify-between items-center">
+                <span class="bg-gold-500 text-navy-950 text-[10px] font-black px-2 py-0.5 rounded shadow uppercase">
+                  ${item.badge}
+                </span>
+                <span class="text-xs bg-navy-950/80 backdrop-blur-sm text-gold-400 font-bold px-2 py-0.5 rounded border border-gold-500/30 uppercase">
+                  ${item.categoryName}
+                </span>
+              </div>
+
+              <div class="absolute bottom-2 left-3 right-3">
+                <h3 class="text-sm font-black text-white leading-snug drop-shadow">${item.name}</h3>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-2 text-xs bg-slate-50 border-b border-slate-100">
+              <div class="flex justify-between"><span class="text-slate-500">Tải trọng:</span><span class="font-bold text-slate-800">${item.capacity}</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Tốc độ di chuyển:</span><span class="font-bold text-slate-800">${item.speed}</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Động cơ máy kéo:</span><span class="font-bold text-slate-800">${item.motor}</span></div>
+              <div class="flex justify-between"><span class="text-slate-500">Chiều sâu hố PIT:</span><span class="font-bold text-emerald-700">${item.pit}</span></div>
+            </div>
+
+            <div class="p-4 text-xs text-slate-600 leading-relaxed">
+              ${item.highlights}
+            </div>
+          </div>
+
+          <div class="p-4 pt-0 space-y-3">
+            <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+              <div class="text-[10px] text-amber-800 font-bold uppercase">Khoảng giá dự toán trọn gói:</div>
+              <div class="text-sm font-black text-gold-700">${item.priceRange}</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <a href="san-pham.html" class="bg-navy-900 hover:bg-navy-800 text-white font-bold py-2.5 rounded-lg text-xs text-center shadow transition">
+                🔍 Xem Chi Tiết
+              </a>
+              <a href="dat-hang.html" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:opacity-95 text-navy-950 font-black py-2.5 rounded-lg text-xs text-center shadow transition">
+                📐 Đặt Khảo Sát
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let homeCurrentCadView = 'plan';
+
+    function homeStepDim(id, delta) {
+      const el = document.getElementById(id);
+      if (el) {
+        let val = parseInt(el.value, 10) + delta;
+        val = Math.max(parseInt(el.min, 10), Math.min(parseInt(el.max, 10), val));
+        el.value = val;
+        homeUpdateCad();
+      }
+    }
+
+    function handleMobileSearch() {
+      const mInput = document.getElementById('mobileSearchInput');
+      const dInput = document.getElementById('mainSearchInput');
+      if (mInput && dInput) {
+        dInput.value = mInput.value;
+        handleSearch();
+      }
+    }
+
+    function homeSwitchCad(view) {
+      homeCurrentCadView = view;
+      const views = {
+        'plan': document.getElementById('homeCadPlanView'),
+        'section': document.getElementById('homeCadSecView'),
+        'cabin': document.getElementById('homeCadCabView'),
+        'pit': document.getElementById('homeCadPitView')
+      };
+      const tabs = {
+        'plan': document.getElementById('homeTabPlan'),
+        'section': document.getElementById('homeTabSec'),
+        'cabin': document.getElementById('homeTabCab'),
+        'pit': document.getElementById('homeTabPit')
+      };
+
+      Object.keys(views).forEach(k => {
+        if (views[k]) {
+          if (k === view) {
+            views[k].classList.remove('hidden');
+            views[k].classList.add('flex');
+            tabs[k].className = "px-2 py-1 rounded text-[10px] font-bold bg-gold-500 text-navy-950 transition whitespace-nowrap";
+          } else {
+            views[k].classList.add('hidden');
+            views[k].classList.remove('flex');
+            tabs[k].className = "px-2 py-1 rounded text-[10px] font-bold text-slate-300 hover:text-white transition whitespace-nowrap";
+          }
+        }
+      });
+      homeUpdateCad();
+    }
+
+    function homeUpdateCad() {
+      const W = parseInt(document.getElementById('homeInputW').value, 10);
+      const D = parseInt(document.getElementById('homeInputD').value, 10);
+      const Pit = parseInt(document.getElementById('homeInputPit').value, 10);
+      const Oh = parseInt(document.getElementById('homeInputOh').value, 10);
+      const Stops = parseInt(document.getElementById('homeInputStops').value, 10);
+      const Type = document.getElementById('homeInputType').value;
+      const Motor = document.getElementById('homeInputMotor').value;
+
+      document.getElementById('homeValW').innerText = W + ' mm';
+      document.getElementById('homeValD').innerText = D + ' mm';
+
+      let CW = Math.max(750, W - 380);
+      let CD = Math.max(750, D - 320);
+      let DoorWidth = Math.min(800, Math.max(600, CW - 150));
+
+      const area = (CW * CD) / 1000000;
+      let capKg = 350;
+      let people = "4 - 5 người";
+      if (area >= 1.4) {
+        capKg = 630;
+        people = "8 - 9 người";
+      } else if (area >= 1.1) {
+        capKg = 450;
+        people = "6 người";
+      } else if (area < 0.85) {
+        capKg = 300;
+        people = "2 - 3 người";
+      }
+
+      const travelM = ((Stops - 1) * 3300) / 1000;
+      document.getElementById('homeCalcCabin').innerText = `${CW} x ${CD} mm`;
+      document.getElementById('homeCalcDoor').innerText = `${DoorWidth} x 2100 mm`;
+      document.getElementById('homeCalcCap').innerText = `${capKg} kg (${people})`;
+
+      // Render all 4 CAD Views
+      renderHomePlanSvg(W, D, CW, CD, DoorWidth, Type);
+      renderHomeSecSvg(Pit, Oh, Stops, 3300, travelM, CW, CD);
+      renderHomeCabSvg(CW, CD, DoorWidth, Type);
+      renderHomePitSvg(Pit, W, D, Type);
+
+      // BOQ Calculation
+      const formatVND = n => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n);
+      let basePrice = 250000000;
+      if (Type === 'thang-kinh') basePrice = 330000000;
+      if (Type === 'khach-san') basePrice = 360000000;
+      if (Type === 'nhap-khau') basePrice = 550000000;
+
+      const stopAddon = (Stops - 3) * 16000000;
+      let capAddon = (capKg >= 450) ? 25000000 : 0;
+      let motorAddon = (Motor === 'montanari') ? 25000000 : ((Motor === 'ziehl') ? 45000000 : 0);
+
+      const totalMin = basePrice + stopAddon + capAddon + motorAddon;
+      const totalMax = totalMin + 40000000;
+
+      document.getElementById('estimatedPriceText').innerText = `${formatVND(totalMin)} - ${formatVND(totalMax)}`;
+      document.getElementById('shaftSizeText').innerText = `${W}mm x ${D}mm`;
+      
+      const motorNames = { 'fuji': 'Fuji PMSM Nhật Bản', 'montanari': 'Montanari Made in Italy', 'ziehl': 'Ziehl-Abegg Đức' };
+      document.getElementById('homeMotorBadge').innerText = motorNames[Motor] || 'Fuji Nhật Bản';
+      document.getElementById('homePitBadge').innerHTML = `Hố PIT: <strong class="text-white font-bold">${Pit}mm (${Pit <= 300 ? 'Đệm PU' : 'Chuẩn'})</strong>`;
+    }
+
+    function renderHomePlanSvg(W, D, CW, CD, DoorWidth, Type) {
+      const svg = document.getElementById('homeSvgPlan');
+      const scale = Math.min(240 / W, 220 / D);
+      const sW = W * scale;
+      const sD = D * scale;
+      const sCW = CW * scale;
+      const sCD = CD * scale;
+      const sDoorW = DoorWidth * scale;
+      const cx = 270;
+      const cy = 190;
+      const x0 = cx - sW / 2;
+      const y0 = cy - sD / 2;
+      const x1 = cx + sW / 2;
+      const y1 = cy + sD / 2;
+
+      const cx0 = cx - sCW / 2;
+      const cy0 = (cy - sCD / 2) - 6;
+      const cx1 = cx + sCW / 2;
+      const cy1 = (cy + sCD / 2) - 6;
+
+      const wallColor = (Type === 'thang-kinh') ? '#00e5ff' : '#ffffff';
+      const cwtW = sCW * 0.75;
+      const cwtX = cx - cwtW / 2;
+      const cwtY = y0 + 8;
+
+      svg.innerHTML = `
+        <defs>
+          <marker id="hTick" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <line x1="0" y1="6" x2="6" y2="0" stroke="#00e5ff" stroke-width="1.5" />
+          </marker>
+        </defs>
+        <!-- Hố thang ngoài -->
+        <rect x="${x0}" y="${y0}" width="${sW}" height="${sD}" fill="rgba(0, 229, 255, 0.05)" stroke="${wallColor}" stroke-width="2.5" />
+        <rect x="${x0-5}" y="${y0-5}" width="10" height="10" fill="#ef4444" />
+        <rect x="${x1-5}" y="${y0-5}" width="10" height="10" fill="#ef4444" />
+        <rect x="${x0-5}" y="${y1-5}" width="10" height="10" fill="#ef4444" />
+        <rect x="${x1-5}" y="${y1-5}" width="10" height="10" fill="#ef4444" />
+        <!-- Đối trọng -->
+        <rect x="${cwtX}" y="${cwtY}" width="${cwtW}" height="14" fill="#ffd600" fill-opacity="0.3" stroke="#ffd600" stroke-width="1.5" />
+        <text x="${cx}" y="${cwtY + 10}" fill="#ffd600" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">ĐỐI TRỌNG (CWT)</text>
+        <!-- Ray cabin -->
+        <circle cx="${x0+8}" cy="${cy}" r="3.5" fill="#00e5ff" />
+        <circle cx="${x1-8}" cy="${cy}" r="3.5" fill="#00e5ff" />
+        <!-- Cabin -->
+        <rect x="${cx0}" y="${cy0}" width="${sCW}" height="${sCD}" fill="#0d241d" stroke="#00e676" stroke-width="2" />
+        <text x="${cx}" y="${cy - 4}" fill="#00e676" font-size="10" font-family="monospace" text-anchor="middle" font-weight="bold">CABIN (${CW}x${CD})</text>
+        <!-- Cửa -->
+        <line x1="${cx - sDoorW/2}" y1="${y1}" x2="${cx + sDoorW/2}" y2="${y1}" stroke="#ff4081" stroke-width="4" />
+        <text x="${cx}" y="${y1 + 18}" fill="#ff4081" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">CỬA OP=${DoorWidth}</text>
+        <!-- Dims -->
+        <line x1="${x0}" y1="${y0 - 20}" x2="${x1}" y2="${y0 - 20}" stroke="#00e5ff" stroke-width="1" marker-start="url(#hTick)" marker-end="url(#hTick)" />
+        <text x="${cx}" y="${y0 - 25}" fill="#00e5ff" font-size="10" font-family="monospace" text-anchor="middle" font-weight="bold">W = ${W} mm</text>
+        <line x1="${x0 - 20}" y1="${y0}" x2="${x0 - 20}" y2="${y1}" stroke="#00e5ff" stroke-width="1" marker-start="url(#hTick)" marker-end="url(#hTick)" />
+        <text x="${x0 - 26}" y="${cy}" fill="#00e5ff" font-size="10" font-family="monospace" text-anchor="middle" transform="rotate(-90 ${x0-26} ${cy})" font-weight="bold">D = ${D} mm</text>
+      `;
+    }
+
+        function renderHomeSecSvg(Pit, Oh, Stops, FloorH, travelM, CW, CD) {
+      const svg = document.getElementById('homeSvgSec');
+      if (!svg) return;
+      const shaftH = Pit + (FloorH * (Stops - 1)) + Oh;
+      const scaleY = 320 / shaftH;
+      const cx = 270;
+      const topY = 40;
+      const botY = topY + shaftH * scaleY;
+      const pitHeightPx = Pit * scaleY;
+      const floorDistPx = FloorH * scaleY;
+      const groundFloorY = botY - pitHeightPx;
+      const cabinH = 2200;
+      const cabinHPx = Math.max(40, cabinH * scaleY);
+
+      let floorsSvg = '';
+      for (let i = 0; i < Stops; i++) {
+        const fy = groundFloorY - i * floorDistPx;
+        const elev = (i * FloorH / 1000).toFixed(1);
+        floorsSvg += `
+          <line x1="${cx - 110}" y1="${fy}" x2="${cx - 50}" y2="${fy}" stroke="#ffffff" stroke-width="2.5" />
+          <text x="${cx - 115}" y="${fy + 4}" fill="#00e5ff" font-size="9" font-family="monospace" text-anchor="end">T${i+1} [${i===0 ? '±0.0' : '+'+elev+'m'}]</text>
+          <rect x="${cx - 50}" y="${fy - 25}" width="4" height="25" fill="#ff4081" />
+        `;
+      }
+
+      svg.innerHTML = `
+        <rect x="${cx - 50}" y="${topY}" width="100" height="${shaftH * scaleY}" fill="rgba(0, 229, 255, 0.04)" stroke="#00e5ff" stroke-width="2.5" />
+        <rect x="${cx - 50}" y="${botY - 4}" width="100" height="4" fill="#ef4444" />
+        <rect x="${cx - 25}" y="${botY - 14}" width="18" height="10" fill="#ffd600" />
+        <rect x="${cx + 7}" y="${botY - 14}" width="18" height="10" fill="#ffd600" />
+        <text x="${cx}" y="${botY - 16}" fill="#ffd600" font-size="7" font-family="monospace" text-anchor="middle">ĐỆM PU</text>
+        ${floorsSvg}
+        <!-- Cabin -->
+        <rect x="${cx - 35}" y="${groundFloorY - floorDistPx - cabinHPx}" width="70" height="${cabinHPx}" fill="#0d241d" stroke="#00e676" stroke-width="1.5" />
+        <text x="${cx}" y="${groundFloorY - floorDistPx - cabinHPx/2 + 3}" fill="#00e676" font-size="9" font-family="monospace" text-anchor="middle">CABIN H=2200</text>
+        <!-- Motor MRL -->
+        <rect x="${cx - 35}" y="${topY + 8}" width="70" height="18" fill="#0f172a" stroke="#ffd600" stroke-width="1.5" />
+        <circle cx="${cx - 15}" cy="${topY + 17}" r="8" fill="#d97706" />
+        <text x="${cx}" y="${topY + 4}" fill="#ffd600" font-size="8" font-family="monospace" text-anchor="middle">MÁY KÉO MRL</text>
+        <!-- Dims -->
+        <text x="${cx + 56}" y="${topY + 20}" fill="#00e5ff" font-size="9" font-family="monospace">OH=${Oh}</text>
+        <text x="${cx + 56}" y="${groundFloorY - floorDistPx/2}" fill="#00e5ff" font-size="9" font-family="monospace">H=${FloorH}</text>
+        <text x="${cx + 56}" y="${groundFloorY + pitHeightPx/2}" fill="#00e5ff" font-size="9" font-family="monospace">PIT=${Pit}</text>
+      `;
+    }
+
+    function renderHomeCabSvg(CW, CD, DoorWidth, Type) {
+      const svg = document.getElementById('homeSvgCab');
+      if (!svg) return;
+      const cx = 270;
+      const floorY = 320;
+      const sCW = CW * 0.12;
+      const sCH = 2200 * 0.12;
+      const sDoorW = DoorWidth * 0.12;
+      const sDoorH = 2100 * 0.12;
+      const ceilY = floorY - sCH;
+      const doorTopY = floorY - sDoorH;
+      const x0 = cx - sCW / 2;
+      const x1 = cx + sCW / 2;
+
+      svg.innerHTML = `
+        <line x1="40" y1="${floorY}" x2="500" y2="${floorY}" stroke="#ffffff" stroke-width="3" />
+        <text x="50" y="${floorY + 14}" fill="#00e5ff" font-size="9" font-family="monospace">SÀN TẦNG [±0.000]</text>
+        <rect x="${x0}" y="${ceilY}" width="${sCW}" height="${sCH}" fill="#0d241d" stroke="#00e676" stroke-width="2" />
+        <!-- Trần LED -->
+        <rect x="${x0}" y="${ceilY}" width="${sCW}" height="12" fill="#0f172a" stroke="#ffd600" />
+        <circle cx="${cx - 20}" cy="${ceilY + 6}" r="3" fill="#ffd600" />
+        <circle cx="${cx + 20}" cy="${ceilY + 6}" r="3" fill="#ffd600" />
+        <text x="${cx}" y="${ceilY - 6}" fill="#ffd600" font-size="8" font-family="monospace" text-anchor="middle">TRẦN CHIẾU SÁNG LED</text>
+        <!-- Tay vịn -->
+        <line x1="${x0 + 8}" y1="${floorY - 900*0.12}" x2="${x1 - 8}" y2="${floorY - 900*0.12}" stroke="#ffffff" stroke-width="2.5" />
+        <!-- Cửa -->
+        <rect x="${cx - sDoorW/2}" y="${doorTopY}" width="${sDoorW}" height="${sDoorH}" fill="rgba(255, 64, 129, 0.15)" stroke="#ff4081" stroke-width="1.5" />
+        <line x1="${cx}" y1="${doorTopY}" x2="${cx}" y2="${floorY}" stroke="#ff4081" stroke-dasharray="2,2" />
+        <text x="${cx}" y="${doorTopY - 6}" fill="#ff4081" font-size="8" font-family="monospace" text-anchor="middle">CỬA TẦNG JH=2100</text>
+        <!-- COP -->
+        <rect x="${x1 - 14}" y="${floorY - 140}" width="8" height="50" fill="#1e293b" stroke="#ffd600" />
+        <!-- Nút gọi -->
+        <rect x="${x0 - 24}" y="${floorY - 120}" width="10" height="20" fill="#1e293b" stroke="#00e5ff" />
+        <text x="${x0 - 28}" y="${floorY - 105}" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="end">GỌI (+1050)</text>
+        <!-- Dims -->
+        <text x="${x1 + 10}" y="${(ceilY + floorY)/2}" fill="#00e676" font-size="9" font-family="monospace">CH=2200mm</text>
+        <text x="${cx}" y="${floorY + 28}" fill="#00e676" font-size="9" font-family="monospace" text-anchor="middle">CW=${CW}mm (RỘNG CABIN)</text>
+      `;
+    }
+
+    function renderHomePitSvg(Pit, W, D, Type) {
+      const svg = document.getElementById('homeSvgPit');
+      if (!svg) return;
+      const cx = 270;
+      const groundY = 80;
+      const scale = 0.2;
+      const pitPx = Math.max(65, Pit * scale);
+      const pitBottomY = groundY + pitPx;
+      const x0 = cx - 150;
+      const x1 = cx + 150;
+
+      svg.innerHTML = `
+        <line x1="30" y1="${groundY}" x2="${x0}" y2="${groundY}" stroke="#ffffff" stroke-width="3" />
+        <line x1="${x1}" y1="${groundY}" x2="510" y2="${groundY}" stroke="#ffffff" stroke-width="3" />
+        <text x="40" y="${groundY - 8}" fill="#00e5ff" font-size="9" font-family="monospace">SÀN TẦNG 1 [±0.000]</text>
+        <path d="M ${x0} ${groundY} L ${x0} ${pitBottomY} L ${x1} ${pitBottomY} L ${x1} ${groundY}" fill="rgba(0, 229, 255, 0.04)" stroke="#00e5ff" stroke-width="2.5" />
+        <!-- Lót bê tông -->
+        <rect x="${x0 - 15}" y="${pitBottomY}" width="330" height="18" fill="#334155" />
+        <text x="${cx}" y="${pitBottomY + 12}" fill="#94a3b8" font-size="7" font-family="monospace" text-anchor="middle">BÊ TÔNG MÓNG ĐÁY HỐ / CHỐNG THẤM</text>
+        <!-- Đệm PU -->
+        <rect x="${cx - 70}" y="${pitBottomY - 32}" width="32" height="28" rx="3" fill="#ffd600" stroke="#ffffff" />
+        <rect x="${cx + 38}" y="${pitBottomY - 32}" width="32" height="28" rx="3" fill="#ffd600" stroke="#ffffff" />
+        <text x="${cx - 54}" y="${pitBottomY - 36}" fill="#ffd600" font-size="7" font-family="monospace" text-anchor="middle">ĐỆM PU CABIN</text>
+        <text x="${cx + 54}" y="${pitBottomY - 36}" fill="#ffd600" font-size="7" font-family="monospace" text-anchor="middle">ĐỆM PU CWT</text>
+        <!-- Bulong Hilti -->
+        <line x1="${cx - 65}" y1="${pitBottomY - 4}" x2="${cx - 65}" y2="${pitBottomY + 10}" stroke="#ffd600" stroke-width="2" />
+        <line x1="${cx - 43}" y1="${pitBottomY - 4}" x2="${cx - 43}" y2="${pitBottomY + 10}" stroke="#ffd600" stroke-width="2" />
+        <line x1="${cx + 43}" y1="${pitBottomY - 4}" x2="${cx + 43}" y2="${pitBottomY + 10}" stroke="#ffd600" stroke-width="2" />
+        <line x1="${cx + 65}" y1="${pitBottomY - 4}" x2="${cx + 65}" y2="${pitBottomY + 10}" stroke="#ffd600" stroke-width="2" />
+        <!-- Ray T -->
+        <rect x="${x0 + 10}" y="${groundY - 20}" width="8" height="${pitPx + 20}" fill="#00e5ff" />
+        <rect x="${x1 - 18}" y="${groundY - 20}" width="8" height="${pitPx + 20}" fill="#00e5ff" />
+        <!-- Công tắc an toàn -->
+        <rect x="${x0 + 26}" y="${pitBottomY - 40}" width="14" height="20" fill="#1e293b" stroke="#ef4444" />
+        <circle cx="${x0 + 33}" cy="${pitBottomY - 30}" r="4" fill="#ef4444" />
+        <text x="${x0 + 33}" y="${pitBottomY - 44}" fill="#ef4444" font-size="6" font-family="monospace" text-anchor="middle">STOP</text>
+        <!-- Dim Pit -->
+        <text x="${x1 + 10}" y="${(groundY + pitBottomY)/2 + 4}" fill="#00e5ff" font-size="10" font-family="monospace" font-weight="bold">PIT = ${Pit} mm</text>
+      `;
+    }
+
+    function homeDownloadCad() {
+      const svgMap = {
+        'plan': document.getElementById('homeSvgPlan'),
+        'section': document.getElementById('homeSvgSec'),
+        'cabin': document.getElementById('homeSvgCab'),
+        'pit': document.getElementById('homeSvgPit')
+      };
+      const activeSvg = svgMap[homeCurrentCadView] || document.getElementById('homeSvgPlan');
+      const svgData = new XMLSerializer().serializeToString(activeSvg);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const svgUrl = URL.createObjectURL(svgBlob);
+      const downloadLink = document.createElement('a');
+      downloadLink.href = svgUrl;
+      downloadLink.download = `Ban-Ve-Thang-May-0914587575.svg`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      alert('Đã tải thành công bản vẽ kỹ thuật Auto-CAD về máy!');
+    }
+
+    function homeSendZalo() {
+      const W = document.getElementById('homeInputW').value;
+      const D = document.getElementById('homeInputD').value;
+      const Pit = document.getElementById('homeInputPit').value;
+      const Oh = document.getElementById('homeInputOh').value;
+      const Stops = document.getElementById('homeInputStops').value;
+      const price = document.getElementById('estimatedPriceText').innerText;
+
+      const message = `Chào Kỹ Sư Trưởng 0914.587.575! Tôi vừa cấu hình bản vẽ thang máy trên trang chủ sieuthithangmaytoanquoc.com:
+- Kích thước lọt lòng: Rộng ${W}mm x Sâu ${D}mm
+- Hố PIT: ${Pit}mm | Tum OH: ${Oh}mm | Số tầng: ${Stops} tầng
+- Dự toán web tính: ${price}
+Nhờ Kỹ Sư Trưởng kiểm tra bản vẽ kết cấu và tư vấn giúp tôi!`;
+
+      window.open(`https://zalo.me/0914587575?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function selectPackage(type, stops, cap, motor) {
+      if (document.getElementById('homeInputType')) {
+        document.getElementById('homeInputType').value = type;
+        document.getElementById('homeInputStops').value = stops;
+        if (cap === 250 || cap === 350) {
+          document.getElementById('homeInputW').value = 1350;
+          document.getElementById('homeInputD').value = 1350;
+        } else if (cap === 450) {
+          document.getElementById('homeInputW').value = 1550;
+          document.getElementById('homeInputD').value = 1550;
+        } else if (cap >= 630) {
+          document.getElementById('homeInputW').value = 1800;
+          document.getElementById('homeInputD').value = 1850;
+        }
+        if (motor) document.getElementById('homeInputMotor').value = motor;
+        homeUpdateCad();
+      }
+      document.getElementById('du-toan').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleSearch() {
+      const q = document.getElementById('mainSearchInput').value.toLowerCase().trim();
+      currentFilterTag = q;
+      document.getElementById('catalogTitle').textContent = `KẾT QUẢ TÌM KIẾM CHO "${q.toUpperCase()}"`;
+      renderElevatorGrid();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      homeUpdateCad();
+      renderElevatorGrid();
+    });
+  </script>
+
+  <!-- ==================== MOBILE BOTTOM NAVIGATION BAR (CHỈ HIỂN THỊ DƯỚI LG) ==================== -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 w-full z-50 bg-navy-950/95 backdrop-blur-md border-t border-gold-500/40 shadow-2xl grid grid-cols-5 py-1 select-none">
+    <a href="index.html" class="flex flex-col items-center justify-center text-slate-300 hover:text-gold-400 py-1 transition text-center">
+      <span class="text-base leading-none">🏠</span>
+      <span class="text-[9px] font-bold mt-1">Trang Chủ</span>
+    </a>
+    <a href="thiet-ke-cad.html" class="flex flex-col items-center justify-center text-gold-400 py-1 transition font-black text-center">
+      <span class="text-base leading-none">📐</span>
+      <span class="text-[9px] mt-1">Bản Vẽ CAD</span>
+    </a>
+    <a href="tap-chi.html" class="flex flex-col items-center justify-center text-slate-300 hover:text-gold-400 py-1 transition text-center">
+      <span class="text-base leading-none">📰</span>
+      <span class="text-[9px] font-bold mt-1">Tạp Chí</span>
+    </a>
+    <a href="https://zalo.me/0914587575" target="_blank" class="flex flex-col items-center justify-center text-blue-400 hover:text-white py-1 transition text-center">
+      <span class="text-base leading-none">💬</span>
+      <span class="text-[9px] font-bold mt-1">Zalo Kỹ Sư</span>
+    </a>
+    <a href="tel:0914587575" class="flex flex-col items-center justify-center text-red-400 hover:text-red-300 py-1 transition text-center font-bold">
+      <span class="text-base leading-none animate-pulse">📞</span>
+      <span class="text-[9px] font-black mt-1 text-red-400">0914.587.575</span>
+    </a>
+  </nav>
+</body>
+</html>
