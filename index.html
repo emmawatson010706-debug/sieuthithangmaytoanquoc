@@ -79,6 +79,16 @@
 
 
 
+  <!-- Progressive Web App (PWA) Meta & Icons -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Thang Máy TQ">
+  <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/icons/icon-512.png">
 </head>
 <body class="antialiased flex flex-col min-h-screen overflow-x-hidden pb-16 lg:pb-0 w-full">
 
@@ -95,6 +105,20 @@
     </div>
 
     <div class="flex-1 overflow-y-auto p-4 space-y-5 text-xs">
+      
+      <!-- NÚT TẢI APP VỀ MÀN HÌNH CHÍNH -->
+      <div class="bg-gradient-to-br from-red-600 to-rose-700 text-white rounded-xl p-3 shadow-md flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5">
+          <img src="images/icons/icon-192.png" alt="App" class="w-9 h-9 rounded-lg border border-amber-300 shadow bg-slate-950 flex-shrink-0">
+          <div>
+            <div class="font-black text-xs leading-tight">Cài App Thang Máy</div>
+            <div class="text-[10px] text-red-100">Dùng tiện lợi như App gốc</div>
+          </div>
+        </div>
+        <button onclick="window.triggerPwaInstall(); toggleDrawer(false);" class="bg-white text-red-700 px-2.5 py-1.5 rounded-lg font-bold text-[11px] shadow hover:bg-red-50 flex-shrink-0 transition">
+          Cài Ngay
+        </button>
+      </div>
       
       <!-- 1. CHỦNG LOẠI THANG MÁY -->
       <div class="space-y-1.5">
@@ -245,6 +269,7 @@
         <a href="tap-chi.html" class="px-3 py-1 rounded text-sky-400 hover:bg-navy-800">📰 Tạp Chí Thang Máy</a>
         <a href="chiet-khau.html" class="px-3 py-1 rounded text-gold-400 hover:bg-navy-800">💰 Hoa hồng 10% KTS</a>
         <a href="doi-tac.html" class="px-3 py-1 rounded text-green-400 hover:bg-navy-800">🤝 Đưa thang lên sàn</a>
+        <button onclick="window.triggerPwaInstall()" class="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white font-bold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">📲 Cài App về máy</button>
       </div>
     </nav>
   </header>
@@ -1616,5 +1641,7 @@ Nhờ Kỹ Sư Trưởng kiểm tra bản vẽ kết cấu và tư vấn giúp t
       <span class="text-[9px] font-black mt-1 text-red-400">0914.587.575</span>
     </a>
   </nav>
+  <!-- PWA Install & Offline Support -->
+  <script src="pwa-install.js" defer></script>
 </body>
 </html>

@@ -8,6 +8,16 @@
   <script>
     window.location.href = "index.html";
   </script>
+  <!-- Progressive Web App (PWA) Meta & Icons -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Thang Máy TQ">
+  <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/icons/icon-512.png">
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 40px; background-color: #050c26; color: white;">
   <div style="max-width: 550px; margin: 60px auto; background: #0a1945; padding: 36px; border-radius: 16px; border: 1px solid #d97706; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
@@ -21,5 +31,7 @@
       Hotline Kỹ Sư Trưởng Toàn Quốc: <strong style="color: #fbbf24;">0914.587.575</strong>
     </div>
   </div>
+  <!-- PWA Install & Offline Support -->
+  <script src="pwa-install.js" defer></script>
 </body>
 </html>

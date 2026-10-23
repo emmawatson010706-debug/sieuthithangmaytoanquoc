@@ -77,6 +77,16 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   
   </style>
+  <!-- Progressive Web App (PWA) Meta & Icons -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Thang Máy TQ">
+  <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/icons/icon-512.png">
 </head>
 <body class="antialiased flex flex-col min-h-screen pb-16 lg:pb-0 overflow-x-hidden w-full">
 
@@ -812,5 +822,7 @@
       <span class="text-[9px] font-black mt-1 text-red-400">0914.587.575</span>
     </a>
   </nav>
+  <!-- PWA Install & Offline Support -->
+  <script src="pwa-install.js" defer></script>
 </body>
 </html>
