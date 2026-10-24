@@ -17,19 +17,21 @@
     }
   }
 
-  // 2. Gửi dữ liệu khách hàng về Email qua FormSubmit AJAX
+  // 2. Gửi dữ liệu khách hàng về Email qua FormSubmit AJAX (Tối ưu chống ngắt dòng Gmail)
   function sendLeadToEmail(lead) {
+    var subjectTitle = '🚨 [KHÁCH HÀNG MỚI] ' + (lead.name || 'Khách') + ' - ' + lead.phone + ' - ' + (lead.province || lead.address || '34 Tỉnh');
+    
     var payload = {
-      _subject: '🚨 [KHÁCH HÀNG MỚI] ' + (lead.name || 'Khách') + ' - SĐT: ' + lead.phone + ' (' + (lead.province || lead.address || 'Toàn Quốc') + ')',
+      _subject: subjectTitle,
       _template: 'table',
       _captcha: 'false',
-      'Họ và tên': lead.name || 'Chưa cung cấp',
+      'Họ và tên khách': lead.name || 'Chưa cung cấp',
       'Số điện thoại': lead.phone,
-      'Địa chỉ / Tỉnh thành': lead.address || lead.province || 'Toàn quốc (34 tỉnh)',
-      'Loại yêu cầu': lead.type || 'Tư vấn dự toán thang máy',
-      'Thông số kỹ thuật': lead.details || 'Mặc định',
+      'Khu vực công trình': lead.address || lead.province || 'Toàn quốc (34 tỉnh thành)',
+      'Nhu cầu dịch vụ': lead.type || 'Tư vấn dự toán thang máy',
+      'Thông số chi tiết': lead.details || 'Mặc định',
       'Thời gian gửi': new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
-      'Nguồn trang': window.location.href
+      'Trang web': 'https://sieuthithangmaytoanquoc.vercel.app'
     };
 
     return fetch('https://formsubmit.co/ajax/' + ADMIN_EMAIL, {
@@ -190,7 +192,7 @@
     window.sttmSubmitLead(leadData);
   };
 
-  // 6. Bảng Quản trị Lead nội bộ (Admin Dashboard dành riêng cho Anh)
+  // 6. Bảng Quản trị Lead nội bộ (Admin Dashboard)
   window.openAdminLeadManager = function () {
     var leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
     var modal = document.createElement('div');
@@ -199,7 +201,7 @@
 
     var rowsHtml = '';
     if (leads.length === 0) {
-      rowsHtml = '<tr><td colspan="5" class="text-center py-8 text-slate-400">Chưa có khách hàng nào để lại thông tin trên thiết bị này.</td></tr>';
+      rowsHtml = '<tr><td colspan="6" class="text-center py-8 text-slate-400">Chưa có khách hàng nào để lại thông tin trên thiết bị này.</td></tr>';
     } else {
       leads.forEach(function (l, i) {
         rowsHtml += `
@@ -289,7 +291,7 @@
     document.body.removeChild(link);
   };
 
-  // Phím tắt bí mật để mở Lead Manager: Ctrl + Shift + L
+  // Phím tắt bí mật: Ctrl + Shift + L
   window.addEventListener('keydown', function (e) {
     if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
       window.openAdminLeadManager();
