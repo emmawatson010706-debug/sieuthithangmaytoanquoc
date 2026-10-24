@@ -1,8 +1,8 @@
 // ==========================================================================================
-// HỆ THỐNG XUẤT HỒ SƠ BẢN VẼ KỸ THUẬT SHOP DRAWING HỐ THANG BÊ TÔNG (KHỔ A3 & TẬP A4 8 TRANG)
-// Thương hiệu độc quyền: SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
+// HỆ THỐNG XUẤT HỒ SƠ BẢN VẼ SHOP DRAWING KỸ THUẬT HỐ THANG BÊ TÔNG (CHUẨN AUTOCAD CHUYÊN NGHIỆP)
+// Đơn vị thiết kế & bản quyền: SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
 // Hotline Kỹ Sư Trưởng: 0914.587.575 - Website: sieuthithangmaytoanquoc.com
-// Chuẩn hóa 07 Mặt Cắt Kỹ Thuật AutoCAD Thi Công Thực Tế & QCVN 02:2019/BLĐTBXH
+// Quy chuẩn thiết kế: QCVN 02:2019/BLĐTBXH • TCVN 6395:2008 • Khổ in: A3 Kỹ Sư & Tập A4 8 Trang
 // ==========================================================================================
 
 (function () {
@@ -16,29 +16,28 @@
     Oh = parseInt(Oh) || 4500;
     Stops = parseInt(Stops) || 4;
 
-    // Tải trọng ước tính theo diện tích nếu không truyền vào
     var cap = parseInt(Capacity) || (W < 1400 ? 350 : (W < 1700 ? 450 : (W < 1900 ? 630 : 800)));
     var speed = cap <= 450 ? 1.0 : 1.5; // m/s
     var persons = Math.floor(cap / 75) || (cap <= 450 ? 6 : 9);
 
     // Kích thước Cabin thông thủy (tỷ lệ chuẩn theo bản vẽ mẫu)
-    var CW = Math.max(800, W - 400); // vd: 1800 - 400 = 1400
-    var CD = Math.max(750, D - 550); // vd: 1500 - 550 = 950
+    var CW = Math.max(800, W - 400); // 1800 -> 1400
+    var CD = Math.max(750, D - 550); // 1500 -> 950
     var CH = 2200;
 
     // Cửa mở tầng (Center Opening 2 cánh)
-    var CO = Math.max(650, Math.min(900, Math.round((CW * 0.57) / 50) * 50)); // vd 800
+    var CO = Math.max(650, Math.min(900, Math.round((CW * 0.57) / 50) * 50));
     if (W >= 1800) CO = 800;
     var DH = 2100;
     var roughDoorW = CO + 400; // 800 + 400 = 1200
-    var roughDoorH = 2400; // Lỗ chờ thô cao 2400
+    var roughDoorH = 2400;     // Lỗ chờ thô cao 2400
     var doorJamb = Math.max(250, Math.round((W - roughDoorW) / 2)); // Trụ gạch 2 bên = 300
 
     // Phản lực tính toán kết cấu (kN)
-    var R1 = (cap * 0.08 + 15).toFixed(1); // Lực đáy ray cabin
-    var R2 = (cap * 0.07 + 12).toFixed(1); // Lực đáy ray đối trọng
-    var R3 = (cap * 0.12 + 25).toFixed(1); // Lực dầm bệ máy kéo
-    var R4 = '20.0'; // Móc cẩu pa-lăng nóc giếng thang (2.0 Tấn)
+    var R1 = (cap * 0.08 + 15).toFixed(1); // Lực đáy ray cabin khi phanh dù
+    var R2 = (cap * 0.07 + 12).toFixed(1); // Lực đáy ray đối trọng khi chạm đệm
+    var R3 = (cap * 0.12 + 25).toFixed(1); // Lực dầm bệ máy kéo lên sàn tum
+    var R4 = '20.0';                       // Móc cẩu pa-lăng nóc giếng (2.0 Tấn)
 
     return {
       W: W,
@@ -64,491 +63,517 @@
     };
   }
 
-  // 2. KHAI BÁO CÁC MẪU HOA VĂN BÊ TÔNG, GẠCH VÀ KÍCH THƯỚC CHUẨN CAD
+  // 2. BỘ ĐỊNH NGHĨA HOA VĂN CAD, PHÔNG CHỮ ROBOTO & SYMBOL KỸ THUẬT
   function getCadDefs() {
     return `
       <defs>
-        <!-- Hatch bê tông cốt thép -->
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&amp;family=Roboto+Mono:wght@500;700&amp;display=swap');
+          text {
+            font-family: 'Roboto', Arial, 'Segoe UI', sans-serif !important;
+            text-rendering: geometricPrecision;
+            -webkit-font-smoothing: antialiased;
+          }
+          .cad-dim-text {
+            font-family: 'Roboto Mono', monospace !important;
+            font-weight: 700;
+          }
+        </style>
+        
+        <!-- Bê tông cốt thép chuẩn AutoCAD: gạch chéo 45 độ + chấm hạt -->
         <pattern id="cadConcrete" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
           <line x1="0" y1="0" x2="0" y2="16" stroke="#94a3b8" stroke-width="1.2"/>
-          <circle cx="8" cy="8" r="1.2" fill="#64748b"/>
+          <circle cx="8" cy="8" r="1.3" fill="#64748b"/>
+          <circle cx="2" cy="14" r="0.8" fill="#94a3b8"/>
         </pattern>
-        <!-- Hatch tường gạch xây -->
-        <pattern id="cadBrick" width="12" height="6" patternUnits="userSpaceOnUse">
-          <rect width="12" height="6" fill="#fef2f2"/>
-          <line x1="0" y1="0" x2="12" y2="0" stroke="#dc2626" stroke-width="0.8"/>
-          <line x1="0" y1="3" x2="12" y2="3" stroke="#dc2626" stroke-width="0.8"/>
-          <line x1="0" y1="0" x2="0" y2="3" stroke="#dc2626" stroke-width="0.8"/>
-          <line x1="6" y1="3" x2="6" y2="6" stroke="#dc2626" stroke-width="0.8"/>
+
+        <!-- Tường gạch xây chuẩn AutoCAD: gạch so le đỏ nhạt -->
+        <pattern id="cadBrick" width="16" height="8" patternUnits="userSpaceOnUse">
+          <rect width="16" height="8" fill="#fff5f5"/>
+          <line x1="0" y1="0" x2="16" y2="0" stroke="#ef4444" stroke-width="0.7"/>
+          <line x1="0" y1="4" x2="16" y2="4" stroke="#ef4444" stroke-width="0.7"/>
+          <line x1="0" y1="0" x2="0" y2="4" stroke="#ef4444" stroke-width="0.7"/>
+          <line x1="8" y1="4" x2="8" y2="8" stroke="#ef4444" stroke-width="0.7"/>
         </pattern>
-        <!-- Hatch kim loại / thép -->
-        <pattern id="cadSteel" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="8" stroke="#0284c7" stroke-width="1.2"/>
+
+        <!-- Thép kết cấu: gạch chéo xanh dương -->
+        <pattern id="cadSteel" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#0284c7" stroke-width="1.2"/>
         </pattern>
-        <!-- Mũi tên kích thước -->
-        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#0f172a" />
+
+        <!-- Mũi tên CAD -->
+        <marker id="arrowCAD" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 2 L 8 5 L 0 8 z" fill="#0f172a" />
         </marker>
-        <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#dc2626" />
+        <marker id="arrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 2 L 8 5 L 0 8 z" fill="#dc2626" />
         </marker>
       </defs>
     `;
   }
 
-  // 3. KHUNG TÊN KỸ THUẬT TIÊU CHUẨN SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
+  // 3. CÁC HÀM TIỆN ÍCH DỰNG ĐƯỜNG KÍCH THƯỚC CHUẨN AUTOCAD
+  // Đường kích thước có dấu gạch chéo 45 độ (Architectural Tick), đường dóng và chữ số rõ nét
+  function cadDimH(x1, x2, y, val, color) {
+    color = color || '#0f172a';
+    var tick = 3.5;
+    var minX = Math.min(x1, x2);
+    var maxX = Math.max(x1, x2);
+    var midX = (minX + maxX) / 2;
+    return `
+      <g class="cad-dim">
+        <line x1="${minX}" y1="${y}" x2="${maxX}" y2="${y}" stroke="${color}" stroke-width="0.8"/>
+        <!-- Dấu gạch chéo 45 độ 2 đầu -->
+        <line x1="${minX - tick}" y1="${y + tick}" x2="${minX + tick}" y2="${y - tick}" stroke="${color}" stroke-width="1.3"/>
+        <line x1="${maxX - tick}" y1="${y + tick}" x2="${maxX + tick}" y2="${y - tick}" stroke="${color}" stroke-width="1.3"/>
+        <text x="${midX}" y="${y - 3.5}" fill="${color}" font-size="9" font-weight="700" text-anchor="middle">${val}</text>
+      </g>
+    `;
+  }
+
+  function cadDimV(x, y1, y2, val, color) {
+    color = color || '#0f172a';
+    var tick = 3.5;
+    var minY = Math.min(y1, y2);
+    var maxY = Math.max(y1, y2);
+    var midY = (minY + maxY) / 2;
+    return `
+      <g class="cad-dim">
+        <line x1="${x}" y1="${minY}" x2="${x}" y2="${maxY}" stroke="${color}" stroke-width="0.8"/>
+        <line x1="${x - tick}" y1="${minY + tick}" x2="${x + tick}" y2="${minY - tick}" stroke="${color}" stroke-width="1.3"/>
+        <line x1="${x - tick}" y1="${maxY + tick}" x2="${x + tick}" y2="${maxY - tick}" stroke="${color}" stroke-width="1.3"/>
+        <text x="${x - 4.5}" y="${midY + 3}" fill="${color}" font-size="9" font-weight="700" text-anchor="end">${val}</text>
+      </g>
+    `;
+  }
+
+  // Tiêu đề chi tiết chuẩn AutoCAD (Vòng tròn số chi tiết + Tên chữ in hoa + Tỷ lệ)
+  function cadTitleBubble(x, y, num, title, scale) {
+    scale = scale || '1/25';
+    return `
+      <g class="cad-title-bubble" transform="translate(${x}, ${y})">
+        <circle cx="12" cy="12" r="11" fill="#0f2766" stroke="#0f172a" stroke-width="1.2"/>
+        <text x="12" y="16" fill="#fbbf24" font-size="10.5" font-weight="900" text-anchor="middle">${num}</text>
+        <text x="30" y="12" fill="#0f172a" font-size="10.5" font-weight="900">${title.toUpperCase()}</text>
+        <line x1="30" y1="16" x2="310" y2="16" stroke="#0f172a" stroke-width="1.4"/>
+        <line x1="30" y1="19" x2="260" y2="19" stroke="#0f172a" stroke-width="0.6"/>
+        <text x="30" y="29" fill="#64748b" font-size="7.5" font-weight="700">TỶ LỆ: ${scale}</text>
+      </g>
+    `;
+  }
+
+  // Đường chỉ dẫn Leader Line có mũi tên và gạch chân chữ viết
+  function cadLeader(x1, y1, x2, y2, x3, text, color) {
+    color = color || '#0f172a';
+    return `
+      <g class="cad-leader">
+        <circle cx="${x1}" cy="${y1}" r="2" fill="${color}"/>
+        <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="0.8"/>
+        <line x1="${x2}" y1="${y2}" x2="${x3}" y2="${y2}" stroke="${color}" stroke-width="0.9"/>
+        <text x="${x2 + 3}" y="${y2 - 2.5}" fill="${color}" font-size="8" font-weight="700">${text}</text>
+      </g>
+    `;
+  }
+
+  // Ký hiệu cao độ sàn FFL (Tam giác AutoCAD chỉ cốt)
+  function cadLevelMark(x, y, label) {
+    return `
+      <g class="cad-level-mark" transform="translate(${x}, ${y})">
+        <path d="M 0 0 L -5 -8 L 5 -8 Z" fill="#0f172a"/>
+        <line x1="-12" y1="0" x2="20" y2="0" stroke="#0f172a" stroke-width="1"/>
+        <text x="2" y="-10" fill="#0f172a" font-size="7.5" font-weight="900">${label}</text>
+      </g>
+    `;
+  }
+
+  // 4. KHUNG TÊN KỸ THUẬT TIÊU CHUẨN ISO/TCVN (ENGINEERING TITLE BLOCK)
   function renderCadTitleBlock(specs, drawingTitle, drawingNo, sheetSize) {
     var today = new Date().toLocaleDateString('vi-VN');
     sheetSize = sheetSize || 'A3';
     return `
       <g class="cad-title-block" transform="translate(0, 0)">
-        <rect x="0" y="0" width="360" height="150" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+        <rect x="0" y="0" width="370" height="155" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
         
-        <!-- Dòng Header Đơn Vị Thiết Kế -->
-        <rect x="0" y="0" width="360" height="34" fill="#0f2766" stroke="#0f172a" stroke-width="1"/>
-        <text x="180" y="16" fill="#fbbf24" font-size="11" font-weight="900" text-anchor="middle" letter-spacing="0.5">
+        <!-- Header: Tên đơn vị độc quyền -->
+        <rect x="0" y="0" width="370" height="36" fill="#0f2766" stroke="#0f172a" stroke-width="1"/>
+        <text x="185" y="16" fill="#fbbf24" font-size="11.5" font-weight="900" text-anchor="middle" letter-spacing="0.5">
           SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
         </text>
-        <text x="180" y="28" fill="#93c5fd" font-size="8" font-weight="700" text-anchor="middle">
-          HỒ SƠ THIẾT KẾ THI CÔNG HỐ THANG BÊ TÔNG CỐT THÉP
+        <text x="185" y="29" fill="#93c5fd" font-size="8.5" font-weight="700" text-anchor="middle">
+          HỒ SƠ BẢN VẼ SHOP DRAWING HỐ THANG BÊ TÔNG CỐT THÉP
         </text>
 
         <!-- Tên Bản Vẽ -->
-        <rect x="0" y="34" width="360" height="30" fill="#f8fafc" stroke="#0f172a" stroke-width="0.8"/>
-        <text x="180" y="47" fill="#dc2626" font-size="10.5" font-weight="900" text-anchor="middle">
+        <rect x="0" y="36" width="370" height="30" fill="#f8fafc" stroke="#0f172a" stroke-width="0.8"/>
+        <text x="185" y="49" fill="#dc2626" font-size="10.5" font-weight="900" text-anchor="middle">
           ${drawingTitle.toUpperCase()}
         </text>
-        <text x="180" y="58" fill="#475569" font-size="8" font-weight="bold" text-anchor="middle">
+        <text x="185" y="60" fill="#475569" font-size="8" font-weight="bold" text-anchor="middle">
           TẢI TRỌNG: ${specs.cap} KG • HW${specs.W} x HD${specs.D} mm • ${specs.Stops} STOPS
         </text>
 
-        <!-- Thông Tin Dự Án -->
-        <g transform="translate(0, 64)" font-size="8">
-          <rect x="0" y="0" width="85" height="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="42" y="12" fill="#0f172a" font-weight="bold" text-anchor="middle">CÔNG TRÌNH</text>
-          <rect x="85" y="0" width="275" height="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="95" y="12" fill="#0f172a" font-weight="bold">Nhà Phố / Biệt Thự / Văn Phòng (34 Tỉnh Thành)</text>
+        <!-- Chi Tiết Dự Án & Người Thiết Kế -->
+        <g transform="translate(0, 66)" font-size="8">
+          <rect x="0" y="0" width="90" height="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="45" y="12" fill="#0f172a" font-weight="bold" text-anchor="middle">CÔNG TRÌNH</text>
+          <rect x="90" y="0" width="280" height="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="100" y="12" fill="#0f172a" font-weight="bold">Nhà Phố / Biệt Thự / Văn Phòng (34 Tỉnh Thành)</text>
 
-          <rect x="0" y="18" width="85" height="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="42" y="30" fill="#0f172a" font-weight="bold" text-anchor="middle">THIẾT KẾ</text>
-          <rect x="85" y="18" width="95" height="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="132" y="30" fill="#0f172a" text-anchor="middle">Phòng Kỹ Thuật CAD</text>
+          <rect x="0" y="18" width="90" height="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="45" y="30" fill="#0f172a" font-weight="bold" text-anchor="middle">THIẾT KẾ</text>
+          <rect x="90" y="18" width="95" height="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="137" y="30" fill="#0f172a" text-anchor="middle">KS. Dự Toán CAD</text>
 
-          <rect x="180" y="18" width="85" height="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="222" y="30" fill="#dc2626" font-weight="bold" text-anchor="middle">PHÊ DUYỆT</text>
-          <rect x="265" y="18" width="95" height="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="312" y="30" fill="#0f2766" font-weight="900" text-anchor="middle">0914.587.575</text>
+          <rect x="185" y="18" width="90" height="18" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="230" y="30" fill="#dc2626" font-weight="bold" text-anchor="middle">PHÊ DUYỆT</text>
+          <rect x="275" y="18" width="95" height="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="322" y="30" fill="#0f2766" font-weight="900" text-anchor="middle">0914.587.575</text>
         </g>
 
         <!-- Footer Khung Tên: Tỷ lệ, Khổ Giấy, Ngày, Mã Bản Vẽ -->
-        <g transform="translate(0, 100)" font-size="8">
-          <rect x="0" y="0" width="90" height="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="45" y="11" fill="#64748b" text-anchor="middle">TỶ LỆ</text>
-          <text x="45" y="21" fill="#0f172a" font-weight="bold" text-anchor="middle">1:25 / 1:50</text>
+        <g transform="translate(0, 102)" font-size="8">
+          <rect x="0" y="0" width="92" height="27" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="46" y="11" fill="#64748b" text-anchor="middle">TỶ LỆ</text>
+          <text x="46" y="22" fill="#0f172a" font-weight="bold" text-anchor="middle">1:25 / 1:50</text>
 
-          <rect x="90" y="0" width="90" height="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="135" y="11" fill="#64748b" text-anchor="middle">KHỔ GIẤY</text>
-          <text x="135" y="21" fill="#0f172a" font-weight="bold" text-anchor="middle">${sheetSize}</text>
+          <rect x="92" y="0" width="93" height="27" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="138" y="11" fill="#64748b" text-anchor="middle">KHỔ GIẤY</text>
+          <text x="138" y="22" fill="#0f172a" font-weight="bold" text-anchor="middle">${sheetSize}</text>
 
-          <rect x="180" y="0" width="90" height="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
-          <text x="225" y="11" fill="#64748b" text-anchor="middle">NGÀY PHÁT HÀNH</text>
-          <text x="225" y="21" fill="#0f172a" font-weight="bold" text-anchor="middle">${today}</text>
+          <rect x="185" y="0" width="92" height="27" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+          <text x="231" y="11" fill="#64748b" text-anchor="middle">NGÀY PHÁT HÀNH</text>
+          <text x="231" y="22" fill="#0f172a" font-weight="bold" text-anchor="middle">${today}</text>
 
-          <rect x="270" y="0" width="90" height="26" fill="#0f2766" stroke="#0f172a" stroke-width="0.6"/>
-          <text x="315" y="11" fill="#fbbf24" font-weight="bold" text-anchor="middle">KÝ HIỆU</text>
-          <text x="315" y="22" fill="#ffffff" font-weight="900" text-anchor="middle">${drawingNo}</text>
+          <rect x="277" y="0" width="93" height="27" fill="#0f2766" stroke="#0f172a" stroke-width="0.6"/>
+          <text x="323" y="11" fill="#fbbf24" font-weight="bold" text-anchor="middle">KÝ HIỆU</text>
+          <text x="323" y="22" fill="#ffffff" font-weight="900" text-anchor="middle">${drawingNo}</text>
         </g>
 
-        <!-- Hotline & Cam Kết Tiêu Chuẩn -->
-        <rect x="0" y="126" width="360" height="24" fill="#fef3c7" stroke="#f59e0b" stroke-width="0.8"/>
-        <text x="180" y="142" fill="#b45309" font-size="8" font-weight="900" text-anchor="middle">
-          HOTLINE KỸ SƯ TRƯỞNG: 0914.587.575 • TIÊU CHUẨN QCVN 02:2019
+        <!-- Dòng Cam Kết Hotline & Tiêu Chuẩn Quốc Gia -->
+        <rect x="0" y="129" width="370" height="26" fill="#fef3c7" stroke="#f59e0b" stroke-width="0.8"/>
+        <text x="185" y="146" fill="#b45309" font-size="8.5" font-weight="900" text-anchor="middle">
+          HOTLINE KỸ SƯ TRƯỞNG: 0914.587.575 • TIÊU CHUẨN QCVN 02:2019/BLĐTBXH
         </text>
       </g>
     `;
   }
 
   // ==========================================================================================
-  // BẢN VẼ 1: MẶT BẰNG HỐ THANG (TẦNG ĐIỂN HÌNH & VỊ TRÍ SÀN TẦNG)
-  // Gồm: Cột góc 220, tường gạch 220, HW, HD, cửa mở 1200, trụ cửa 300/350, các mặt cắt A-A, B-B, C-C
+  // CHI TIẾT 01: MẶT BẰNG HỐ THANG (TẦNG ĐIỂN HÌNH & VỊ TRÍ SÀN TẦNG)
   // ==========================================================================================
-  function renderDrawing1_HoistwayPlan(specs, isStandalone) {
-    var width = isStandalone ? 800 : 380;
-    var scale = isStandalone ? 1.0 : 0.52;
+  function renderDrawing1_HoistwayPlan(specs) {
     var halfW = Math.round(specs.W / 2);
     var halfD = Math.round(specs.D / 2);
 
     return `
       <g id="drawing1_hoistwayPlan" class="cad-drawing">
-        <!-- TIÊU ĐỀ BẢN VẼ 1 -->
-        <text x="190" y="20" fill="#0f172a" font-size="12" font-weight="900" text-anchor="middle" text-decoration="underline">
-          1. MẶT BẰNG HỐ THANG (HOISTWAY PLAN)
-        </text>
+        ${cadTitleBubble(15, 10, "01", "MẶT BẰNG HỐ THANG (HOISTWAY PLAN)", "1/30")}
 
-        <!-- SUB-DRAWING 1A: MẶT BẰNG HỐ THANG TẦNG ĐIỂN HÌNH -->
-        <g id="planTypical" transform="translate(20, 35)">
-          <text x="85" y="12" fill="#0f172a" font-size="9" font-weight="900" text-anchor="middle">
+        <!-- 1A: TẦNG ĐIỂN HÌNH -->
+        <g id="planTypical" transform="translate(15, 45)">
+          <text x="80" y="10" fill="#0f172a" font-size="8.5" font-weight="900" text-anchor="middle">
             MẶT BẰNG HỐ THANG TẦNG ĐIỂN HÌNH
           </text>
 
-          <!-- Tường gạch & Cột góc 220x220 -->
-          <!-- Khung ngoài (1800+440 x 1500+440) -> scaled -->
-          <rect x="15" y="25" width="140" height="120" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1.2"/>
-          <rect x="27" y="37" width="116" height="96" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
+          <!-- Tường gạch & 4 Cột bê tông 220x220 -->
+          <rect x="10" y="20" width="140" height="120" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1.4"/>
+          <rect x="22" y="32" width="116" height="96" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
 
-          <!-- 4 Cột bê tông góc 220x220 -->
-          <rect x="15" y="25" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="139" y="25" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="15" y="129" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="139" y="129" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <!-- 4 Cột bê tông góc -->
+          <rect x="10" y="20" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="134" y="20" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="10" y="124" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="134" y="124" width="16" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- Lỗ cửa mở 1200 ở vách trước -->
-          <rect x="45" y="129" width="80" height="16" fill="#ffffff" stroke="#ffffff"/>
-          <line x1="45" y1="129" x2="45" y2="145" stroke="#0f172a" stroke-width="1"/>
-          <line x1="125" y1="129" x2="125" y2="145" stroke="#0f172a" stroke-width="1"/>
+          <!-- Cửa mở 1200 ở vách trước -->
+          <rect x="42" y="124" width="76" height="16" fill="#ffffff" stroke="#ffffff"/>
+          <line x1="42" y1="124" x2="42" y2="140" stroke="#0f172a" stroke-width="1"/>
+          <line x1="118" y1="124" x2="118" y2="140" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- Trục tim C_L -->
-          <line x1="85" y1="20" x2="85" y2="150" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
-          <line x1="10" y1="85" x2="160" y2="85" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
-          <text x="88" y="35" fill="#ef4444" font-size="7" font-weight="bold">CL</text>
+          <!-- Trục tim CL hố thang -->
+          <line x1="80" y1="14" x2="80" y2="148" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
+          <line x1="4" y1="80" x2="156" y2="80" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
+          <text x="83" y="26" fill="#dc2626" font-size="7" font-weight="bold">CL</text>
 
           <!-- Ký hiệu mặt cắt A-A, B-B, C-C -->
-          <line x1="35" y1="65" x2="55" y2="65" stroke="#0f172a" stroke-width="1.2"/>
-          <line x1="35" y1="65" x2="35" y2="58" stroke="#0f172a" stroke-width="1.5"/>
-          <text x="45" y="62" fill="#0f172a" font-size="7.5" font-weight="900">A</text>
+          <line x1="30" y1="60" x2="50" y2="60" stroke="#0f172a" stroke-width="1.2"/>
+          <line x1="30" y1="60" x2="30" y2="53" stroke="#0f172a" stroke-width="1.6"/>
+          <text x="38" y="56" fill="#0f172a" font-size="8" font-weight="900">A</text>
 
-          <line x1="115" y1="65" x2="135" y2="65" stroke="#0f172a" stroke-width="1.2"/>
-          <line x1="135" y1="65" x2="135" y2="58" stroke="#0f172a" stroke-width="1.5"/>
-          <text x="125" y="62" fill="#0f172a" font-size="7.5" font-weight="900">A</text>
+          <line x1="110" y1="60" x2="130" y2="60" stroke="#0f172a" stroke-width="1.2"/>
+          <line x1="130" y1="60" x2="130" y2="53" stroke="#0f172a" stroke-width="1.6"/>
+          <text x="118" y="56" fill="#0f172a" font-size="8" font-weight="900">A</text>
 
-          <line x1="35" y1="105" x2="55" y2="105" stroke="#0f172a" stroke-width="1.2"/>
-          <line x1="35" y1="105" x2="35" y2="112" stroke="#0f172a" stroke-width="1.5"/>
-          <text x="45" y="114" fill="#0f172a" font-size="7.5" font-weight="900">B</text>
+          <line x1="30" y1="100" x2="50" y2="100" stroke="#0f172a" stroke-width="1.2"/>
+          <line x1="30" y1="100" x2="30" y2="107" stroke="#0f172a" stroke-width="1.6"/>
+          <text x="38" y="108" fill="#0f172a" font-size="8" font-weight="900">B</text>
 
-          <line x1="115" y1="105" x2="135" y2="105" stroke="#0f172a" stroke-width="1.2"/>
-          <line x1="135" y1="105" x2="135" y2="112" stroke="#0f172a" stroke-width="1.5"/>
-          <text x="125" y="114" fill="#0f172a" font-size="7.5" font-weight="900">B</text>
+          <line x1="110" y1="100" x2="130" y2="100" stroke="#0f172a" stroke-width="1.2"/>
+          <line x1="130" y1="100" x2="130" y2="107" stroke="#0f172a" stroke-width="1.6"/>
+          <text x="118" y="108" fill="#0f172a" font-size="8" font-weight="900">B</text>
 
-          <!-- Thước kích thước HW & HD -->
-          <!-- HW = 1800 (900 + 900) -->
-          <line x1="27" y1="15" x2="143" y2="15" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="85" y="12" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">HW=${specs.W} (${halfW}+${halfW})</text>
-          
-          <!-- HD = 1500 (750 + 750) -->
-          <text x="156" y="88" fill="#0f172a" font-size="7" font-weight="bold">HD=${specs.D}</text>
+          <!-- Kích thước CAD -->
+          ${cadDimH(22, 80, 15, halfW, "#0f172a")}
+          ${cadDimH(80, 138, 15, halfW, "#0f172a")}
+          ${cadDimH(22, 138, 5, "HW=" + specs.W, "#dc2626")}
+          ${cadDimV(154, 32, 128, "HD=" + specs.D, "#dc2626")}
+          ${cadDimH(42, 118, 148, "1200", "#0f172a")}
 
           <!-- Mũi tên hướng cửa thang máy -->
-          <path d="M 85 160 L 80 167 L 90 167 Z" fill="#0f172a"/>
-          <text x="85" y="177" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">HƯỚNG CỬA THANG MÁY</text>
+          <path d="M 80 156 L 76 163 L 84 163 Z" fill="#0f172a"/>
+          <text x="80" y="172" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">HƯỚNG CỬA THANG MÁY</text>
         </g>
 
-        <!-- SUB-DRAWING 1B: MẶT BẰNG HỐ THANG VỊ TRÍ SÀN TẦNG -->
-        <g id="planFloor" transform="translate(195, 35)">
-          <text x="85" y="12" fill="#0f172a" font-size="9" font-weight="900" text-anchor="middle">
+        <!-- 1B: VỊ TRÍ SÀN TẦNG -->
+        <g id="planFloor" transform="translate(185, 45)">
+          <text x="80" y="10" fill="#0f172a" font-size="8.5" font-weight="900" text-anchor="middle">
             MẶT BẰNG HỐ THANG VỊ TRÍ SÀN TẦNG
           </text>
 
-          <!-- Dầm bê tông cốt thép dày 220 chạy quanh 3 mặt -->
-          <rect x="15" y="25" width="140" height="120" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
-          <rect x="27" y="37" width="116" height="96" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
+          <!-- Dầm BTCT 220 đổ bao 3 mặt -->
+          <rect x="10" y="20" width="140" height="120" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.4"/>
+          <rect x="22" y="32" width="116" height="96" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
 
-          <!-- Trụ gạch 300/350 vị trí dầm sàn cửa -->
-          <rect x="15" y="129" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="133" y="129" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <!-- Trụ gạch 300 hai bên cửa -->
+          <rect x="10" y="124" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="128" y="124" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- Lỗ chừa cửa 1200 -->
-          <rect x="37" y="129" width="96" height="16" fill="#ffffff" stroke="#ffffff"/>
-          <line x1="37" y1="129" x2="37" y2="145" stroke="#0f172a" stroke-width="1"/>
-          <line x1="133" y1="129" x2="133" y2="145" stroke="#0f172a" stroke-width="1"/>
+          <!-- Lỗ cửa chờ 1200 -->
+          <rect x="32" y="124" width="96" height="16" fill="#ffffff" stroke="#ffffff"/>
+          <line x1="32" y1="124" x2="32" y2="140" stroke="#0f172a" stroke-width="1"/>
+          <line x1="128" y1="124" x2="128" y2="140" stroke="#0f172a" stroke-width="1"/>
 
           <!-- Trục tim CL -->
-          <line x1="85" y1="20" x2="85" y2="150" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
-          <line x1="10" y1="85" x2="160" y2="85" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
+          <line x1="80" y1="14" x2="80" y2="148" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
+          <line x1="4" y1="80" x2="156" y2="80" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
 
-          <!-- Ghi chú dầm bê tông cốt thép -->
-          <text x="85" y="70" fill="#475569" font-size="7" font-weight="bold" text-anchor="middle">
-            DẦM BTCT BAO 3 MẶT
-          </text>
-          <text x="85" y="82" fill="#475569" font-size="6.5" text-anchor="middle">
-            TIẾT DIỆN 220 x 200 mm
-          </text>
+          ${cadLeader(22, 60, -8, 70, -25, "DẦM BTCT 220x200", "#0f172a")}
+          ${cadDimH(22, 138, 5, "HW=" + specs.W, "#dc2626")}
+          ${cadDimH(32, 128, 148, "CỬA CHỜ: " + specs.roughDoorW, "#0f172a")}
 
-          <!-- Thước kích thước cửa & trụ -->
-          <line x1="37" y1="155" x2="133" y2="155" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="85" y="152" fill="#0f172a" font-size="7" font-weight="bold" text-anchor="middle">CỬA CHỜ: ${specs.roughDoorW}</text>
-
-          <!-- Mũi tên hướng cửa -->
-          <path d="M 85 168 L 80 175 L 90 175 Z" fill="#0f172a"/>
-          <text x="85" y="185" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">HƯỚNG CỬA THANG MÁY</text>
+          <path d="M 80 156 L 76 163 L 84 163 Z" fill="#0f172a"/>
+          <text x="80" y="172" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">HƯỚNG CỬA THANG MÁY</text>
         </g>
       </g>
     `;
   }
 
   // ==========================================================================================
-  // BẢN VẼ 2: CHỜ THÔ CỬA TẦNG (MẶT ĐỨNG + CẮT 1-1 + CẮT 2-2)
-  // Gồm: Lỗ chờ thô Open=1200 x Open=2400, lanh tô BTCT 200mm, trụ gạch 300, mặt cắt 1-1, cắt 2-2
+  // CHI TIẾT 02: CHỜ THÔ CỬA TẦNG (OPEN 1200 x 2400 & CẮT 1-1, 2-2)
   // ==========================================================================================
-  function renderDrawing2_RoughDoorOpening(specs, isStandalone) {
+  function renderDrawing2_RoughDoorOpening(specs) {
     return `
       <g id="drawing2_roughDoorOpening" class="cad-drawing">
-        <!-- ĐÁM MÂY TIÊU ĐỀ: CHỜ THÔ CỬA TẦNG -->
-        <g transform="translate(190, 8)">
-          <path d="M 0 10 Q 5 0 20 5 Q 35 -2 50 5 Q 65 0 70 10 Q 80 20 70 30 Q 60 40 45 35 Q 30 42 15 35 Q 0 35 0 20 Z" fill="#f8fafc" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="4,2"/>
-          <text x="35" y="22" fill="#dc2626" font-size="8.5" font-weight="900" text-anchor="middle">CHỜ THÔ CỬA TẦNG</text>
+        ${cadTitleBubble(15, 10, "02", "CHỜ THÔ CỬA TẦNG (ROUGH OPENING)", "1/30")}
+
+        <!-- ĐÁM MÂY KỸ THUẬT: CHỜ THÔ CỬA TẦNG -->
+        <g transform="translate(195, 8)">
+          <path d="M 0 8 Q 8 -2 20 4 Q 35 -3 50 4 Q 65 -2 72 8 Q 80 18 72 26 Q 60 34 45 28 Q 30 36 15 28 Q -2 30 0 16 Z" fill="#f8fafc" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="4,2"/>
+          <text x="36" y="18" fill="#dc2626" font-size="8.5" font-weight="900" text-anchor="middle">CHỜ THÔ CỬA TẦNG</text>
         </g>
 
-        <!-- SUB 2A: MẶT ĐỨNG LỖ CHỜ THÔ CỬA TẦNG -->
-        <g id="roughDoorElevation" transform="translate(30, 40)">
-          <!-- Cột bê tông 2 bên (220mm) -->
-          <rect x="0" y="20" width="16" height="150" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="134" y="20" width="16" height="150" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+        <!-- MẶT ĐỨNG LỖ CHỜ THÔ CỬA TẦNG -->
+        <g id="roughDoorElevation" transform="translate(25, 45)">
+          <!-- Cột bê tông 2 bên (220) -->
+          <rect x="0" y="18" width="16" height="150" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="134" y="18" width="16" height="150" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- Trụ gạch xây 2 bên (300mm) -->
-          <rect x="16" y="40" width="22" height="130" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="112" y="40" width="22" height="130" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <!-- Trụ gạch 2 bên (300) -->
+          <rect x="16" y="38" width="22" height="130" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="112" y="38" width="22" height="130" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
 
           <!-- Dầm lanh-tô bê tông cốt thép dày 200mm trên cửa -->
-          <rect x="16" y="20" width="118" height="20" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
-          <text x="75" y="33" fill="#0f172a" font-size="6.5" font-weight="bold" text-anchor="middle">LANH TÔ BTCT 200x200</text>
+          <rect x="16" y="18" width="118" height="20" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
+          <text x="75" y="31" fill="#0f172a" font-size="7" font-weight="bold" text-anchor="middle">LANH TÔ BTCT 200x200</text>
 
-          <!-- Tường gạch phía trên lanh tô -->
-          <rect x="16" y="0" width="118" height="20" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <!-- Tường gạch trên lanh tô -->
+          <rect x="16" y="0" width="118" height="18" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
 
           <!-- Lỗ chừa trống cửa tầng (Open = 1200 x Open = 2400) -->
-          <rect x="38" y="40" width="74" height="130" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
-          <line x1="38" y1="40" x2="112" y2="170" stroke="#cbd5e1" stroke-width="0.8"/>
-          <line x1="112" y1="40" x2="38" y2="170" stroke="#cbd5e1" stroke-width="0.8"/>
+          <rect x="38" y="38" width="74" height="130" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
+          <line x1="38" y1="38" x2="112" y2="168" stroke="#cbd5e1" stroke-width="0.8"/>
+          <line x1="112" y1="38" x2="38" y2="168" stroke="#cbd5e1" stroke-width="0.8"/>
           
-          <text x="75" y="100" fill="#dc2626" font-size="9" font-weight="900" text-anchor="middle">OPEN = ${specs.roughDoorW}</text>
-          
-          <!-- Ký hiệu cốt FFL -->
-          <line x1="30" y1="170" x2="120" y2="170" stroke="#0f172a" stroke-width="1.5"/>
-          <path d="M 75 170 L 71 163 L 79 163 Z" fill="#0f172a"/>
-          <text x="75" y="160" fill="#0f172a" font-size="6.5" font-weight="bold" text-anchor="middle">FFL</text>
+          <text x="75" y="98" fill="#dc2626" font-size="9" font-weight="900" text-anchor="middle">OPEN = ${specs.roughDoorW}</text>
 
-          <!-- Dầm bê tông sàn tầng -->
-          <rect x="0" y="170" width="150" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <!-- Cốt cao độ FFL -->
+          ${cadLevelMark(75, 168, "FFL")}
 
-          <!-- Thước đo dọc: Open = 2400 -->
-          <line x1="-12" y1="40" x2="-12" y2="170" stroke="#0f172a" stroke-width="0.8"/>
-          <line x1="-16" y1="40" x2="-8" y2="40" stroke="#0f172a" stroke-width="0.8"/>
-          <line x1="-16" y1="170" x2="-8" y2="170" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="-16" y="110" fill="#0f172a" font-size="8.5" font-weight="900" transform="rotate(-90, -16, 110)" text-anchor="middle">
-            OPEN = ${specs.roughDoorH}
-          </text>
+          <!-- Sàn bê tông tầng -->
+          <rect x="0" y="168" width="150" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- Chú thích tiêu đề dưới -->
-          <text x="75" y="200" fill="#0f172a" font-size="8.5" font-weight="900" text-anchor="middle">
+          <!-- Thước dọc Open = 2400 -->
+          ${cadDimV(-12, 38, 168, "OPEN = " + specs.roughDoorH, "#0f172a")}
+
+          <text x="75" y="196" fill="#0f172a" font-size="8.5" font-weight="900" text-anchor="middle">
             LỖ CHỜ THÔ CỬA TẦNG
           </text>
         </g>
 
-        <!-- SUB 2B: MẶT CẮT 2-2 (CẮT NGANG QUA CỬA & TRỤ GẠCH) -->
-        <g id="section2_2" transform="translate(200, 35)">
-          <text x="60" y="10" fill="#0f172a" font-size="8" font-weight="bold" text-anchor="middle">MẶT CẮT 2-2</text>
+        <!-- MẶT CẮT 2-2 -->
+        <g id="section2_2" transform="translate(195, 45)">
+          <text x="55" y="8" fill="#0f172a" font-size="8" font-weight="900" text-anchor="middle">MẶT CẮT 2-2</text>
           
-          <rect x="0" y="15" width="20" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="20" y="15" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="42" y="15" width="40" height="16" fill="#ffffff" stroke="#ffffff"/>
-          <rect x="82" y="15" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
-          <rect x="104" y="15" width="20" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="0" y="14" width="18" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="0.9"/>
+          <rect x="18" y="14" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="0.9"/>
+          <rect x="40" y="14" width="38" height="16" fill="#ffffff" stroke="#ffffff"/>
+          <rect x="78" y="14" width="22" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="0.9"/>
+          <rect x="100" y="14" width="18" height="16" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="0.9"/>
           
-          <line x1="0" y1="31" x2="124" y2="31" stroke="#0f172a" stroke-width="1"/>
-          <line x1="42" y1="15" x2="42" y2="31" stroke="#0f172a" stroke-width="1"/>
-          <line x1="82" y1="15" x2="82" y2="31" stroke="#0f172a" stroke-width="1"/>
+          <line x1="0" y1="30" x2="118" y2="30" stroke="#0f172a" stroke-width="1"/>
+          <line x1="40" y1="14" x2="40" y2="30" stroke="#0f172a" stroke-width="0.9"/>
+          <line x1="78" y1="14" x2="78" y2="30" stroke="#0f172a" stroke-width="0.9"/>
 
-          <text x="62" y="26" fill="#0f172a" font-size="6.5" font-weight="bold" text-anchor="middle">${specs.roughDoorW}</text>
+          ${cadDimH(40, 78, 38, specs.roughDoorW, "#0f172a")}
         </g>
 
-        <!-- SUB 2C: MẶT CẮT 1-1 (CẮT DỌC QUA LANH TÔ) -->
-        <g id="section1_1" transform="translate(215, 95)">
-          <text x="45" y="0" fill="#0f172a" font-size="8" font-weight="bold" text-anchor="middle">MẶT CẮT 1-1</text>
+        <!-- MẶT CẮT 1-1 -->
+        <g id="section1_1" transform="translate(205, 105)">
+          <text x="45" y="0" fill="#0f172a" font-size="8" font-weight="900" text-anchor="middle">MẶT CẮT 1-1</text>
           
-          <!-- Tường gạch phía trên -->
-          <rect x="30" y="8" width="16" height="24" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="28" y="8" width="16" height="22" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="28" y="30" width="16" height="18" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
+          ${cadLeader(28, 40, -5, 30, -30, "LANH TÔ BTCT 200", "#0f172a")}
 
-          <!-- Dầm lanh-tô bê tông 200x200 -->
-          <rect x="30" y="32" width="16" height="20" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
-          <line x1="28" y1="42" x2="0" y2="28" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="-4" y="26" fill="#0f172a" font-size="6.5" font-weight="bold">DẦM BTCT 200</text>
-
-          <!-- Khoảng trống cửa cao 2400 -->
-          <line x1="30" y1="52" x2="30" y2="120" stroke="#cbd5e1" stroke-dasharray="4,2"/>
-          <text x="50" y="88" fill="#475569" font-size="7" font-weight="bold" transform="rotate(90, 50, 88)" text-anchor="middle">
+          <line x1="28" y1="48" x2="28" y2="115" stroke="#cbd5e1" stroke-dasharray="4,2"/>
+          <text x="50" y="85" fill="#475569" font-size="7" font-weight="bold" transform="rotate(90, 50, 85)" text-anchor="middle">
             Chừa trống cao: ${specs.roughDoorH}
           </text>
 
-          <!-- Dầm sàn bê tông phía dưới -->
-          <rect x="15" y="120" width="35" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <line x1="10" y1="120" x2="55" y2="120" stroke="#0f172a" stroke-width="1.2"/>
+          <rect x="12" y="115" width="38" height="16" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
+          <line x1="8" y1="115" x2="52" y2="115" stroke="#0f172a" stroke-width="1.2"/>
         </g>
       </g>
     `;
   }
 
   // ==========================================================================================
-  // BẢN VẼ 3: CỬA TẦNG HOÀN THIỆN (MẶT CẮT NGANG & MẶT ĐỨNG CỬA HOÀN THIỆN)
-  // Gồm: Cửa DW=800, chừa trống 1000, ốp đá 1100, DH=2100, nút bấm gọi tầng LOP cao 1200mm
+  // CHI TIẾT 03: CỬA TẦNG HOÀN THIỆN & HỘP GỌI TẦNG LOP
   // ==========================================================================================
-  function renderDrawing3_FinishedDoor(specs, isStandalone) {
+  function renderDrawing3_FinishedDoor(specs) {
     return `
       <g id="drawing3_finishedDoor" class="cad-drawing">
-        <!-- TIÊU ĐỀ: CỬA TẦNG HOÀN THIỆN -->
-        <text x="140" y="225" fill="#0f172a" font-size="11" font-weight="900" text-anchor="middle" text-decoration="underline">
-          CỬA TẦNG HOÀN THIỆN
-        </text>
+        ${cadTitleBubble(15, 10, "03", "CỬA TẦNG HOÀN THIỆN & HỘP LOP", "1/25")}
 
-        <!-- SUB 3A: MẶT CẮT NGANG CỬA TẦNG HOÀN THIỆN & ỐP ĐÁ -->
-        <g id="doorPlanDetail" transform="translate(45, 10)">
-          <!-- Tường gạch hố thang -->
-          <rect x="0" y="10" width="190" height="14" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+        <!-- CHI TIẾT MẶT CẮT NGANG ỐP ĐÁ CỬA TẦNG -->
+        <g id="doorPlanDetail" transform="translate(35, 45)">
+          <rect x="0" y="8" width="190" height="14" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
+          <rect x="35" y="8" width="120" height="14" fill="#ffffff" stroke="#ffffff"/>
 
-          <!-- Chừa trống cửa tầng: 1000mm -->
-          <rect x="35" y="10" width="120" height="14" fill="#ffffff" stroke="#ffffff"/>
+          <!-- Đá granite ốp vát mép -->
+          <polygon points="35,8 45,22 55,22 50,8" fill="#fef3c7" stroke="#d97706" stroke-width="0.8"/>
+          <polygon points="155,8 145,22 135,22 140,8" fill="#fef3c7" stroke="#d97706" stroke-width="0.8"/>
 
-          <!-- Đá ốp vát mép cửa (mỗi bên 100mm) -->
-          <polygon points="35,10 45,24 55,24 50,10" fill="#fef3c7" stroke="#d97706" stroke-width="0.8"/>
-          <polygon points="155,10 145,24 135,24 140,10" fill="#fef3c7" stroke="#d97706" stroke-width="0.8"/>
+          <!-- Khung bao cửa inox & Cánh cửa mở tim -->
+          <rect x="55" y="5" width="80" height="4" fill="#0284c7" stroke="#0f172a" stroke-width="0.8"/>
+          <rect x="56" y="1" width="38" height="3" fill="#64748b"/>
+          <rect x="96" y="1" width="38" height="3" fill="#64748b"/>
 
-          <!-- Khung bao cửa tầng inox -->
-          <rect x="55" y="6" width="80" height="4" fill="#0284c7" stroke="#0f172a" stroke-width="0.8"/>
-          <!-- Hai cánh cửa mở tim -->
-          <rect x="56" y="2" width="38" height="3" fill="#64748b"/>
-          <rect x="96" y="2" width="38" height="3" fill="#64748b"/>
-          <!-- Mũi tên mở tim -->
-          <path d="M 72 3.5 L 68 3.5" stroke="#ffffff" stroke-width="1"/>
-          <path d="M 118 3.5 L 122 3.5" stroke="#ffffff" stroke-width="1"/>
+          ${cadDimH(55, 135, 27, "C.rộng cửa: " + specs.CO, "#0f172a")}
+          ${cadDimH(35, 155, 38, "Chừa trống: " + (specs.CO + 200), "#d97706")}
 
-          <!-- Ghi chú kích thước -->
-          <text x="95" y="22" fill="#0f172a" font-size="6.5" font-weight="900" text-anchor="middle">
-            C.rộng cửa tầng: ${specs.CO}
-          </text>
-          <text x="95" y="32" fill="#d97706" font-size="6" font-weight="bold" text-anchor="middle">
-            Chừa trống cửa tầng: ${specs.CO + 200}
-          </text>
-
-          <!-- Mũi tên chỉ dẫn ốp đá sau lắp thang -->
-          <path d="M 145 20 L 175 32" stroke="#d97706" stroke-width="0.8"/>
-          <text x="175" y="32" fill="#d97706" font-size="5.8" font-weight="bold">
-            Hoàn thiện ốp đá, xây chèn sau khi lắp xong khung (*)
-          </text>
+          ${cadLeader(145, 15, 175, 25, 260, "Ốp đá sau khi lắp khung (*)", "#d97706")}
         </g>
 
-        <!-- SUB 3B: MẶT ĐỨNG CỬA TẦNG HOÀN THIỆN -->
-        <g id="doorFrontDetail" transform="translate(60, 50)">
-          <!-- Khung ốp đá granite ngoài (rộng 1100, cao 2200) -->
-          <rect x="15" y="8" width="130" height="152" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <!-- MẶT ĐỨNG CỬA TẦNG HOÀN THIỆN -->
+        <g id="doorFrontDetail" transform="translate(50, 95)">
+          <!-- Khung ốp đá granite ngoài (1100) -->
+          <rect x="15" y="6" width="130" height="146" fill="#fffbeb" stroke="#d97706" stroke-width="1.4"/>
+          <!-- Khung cửa inox tiêu chuẩn (DW=800, DH=2100) -->
+          <rect x="25" y="14" width="110" height="138" fill="#f8fafc" stroke="#0f172a" stroke-width="1.4"/>
 
-          <!-- Khung cửa tầng Inox tiêu chuẩn (DW=800, DH=2100) -->
-          <rect x="25" y="16" width="110" height="144" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5"/>
-
-          <!-- Hai cánh cửa mở tim với chỉ inox xước -->
-          <rect x="27" y="18" width="52" height="142" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8"/>
-          <rect x="81" y="18" width="52" height="142" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8"/>
+          <!-- Cánh cửa inox mở tim có chỉ xước -->
+          <rect x="27" y="16" width="52" height="136" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8"/>
+          <rect x="81" y="16" width="52" height="136" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8"/>
           
-          <!-- Họa tiết cửa hoa văn inox gương -->
-          <line x1="53" y1="30" x2="53" y2="140" stroke="#cbd5e1" stroke-width="1"/>
-          <line x1="107" y1="30" x2="107" y2="140" stroke="#cbd5e1" stroke-width="1"/>
+          <line x1="53" y1="28" x2="53" y2="135" stroke="#cbd5e1" stroke-width="0.9"/>
+          <line x1="107" y1="28" x2="107" y2="135" stroke="#cbd5e1" stroke-width="0.9"/>
 
           <!-- Mũi tên mở 2 cánh -->
-          <path d="M 50 85 L 42 85" stroke="#0f172a" stroke-width="1.2" marker-end="url(#arrow)"/>
-          <path d="M 110 85 L 118 85" stroke="#0f172a" stroke-width="1.2" marker-end="url(#arrow)"/>
+          <path d="M 50 80 L 42 80" stroke="#0f172a" stroke-width="1.2" marker-end="url(#arrowCAD)"/>
+          <path d="M 110 80 L 118 80" stroke="#0f172a" stroke-width="1.2" marker-end="url(#arrowCAD)"/>
 
-          <text x="80" y="98" fill="#0f172a" font-size="9" font-weight="900" text-anchor="middle">
+          <text x="80" y="92" fill="#0f172a" font-size="9" font-weight="900" text-anchor="middle">
             DW = ${specs.CO}
           </text>
 
-          <!-- Hộp nút bấm gọi tầng LOP (cao 1200mm từ FFL) -->
-          <rect x="148" y="70" width="12" height="32" rx="3" fill="#1e293b" stroke="#fbbf24" stroke-width="1"/>
-          <circle cx="154" cy="78" r="2.5" fill="#38bdf8"/>
-          <circle cx="154" cy="86" r="2" fill="#ef4444"/>
-          <circle cx="154" cy="94" r="2" fill="#ef4444"/>
-          <text x="165" y="88" fill="#0f172a" font-size="7" font-weight="bold">LOP</text>
+          <!-- Hộp nút bấm gọi tầng LOP cao 1200mm từ FFL -->
+          <rect x="148" y="65" width="12" height="32" rx="3" fill="#1e293b" stroke="#fbbf24" stroke-width="1"/>
+          <circle cx="154" cy="73" r="2.5" fill="#38bdf8"/>
+          <circle cx="154" cy="81" r="2" fill="#ef4444"/>
+          <circle cx="154" cy="89" r="2" fill="#ef4444"/>
+          <text x="165" y="83" fill="#0f172a" font-size="7.5" font-weight="bold">LOP</text>
 
-          <!-- Cốt cao độ tâm nút bấm LOP = 1200mm -->
-          <line x1="154" y1="88" x2="175" y2="88" stroke="#dc2626" stroke-width="0.8"/>
-          <line x1="175" y1="88" x2="175" y2="160" stroke="#dc2626" stroke-width="0.8"/>
-          <text x="180" y="125" fill="#dc2626" font-size="7.5" font-weight="bold">1200</text>
+          <!-- Thước đo tim nút LOP cao 1200mm -->
+          ${cadDimV(180, 83, 152, "1200", "#dc2626")}
 
-          <!-- Cốt sàn hoàn thiện FFL -->
-          <line x1="0" y1="160" x2="175" y2="160" stroke="#0f172a" stroke-width="1.5"/>
-          <path d="M 80 160 L 76 153 L 84 153 Z" fill="#0f172a"/>
-          <text x="80" y="150" fill="#0f172a" font-size="6.5" font-weight="bold" text-anchor="middle">FFL</text>
+          <!-- Cốt sàn FFL -->
+          ${cadLevelMark(80, 152, "FFL")}
+          <line x1="0" y1="152" x2="175" y2="152" stroke="#0f172a" stroke-width="1.5"/>
 
           <!-- Thước chiều cao cửa DH = 2100 -->
-          <line x1="195" y1="16" x2="195" y2="160" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="200" y="90" fill="#0f172a" font-size="8.5" font-weight="900" transform="rotate(90, 200, 90)" text-anchor="middle">
-            DH = ${specs.DH}
-          </text>
+          ${cadDimV(200, 14, 152, "DH = " + specs.DH, "#0f172a")}
 
-          <!-- Bề rộng hoàn thiện ngoài 1100 -->
-          <line x1="15" y1="172" x2="145" y2="172" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="80" y="182" fill="#0f172a" font-size="8" font-weight="bold" text-anchor="middle">1100 (Ốp đá hoàn thiện)</text>
+          <!-- Thước bề rộng ốp đá 1100 -->
+          ${cadDimH(15, 145, 165, "1100 (ỐP ĐÁ HOÀN THIỆN)", "#0f172a")}
         </g>
       </g>
     `;
   }
 
   // ==========================================================================================
-  // BẢN VẼ 4: MẶT BẰNG LẮP THANG (CABIN, ĐỐI TRỌNG SAU, RAY, BÁT RAY)
-  // Gồm: Kích thước lọt lòng HWxHD, Cabin Wcar x Dcar, cửa CO=800, đối trọng sau, ray T78/T89, nút LOP
+  // CHI TIẾT 04: MẶT BẰNG LẮP THANG (CABIN, ĐỐI TRỌNG SAU, RAY & BÁT RAY)
   // ==========================================================================================
-  function renderDrawing4_ElevatorInstallationPlan(specs, isStandalone) {
+  function renderDrawing4_ElevatorInstallationPlan(specs) {
     var halfW = Math.round(specs.W / 2);
     var halfD = Math.round(specs.D / 2);
 
     return `
       <g id="drawing4_installationPlan" class="cad-drawing">
-        <!-- TIÊU ĐỀ: MẶT BẰNG LẮP THANG -->
-        <text x="190" y="18" fill="#0f172a" font-size="11" font-weight="900" text-anchor="middle" text-decoration="underline">
-          4. MẶT BẰNG LẮP THANG (CAR & CWT PLAN)
-        </text>
+        ${cadTitleBubble(15, 10, "04", "MẶT BẰNG LẮP THANG (CAR & CWT PLAN)", "1/25")}
 
-        <g transform="translate(45, 30)">
-          <!-- Khung tường bao giếng thang (220mm) -->
+        <g transform="translate(35, 45)">
+          <!-- Khung tường bao giếng thang 220mm -->
           <rect x="15" y="15" width="260" height="200" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.8"/>
           <rect x="35" y="35" width="220" height="160" fill="#ffffff" stroke="#0f172a" stroke-width="1.5"/>
 
           <!-- Trục tim CL -->
-          <line x1="145" y1="10" x2="145" y2="205" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
-          <line x1="25" y1="115" x2="265" y2="115" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
+          <line x1="145" y1="10" x2="145" y2="205" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
+          <line x1="25" y1="115" x2="265" y2="115" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
 
-          <!-- CẶP RAY CABIN (2 bên hông) & BÁT RAY (BRACKET) -->
-          <!-- Ray trái -->
+          <!-- CẶP RAY CABIN 2 BÊN HÔNG (T78/T89) & BÁT RAY -->
           <rect x="35" y="108" width="14" height="14" fill="#475569" stroke="#0f172a" stroke-width="1"/>
           <polygon points="49,115 57,110 57,120" fill="#dc2626"/>
-          <!-- Ray phải -->
+          ${cadLeader(42, 115, 15, 95, -15, "RAY CABIN T78/T89", "#dc2626")}
+
           <rect x="241" y="108" width="14" height="14" fill="#475569" stroke="#0f172a" stroke-width="1"/>
           <polygon points="241,115 233,110 233,120" fill="#dc2626"/>
+          ${cadLeader(248, 115, 275, 95, 335, "RAY CABIN T78/T89", "#dc2626")}
 
           <!-- KHUNG ĐỐI TRỌNG (Phía sau Cabin) -->
           <rect x="80" y="42" width="130" height="18" fill="#334155" stroke="#0f172a" stroke-width="1.2"/>
-          <!-- Cục tạ gang/bê tông đối trọng -->
           <line x1="100" y1="42" x2="100" y2="60" stroke="#64748b" stroke-width="1"/>
           <line x1="190" y1="42" x2="190" y2="60" stroke="#64748b" stroke-width="1"/>
-          <!-- 2 Ray đối trọng & bracket tường sau -->
+          <!-- Ray đối trọng T50/T75 -->
           <polygon points="76,51 80,47 80,55" fill="#d97706"/>
           <polygon points="214,51 210,47 210,55" fill="#d97706"/>
-          <text x="145" y="54" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">ĐỐI TRỌNG (CWT)</text>
+          <text x="145" y="54" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">ĐỐI TRỌNG (CWT T50/T75)</text>
 
           <!-- CABIN THANG MÁY (Wcar x Dcar) -->
           <rect x="65" y="70" width="160" height="105" rx="3" fill="#f0f9ff" stroke="#0284c7" stroke-width="1.8"/>
-          <!-- Vách trong cabin -->
           <rect x="70" y="75" width="150" height="95" fill="#ffffff" stroke="#38bdf8" stroke-width="1"/>
 
-          <!-- Cửa Cabin tự động 2 cánh mở tim -->
+          <!-- Cửa Cabin & Cửa Tầng -->
           <rect x="95" y="165" width="50" height="6" fill="#0284c7" stroke="#0f172a" stroke-width="0.8"/>
           <rect x="145" y="165" width="50" height="6" fill="#0284c7" stroke="#0f172a" stroke-width="0.8"/>
-          <!-- Cửa Tầng tương ứng -->
           <rect x="95" y="175" width="50" height="6" fill="#64748b" stroke="#0f172a" stroke-width="0.8"/>
           <rect x="145" y="175" width="50" height="6" fill="#64748b" stroke="#0f172a" stroke-width="0.8"/>
 
-          <!-- Trụ tường cửa 2 bên (400mm) -->
+          <!-- Trụ tường 2 bên (400) -->
           <rect x="35" y="180" width="45" height="15" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
           <rect x="210" y="180" width="45" height="15" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- Hộp nút bấm LOP ở góc phải cửa -->
+          <!-- Hộp nút bấm LOP góc phải -->
           <rect x="202" y="182" width="6" height="10" fill="#1e293b" stroke="#fbbf24" stroke-width="0.8"/>
 
           <!-- Thông số Cabin Wcar x Dcar -->
@@ -562,25 +587,13 @@
             ${specs.cap} KG - ${specs.persons} NGƯỜI
           </text>
 
-          <!-- Thước kích thước Cửa CO = 800 -->
-          <line x1="95" y1="195" x2="195" y2="195" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="145" y="205" fill="#dc2626" font-size="8" font-weight="900" text-anchor="middle">
-            CO = ${specs.CO} mm
-          </text>
+          <!-- Thước Cửa CO = 800 -->
+          ${cadDimH(95, 195, 198, "CO = " + specs.CO + " mm", "#dc2626")}
 
-          <!-- Thước kích thước lọt lòng HW & HD -->
-          <!-- Ngang W -->
-          <line x1="35" y1="222" x2="255" y2="222" stroke="#0f172a" stroke-width="1"/>
-          <text x="145" y="233" fill="#0f172a" font-size="8.5" font-weight="900" text-anchor="middle">
-            HW = ${specs.W} mm (${halfW} + ${halfW})
-          </text>
+          <!-- Thước lọt lòng HW & HD -->
+          ${cadDimH(35, 255, 224, "HW = " + specs.W + " mm (" + halfW + "+" + halfW + ")", "#0f172a")}
+          ${cadDimV(275, 35, 195, "HD = " + specs.D + " mm", "#0f172a")}
 
-          <!-- Dọc D -->
-          <text x="275" y="118" fill="#0f172a" font-size="8.5" font-weight="900" transform="rotate(90, 275, 118)" text-anchor="middle">
-            HD = ${specs.D} mm
-          </text>
-
-          <!-- Mũi tên hướng cửa -->
           <path d="M 145 240 L 140 248 L 150 248 Z" fill="#0f172a"/>
           <text x="145" y="258" fill="#0f172a" font-size="8" font-weight="bold" text-anchor="middle">HƯỚNG CỬA THANG MÁY</text>
         </g>
@@ -589,75 +602,52 @@
   }
 
   // ==========================================================================================
-  // BẢN VẼ 5: MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ THANG (TUM KT / PHÒNG MÁY)
-  // Gồm: Kích thước lọt lòng HWxHD, tường 110mm 4 mặt, cửa tum R800xC1000, dây nguồn Áttomát 3PHA 40A, móc H
+  // CHI TIẾT 05: MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ THANG (TUM KT / PHÒNG MÁY)
   // ==========================================================================================
-  function renderDrawing5_MachineBeamsPlan(specs, isStandalone) {
-    var halfW = Math.round(specs.W / 2);
-    var halfD = Math.round(specs.D / 2);
-
+  function renderDrawing5_MachineBeamsPlan(specs) {
     return `
       <g id="drawing5_machineBeamsPlan" class="cad-drawing">
-        <!-- TIÊU ĐỀ: MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ THANG -->
-        <text x="190" y="18" fill="#0f172a" font-size="11" font-weight="900" text-anchor="middle" text-decoration="underline">
-          5. MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ THANG
-        </text>
+        ${cadTitleBubble(15, 10, "05", "MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ", "1/25")}
 
-        <g transform="translate(45, 28)">
-          <!-- Xây tường 110 cả 04 mặt hố thang -->
+        <g transform="translate(35, 45)">
           <text x="25" y="12" fill="#d97706" font-size="7.5" font-weight="bold">Xây tường 110 cả 04 mặt hố thang</text>
-          <text x="190" y="12" fill="#d97706" font-size="7.5" font-weight="bold">Xây tường 110 cả 04 mặt hố thang</text>
+          <text x="175" y="12" fill="#d97706" font-size="7.5" font-weight="bold">Xây tường 110 cả 04 mặt hố thang</text>
 
-          <!-- Tường bao 110mm & Cột bê tông 220 góc -->
+          <!-- Tường 110 & Cột bê tông 220 góc -->
           <rect x="25" y="20" width="240" height="190" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1.2"/>
           <rect x="37" y="32" width="216" height="166" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
 
-          <!-- 4 Cột bê tông góc 220x220 -->
+          <!-- 4 Cột bê tông góc -->
           <rect x="25" y="20" width="18" height="18" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
           <rect x="247" y="20" width="18" height="18" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
           <rect x="25" y="192" width="18" height="18" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
           <rect x="247" y="192" width="18" height="18" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
 
           <!-- Trục tim CL -->
-          <line x1="145" y1="15" x2="145" y2="205" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
-          <line x1="20" y1="115" x2="265" y2="115" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="6,2"/>
+          <line x1="145" y1="15" x2="145" y2="205" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
+          <line x1="20" y1="115" x2="265" y2="115" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="8,2,2,2"/>
 
-          <!-- Tâm móc treo 'H' tại tim trục -->
-          <circle cx="145" cy="115" r="4" fill="#dc2626"/>
-          <line x1="145" y1="115" x2="185" y2="135" stroke="#dc2626" stroke-width="1"/>
-          <line x1="185" y1="135" x2="215" y2="135" stroke="#dc2626" stroke-width="1"/>
-          <text x="220" y="138" fill="#dc2626" font-size="9" font-weight="900">'H' (MÓC TREO)</text>
+          <!-- Tâm móc treo 'H' -->
+          <circle cx="145" cy="115" r="4.5" fill="#dc2626"/>
+          ${cadLeader(145, 115, 185, 135, 235, "TÂM MÓC TREO 'H'", "#dc2626")}
 
-          <!-- Cửa vào phòng máy / tum KT: R800 x C1000 (Khách hàng thực hiện) -->
+          <!-- Cửa vào tum R800 x C1000 (KH Thực hiện) -->
           <rect x="135" y="192" width="70" height="18" fill="#ffffff" stroke="#ffffff"/>
           <line x1="135" y1="192" x2="135" y2="210" stroke="#0f172a" stroke-width="1"/>
           <line x1="205" y1="192" x2="205" y2="210" stroke="#0f172a" stroke-width="1"/>
-          <!-- Cánh cửa mở tum -->
           <line x1="135" y1="210" x2="185" y2="225" stroke="#0f172a" stroke-width="1.2"/>
           <path d="M 185 225 A 50 50 0 0 0 205 210" fill="none" stroke="#64748b" stroke-dasharray="2,2"/>
           
-          <line x1="170" y1="220" x2="210" y2="245" stroke="#d97706" stroke-width="0.8"/>
-          <text x="215" y="248" fill="#d97706" font-size="6.8" font-weight="bold">
-            CỬA VÀO PHÒNG MÁY R800 x C1000 (KH THỰC HIỆN)
-          </text>
+          ${cadLeader(170, 220, 210, 245, 335, "CỬA TUM R800xC1000 (KH THỰC HIỆN)", "#d97706")}
 
-          <!-- Dây điện nguồn & Áttomát 3PHA - 40A trên tum kỹ thuật -->
+          <!-- Dây nguồn & Áttomát 3PHA 40A -->
           <rect x="38" y="175" width="14" height="14" fill="#fef08a" stroke="#ca8a04" stroke-width="1"/>
           <line x1="38" y1="175" x2="52" y2="189" stroke="#ca8a04"/>
-          <line x1="45" y1="189" x2="25" y2="235" stroke="#0f172a" stroke-width="0.8"/>
-          <text x="15" y="245" fill="#0f172a" font-size="7" font-weight="bold">
-            DÂY NGUỒN & CB 3PHA - 40A TRÊN TUM KT (KH THỰC HIỆN)
-          </text>
+          ${cadLeader(45, 185, 20, 235, -20, "DÂY NGUỒN & CB 3PHA-40A (KH THỰC HIỆN)", "#0f172a")}
 
-          <!-- Thước đo HW & HD -->
-          <text x="145" y="218" fill="#0f172a" font-size="8" font-weight="bold" text-anchor="middle">
-            HW = ${specs.W} mm
-          </text>
-          <text x="270" y="118" fill="#0f172a" font-size="8" font-weight="bold" transform="rotate(90, 270, 118)" text-anchor="middle">
-            HD = ${specs.D} mm
-          </text>
+          ${cadDimH(37, 253, 218, "HW = " + specs.W + " mm", "#0f172a")}
+          ${cadDimV(270, 32, 198, "HD = " + specs.D + " mm", "#0f172a")}
 
-          <!-- Mũi tên hướng cửa -->
           <path d="M 145 255 L 140 262 L 150 262 Z" fill="#0f172a"/>
           <text x="145" y="270" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">HƯỚNG CỬA THANG MÁY</text>
         </g>
@@ -666,126 +656,95 @@
   }
 
   // ==========================================================================================
-  // BẢN VẼ 6: MẶT CẮT ĐỨNG HỐ THANG (CẮT DỌC TỔNG THỂ TỪ PIT LÊN TUM KT)
-  // Gồm: PIT 1400, lót đáy 300, các tầng 1F-3F, lanh tô 200x200, dầm giằng H/2 <= 1800, Tum OH=4500, móc H phi 20
+  // CHI TIẾT 06: MẶT CẮT ĐỨNG HỐ THANG TỔNG THỂ (PIT -> CÁC TẦNG -> TUM OH)
   // ==========================================================================================
-  function renderDrawing6_VerticalSection(specs, isStandalone) {
+  function renderDrawing6_VerticalSection(specs) {
     return `
       <g id="drawing6_verticalSection" class="cad-drawing">
-        <!-- TIÊU ĐỀ: MẶT CẮT ĐỨNG HỐ THANG -->
-        <text x="190" y="18" fill="#0f172a" font-size="11" font-weight="900" text-anchor="middle" text-decoration="underline">
-          6. MẶT CẮT ĐỨNG HỐ THANG (VERTICAL SHAFT SECTION)
-        </text>
+        ${cadTitleBubble(15, 10, "06", "MẶT CẮT ĐỨNG GIẾNG THANG (SHAFT SECTION)", "1/50")}
 
-        <g transform="translate(60, 28)">
-          <!-- Cột/vách giếng thang trái (phía cửa) và phải (phía sau) -->
-          <!-- Trục cột trái -->
+        <g transform="translate(65, 40)">
+          <!-- Cột/vách giếng trái và phải -->
           <rect x="40" y="40" width="18" height="240" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1.2"/>
-          <!-- Trục cột phải -->
           <rect x="180" y="40" width="18" height="240" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1.2"/>
 
-          <!-- ĐÁY HỐ PIT (Sàn bê tông cốt thép dày 300mm chống thấm) -->
+          <!-- ĐÁY HỐ PIT (Sàn BTCT 300mm chống thấm) -->
           <rect x="25" y="280" width="185" height="22" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.5"/>
           <text x="115" y="295" fill="#0f172a" font-size="7.5" font-weight="bold" text-anchor="middle">
             ĐÁY PIT BTCT CHỐNG THẤM (DÀY 300mm)
           </text>
 
-          <!-- Giảm chấn buffer đáy PIT -->
+          <!-- Giảm chấn buffer -->
           <rect x="90" y="265" width="18" height="15" fill="#ea580c" stroke="#0f172a" stroke-width="1"/>
           <rect x="135" y="265" width="14" height="15" fill="#ea580c" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- TẦNG 1F (Sàn FFL 1F) -->
+          <!-- CỐT SÀN TẦNG 1F -->
           <rect x="15" y="240" width="43" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <line x1="10" y1="240" x2="60" y2="240" stroke="#0f172a" stroke-width="1.5"/>
-          <text x="25" y="235" fill="#0f172a" font-size="7" font-weight="bold">1F</text>
-          <!-- Cửa vào tầng 1F cao 2400 -->
+          ${cadLevelMark(25, 240, "1F")}
           <text x="75" y="225" fill="#0f172a" font-size="7" font-weight="bold">CỬA VÀO 1F</text>
           <!-- Lanh tô BTCT 200x200 tầng 1F -->
           <rect x="40" y="195" width="18" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
 
-          <!-- DẦM GIẰNG BTCT GIỮA TẦNG (H/2 <= 1800mm, đổ 3 mặt hố) -->
+          <!-- DẦM GIẰNG BTCT GIỮA CÁC TẦNG (H/2 <= 1800, đổ 3 mặt hố) -->
           <rect x="180" y="215" width="18" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
           <rect x="180" y="150" width="18" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
           <rect x="180" y="85" width="18" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
 
           <!-- TẦNG 2F & 3F -->
           <rect x="15" y="175" width="43" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <text x="25" y="170" fill="#0f172a" font-size="7" font-weight="bold">2F</text>
+          ${cadLevelMark(25, 175, "2F")}
           <rect x="40" y="130" width="18" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
 
           <rect x="15" y="110" width="43" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
-          <text x="25" y="105" fill="#0f172a" font-size="7" font-weight="bold">3F</text>
+          ${cadLevelMark(25, 110, "3F")}
           <rect x="40" y="65" width="18" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
 
           <!-- Cabin đang đỗ tầng trên cùng -->
           <rect x="75" y="65" width="85" height="75" fill="#f8fafc" stroke="#0284c7" stroke-width="1.5"/>
           <text x="117" y="105" fill="#0284c7" font-size="8" font-weight="bold" text-anchor="middle">CABIN</text>
           
-          <!-- Khung đối trọng phía sau -->
+          <!-- Khung đối trọng -->
           <rect x="165" y="130" width="12" height="50" fill="#475569" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- TUM KỸ THUẬT / PHÒNG MÁY TRÊN CÙNG -->
-          <!-- Dầm bệ máy I200 -->
+          <!-- TUM KỸ THUẬT: Dầm bệ máy I200 & Động cơ Fuji -->
           <rect x="40" y="38" width="158" height="10" fill="#334155" stroke="#0f172a" stroke-width="1"/>
-          <!-- Động cơ máy kéo Fuji PMSM -->
           <rect x="90" y="18" width="35" height="20" fill="#0284c7" stroke="#0f172a" stroke-width="1"/>
           <circle cx="125" cy="28" r="10" fill="#0f2766" stroke="#fbbf24" stroke-width="1.2"/>
 
-          <!-- Sàn mái tum & MÓC TREO PA-LĂNG (CHI TIẾT 'H') -->
+          <!-- Sàn mái tum & MÓC TREO PA-LĂNG 'H' -->
           <rect x="40" y="0" width="158" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
-          <!-- Móc cong thép phi 20 -->
           <path d="M 125 14 L 125 24 A 5 5 0 1 1 115 24" fill="none" stroke="#dc2626" stroke-width="2.5"/>
 
-          <!-- Ghi chú móc 'H' phóng to -->
-          <line x1="125" y1="8" x2="160" y2="-10" stroke="#dc2626" stroke-width="0.8"/>
-          <line x1="160" y1="-10" x2="210" y2="-10" stroke="#dc2626" stroke-width="0.8"/>
-          <text x="215" y="-7" fill="#dc2626" font-size="8" font-weight="bold">CHI TIẾT 'H' (Thép gai ∅20)</text>
-
-          <!-- Khung phóng to chi tiết 'H' góc phải -->
-          <g transform="translate(195, 10)">
+          <!-- Khung phóng to chi tiết 'H' -->
+          <g transform="translate(195, 5)">
             <rect x="0" y="0" width="85" height="42" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
             <rect x="5" y="8" width="75" height="12" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="0.8"/>
             <path d="M 42 12 L 42 28 A 6 6 0 1 1 30 28" fill="none" stroke="#dc2626" stroke-width="2.5"/>
             <text x="42" y="6" fill="#0f172a" font-size="6.5" font-weight="bold" text-anchor="middle">Thép gai ∅20</text>
-            <text x="42" y="38" fill="#dc2626" font-size="6.5" font-weight="900" text-anchor="middle">CHI TIẾT 'H'</text>
+            <text x="42" y="38" fill="#dc2626" font-size="6.5" font-weight="900" text-anchor="middle">CHI TIẾT 'H' (2.0 TẤN)</text>
           </g>
 
-          <!-- Thước đo dọc giếng: PIT & OH -->
-          <!-- PIT -->
-          <line x1="10" y1="240" x2="10" y2="280" stroke="#dc2626" stroke-width="1"/>
-          <text x="5" y="263" fill="#dc2626" font-size="8" font-weight="900" text-anchor="end">PIT = ${specs.Pit}</text>
+          <!-- Thước dọc PIT & OH -->
+          ${cadDimV(10, 240, 280, "PIT=" + specs.Pit, "#dc2626")}
+          ${cadDimV(10, 0, 110, "OH=" + specs.Oh, "#dc2626")}
 
-          <!-- OH -->
-          <line x1="10" y1="0" x2="10" y2="110" stroke="#dc2626" stroke-width="1"/>
-          <text x="5" y="55" fill="#dc2626" font-size="8" font-weight="900" text-anchor="end">OH = ${specs.Oh}</text>
-
-          <!-- Ghi chú dầm giằng BTCT 3 mặt -->
-          <text x="200" y="180" fill="#475569" font-size="6.5" font-weight="bold">
-            Dầm BTCT giữa các tầng
-          </text>
-          <text x="200" y="190" fill="#475569" font-size="6" font-weight="bold">
-            Đổ 3 mặt hố (khoảng cách ≤ 1.8m)
-          </text>
+          <text x="200" y="180" fill="#475569" font-size="6.5" font-weight="bold">Dầm BTCT giữa các tầng</text>
+          <text x="200" y="190" fill="#475569" font-size="6" font-weight="bold">Đổ 3 mặt hố (khoảng cách ≤ 1.8m)</text>
         </g>
       </g>
     `;
   }
 
   // ==========================================================================================
-  // BẢN VẼ 7: MẶT CẮT ĐỈNH TUM KT / PHÒNG MÁY PHÓNG TO
-  // Gồm: Chi tiết đỉnh tum, máy kéo, móc treo H, cửa vào tum R800xC1000, chiều cao tum 1300, đỉnh cabin
+  // CHI TIẾT 07: MẶT CẮT ĐỈNH TUM KT / PHÒNG MÁY PHÓNG TO
   // ==========================================================================================
-  function renderDrawing7_MachineRoomDetail(specs, isStandalone) {
+  function renderDrawing7_MachineRoomDetail(specs) {
     return `
       <g id="drawing7_machineRoomDetail" class="cad-drawing">
-        <!-- TIÊU ĐỀ: MẶT CẮT ĐỈNH TUM KT -->
-        <text x="180" y="18" fill="#0f172a" font-size="11" font-weight="900" text-anchor="middle" text-decoration="underline">
-          7. MẶT CẮT ĐỈNH TUM KT (MACHINE ROOM SECTION)
-        </text>
+        ${cadTitleBubble(15, 10, "07", "MẶT CẮT ĐỈNH TUM KT PHÓNG TO", "1/20")}
 
-        <g transform="translate(40, 30)">
-          <!-- Khung tum kỹ thuật (chiều cao tum 1300mm) -->
-          <!-- Tường xây 110mm cả 04 mặt -->
+        <g transform="translate(40, 45)">
+          <!-- Khung tum kỹ thuật (cao 1300mm) -->
           <rect x="25" y="0" width="235" height="12" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1.2"/>
           <rect x="25" y="12" width="16" height="75" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
           <rect x="244" y="12" width="16" height="75" fill="url(#cadBrick)" stroke="#0f172a" stroke-width="1"/>
@@ -802,11 +761,11 @@
             CỬA VÀO TUM R800 x C1000
           </text>
 
-          <!-- Dầm thép bệ đỡ máy kéo I200 đặt trên dầm bê tông -->
+          <!-- Dầm thép bệ đỡ máy kéo I200 -->
           <rect x="41" y="80" width="203" height="12" fill="#334155" stroke="#0f172a" stroke-width="1.2"/>
           <text x="95" y="90" fill="#ffffff" font-size="7" font-weight="bold">DẦM THÉP ĐỠ MÁY I200</text>
 
-          <!-- Máy kéo Fuji PMSM không hộp số & Puly kéo -->
+          <!-- Động cơ máy kéo Fuji PMSM không hộp số & Puly kéo -->
           <rect x="125" y="45" width="45" height="35" rx="3" fill="#0284c7" stroke="#0f172a" stroke-width="1.2"/>
           <circle cx="160" cy="62" r="16" fill="#0f2766" stroke="#fbbf24" stroke-width="1.5"/>
           <circle cx="160" cy="62" r="6" fill="#fbbf24"/>
@@ -816,9 +775,8 @@
           <line x1="150" y1="62" x2="150" y2="135" stroke="#475569" stroke-width="2"/>
           <line x1="170" y1="62" x2="170" y2="185" stroke="#475569" stroke-width="1.5"/>
 
-          <!-- Đỉnh Cabin (Car Roof) & Puly nóc Cabin -->
+          <!-- Đỉnh Cabin & Lan can an toàn nóc -->
           <rect x="75" y="135" width="115" height="90" fill="#f8fafc" stroke="#0284c7" stroke-width="1.5"/>
-          <!-- Khung an toàn nóc cabin (balustrade) -->
           <rect x="78" y="115" width="109" height="20" fill="none" stroke="#ea580c" stroke-width="1.2" stroke-dasharray="4,2"/>
           <text x="132" y="128" fill="#ea580c" font-size="6.5" font-weight="bold" text-anchor="middle">LAN CAN AN TOÀN NÓC</text>
           
@@ -828,90 +786,86 @@
           <rect x="200" y="125" width="16" height="70" fill="#475569" stroke="#0f172a" stroke-width="1.2"/>
           <text x="208" y="165" fill="#ffffff" font-size="7" font-weight="bold" transform="rotate(90, 208, 165)" text-anchor="middle">ĐỐI TRỌNG</text>
 
-          <!-- Cửa vào tầng trên cùng (3F) -->
+          <!-- Cửa vào tầng trên cùng -->
           <rect x="15" y="135" width="26" height="14" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
           <text x="18" y="130" fill="#0f172a" font-size="7" font-weight="bold">3F</text>
 
-          <!-- Thước đo Tum: OH = 4500 (hoặc 4600mm) -->
-          <line x1="5" y1="0" x2="5" y2="135" stroke="#dc2626" stroke-width="1"/>
-          <text x="0" y="70" fill="#dc2626" font-size="8.5" font-weight="900" text-anchor="end">
-            OH = ${specs.Oh} mm
-          </text>
+          ${cadDimV(5, 0, 135, "OH = " + specs.Oh + " mm", "#dc2626")}
         </g>
       </g>
     `;
   }
 
   // ==========================================================================================
-  // KHU VỰC THÔNG SỐ KỸ THUẬT, PHẢN LỰC KẾT CẤU & YÊU CẦU NGHIỆM THU
+  // BẢNG PHẢN LỰC KẾT CẤU & YÊU CẦU KỸ THUẬT XÂY DỰNG NGHIỆM THU
   // ==========================================================================================
   function renderSpecsAndReactions(specs) {
     return `
       <g id="specsAndReactionsSection">
-        <!-- BẢNG PHẢN LỰC TÁC ĐỘNG KẾT CẤU (R1 - R4) -->
+        <!-- BẢNG PHẢN LỰC TÁC ĐỘNG HỐ THANG (R1 - R4) -->
         <g id="reactionForcesTable" transform="translate(0, 0)">
-          <rect x="0" y="0" width="360" height="20" fill="#0f172a" rx="3"/>
-          <text x="180" y="14" fill="#fbbf24" font-size="9.5" font-weight="900" text-anchor="middle">
+          <rect x="0" y="0" width="370" height="22" fill="#0f172a" rx="3"/>
+          <text x="185" y="15" fill="#fbbf24" font-size="10" font-weight="900" text-anchor="middle">
             BẢNG TÍNH LỰC TÁC ĐỘNG HỐ THANG (REACTIONS)
           </text>
 
-          <g transform="translate(0, 24)" font-size="8">
+          <g transform="translate(0, 26)" font-size="8.5">
             <!-- R1 -->
-            <rect x="0" y="0" width="110" height="20" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="55" y="13" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R1 (Đáy ray Cabin)</text>
-            <rect x="110" y="0" width="250" height="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="120" y="13" fill="#0f172a" font-weight="900">R1 = ${specs.R1} kN</text>
-            <text x="195" y="13" fill="#64748b" font-size="7.5">(Tác động đáy hố PIT khi phanh gấp)</text>
+            <rect x="0" y="0" width="115" height="22" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="57" y="15" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R1 (Đáy ray Cabin)</text>
+            <rect x="115" y="0" width="255" height="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="125" y="15" fill="#0f172a" font-weight="900">R1 = ${specs.R1} kN</text>
+            <text x="205" y="15" fill="#64748b" font-size="7.5">(Tác động đáy hố PIT khi phanh gấp)</text>
 
             <!-- R2 -->
-            <rect x="0" y="20" width="110" height="20" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="55" y="33" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R2 (Đáy ray Tạ)</text>
-            <rect x="110" y="20" width="250" height="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="120" y="33" fill="#0f172a" font-weight="900">R2 = ${specs.R2} kN</text>
-            <text x="195" y="33" fill="#64748b" font-size="7.5">(Tác động đáy PIT khi đối trọng chạm đệm)</text>
+            <rect x="0" y="22" width="115" height="22" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="57" y="37" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R2 (Đáy ray Tạ)</text>
+            <rect x="115" y="22" width="255" height="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="125" y="37" fill="#0f172a" font-weight="900">R2 = ${specs.R2} kN</text>
+            <text x="205" y="37" fill="#64748b" font-size="7.5">(Tác động đáy PIT khi đối trọng chạm đệm)</text>
 
             <!-- R3 -->
-            <rect x="0" y="40" width="110" height="20" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="55" y="53" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R3 (Bệ máy kéo)</text>
-            <rect x="110" y="40" width="250" height="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="120" y="53" fill="#0f172a" font-weight="900">R3 = ${specs.R3} kN</text>
-            <text x="195" y="53" fill="#64748b" font-size="7.5">(Tải trọng động lên dầm chịu lực bệ máy)</text>
+            <rect x="0" y="44" width="115" height="22" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="57" y="59" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R3 (Bệ máy kéo)</text>
+            <rect x="115" y="44" width="255" height="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="125" y="59" fill="#0f172a" font-weight="900">R3 = ${specs.R3} kN</text>
+            <text x="205" y="59" fill="#64748b" font-size="7.5">(Tải trọng động lên dầm chịu lực bệ máy)</text>
 
             <!-- R4 -->
-            <rect x="0" y="60" width="110" height="20" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="55" y="73" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R4 (Móc Pa-lăng)</text>
-            <rect x="110" y="60" width="250" height="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
-            <text x="120" y="73" fill="#dc2626" font-weight="900">R4 = ${specs.R4} kN</text>
-            <text x="195" y="73" fill="#dc2626" font-size="7.5">(Tải trọng kiểm định móc tum: 2.0 Tấn)</text>
+            <rect x="0" y="66" width="115" height="22" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="57" y="81" fill="#0f172a" font-weight="bold" text-anchor="middle">LỰC R4 (Móc Pa-lăng)</text>
+            <rect x="115" y="66" width="255" height="22" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.7"/>
+            <text x="125" y="81" fill="#dc2626" font-weight="900">R4 = ${specs.R4} kN</text>
+            <text x="205" y="81" fill="#dc2626" font-size="7.5">(Tải trọng kiểm định móc tum: 2.0 Tấn)</text>
           </g>
         </g>
 
-        <!-- 6 YÊU CẦU KỸ THUẬT XÂY DỰNG & NGHIỆM THU (CIVIL NOTES) -->
-        <g id="civilNotesBlock" transform="translate(0, 115)">
-          <rect x="0" y="0" width="360" height="18" fill="#0f172a" rx="3"/>
-          <text x="180" y="13" fill="#fbbf24" font-size="8.5" font-weight="900" text-anchor="middle">
+        <!-- 6 YÊU CẦU KỸ THUẬT XÂY DỰNG & NGHIỆM THU -->
+        <g id="civilNotesBlock" transform="translate(0, 125)">
+          <rect x="0" y="0" width="370" height="20" fill="#0f172a" rx="3"/>
+          <text x="185" y="14" fill="#fbbf24" font-size="9" font-weight="900" text-anchor="middle">
             YÊU CẦU KỸ THUẬT XÂY DỰNG & NGHIỆM THU HỐ THANG
           </text>
 
-          <rect x="0" y="22" width="360" height="115" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8" rx="3"/>
-          <g transform="translate(8, 34)" font-size="7.5">
+          <rect x="0" y="24" width="370" height="120" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8" rx="3"/>
+          <g transform="translate(10, 36)" font-size="8">
             <text x="0" y="0" fill="#0f172a" font-weight="bold">1. Sai lệch hố:</text>
-            <text x="55" y="0" fill="#334155">Độ thẳng đứng giếng thang không lệch quá ±10mm toàn bộ chiều cao.</text>
+            <text x="65" y="0" fill="#334155">Độ thẳng đứng giếng thang không lệch quá ±10mm toàn bộ chiều cao.</text>
 
-            <text x="0" y="14" fill="#0f172a" font-weight="bold">2. Dầm giằng:</text>
-            <text x="55" y="14" fill="#334155">Đổ đà giằng BTCT 200x200 ở 3 mặt hố, khoảng cách liên tiếp ≤ 1800mm.</text>
+            <text x="0" y="15" fill="#0f172a" font-weight="bold">2. Dầm giằng:</text>
+            <text x="65" y="15" fill="#334155">Đổ đà giằng BTCT 200x200 ở 3 mặt hố, khoảng cách liên tiếp ≤ 1800mm.</text>
 
-            <text x="0" y="28" fill="#0f172a" font-weight="bold">3. Lanh-tô cửa:</text>
-            <text x="55" y="28" fill="#334155">Đổ dầm BTCT cao 2250mm từ cốt hoàn thiện để gắn ray treo cửa tầng.</text>
+            <text x="0" y="30" fill="#0f172a" font-weight="bold">3. Lanh-tô cửa:</text>
+            <text x="65" y="30" fill="#334155">Đổ dầm BTCT cao 2250mm từ cốt hoàn thiện để gắn ray treo cửa tầng.</text>
 
-            <text x="0" y="42" fill="#0f172a" font-weight="bold">4. Chống thấm:</text>
-            <text x="55" y="42" fill="#dc2626" font-weight="bold">Đáy và vách PIT dâng cao 1000mm phải chống thấm tuyệt đối không ngấm nước.</text>
+            <text x="0" y="45" fill="#0f172a" font-weight="bold">4. Chống thấm:</text>
+            <text x="65" y="45" fill="#dc2626" font-weight="bold">Đáy và vách PIT dâng cao 1000mm phải chống thấm tuyệt đối không ngấm nước.</text>
 
-            <text x="0" y="56" fill="#0f172a" font-weight="bold">5. Điện nguồn:</text>
-            <text x="55" y="56" fill="#334155">Kéo điện nguồn 3 pha 380V (hoặc 1 pha 220V) + tiếp địa độc lập R ≤ 4Ω.</text>
+            <text x="0" y="60" fill="#0f172a" font-weight="bold">5. Điện nguồn:</text>
+            <text x="65" y="60" fill="#334155">Kéo điện nguồn 3 pha 380V (hoặc 1 pha 220V) + tiếp địa độc lập R ≤ 4Ω.</text>
 
-            <text x="0" y="70" fill="#0f172a" font-weight="bold">6. Thông gió tum:</text>
-            <text x="55" y="70" fill="#334155">Cửa thông gió/quạt hút đạt tối thiểu 1% diện tích mặt bằng để tản nhiệt máy.</text>
+            <text x="0" y="75" fill="#0f172a" font-weight="bold">6. Thông gió tum:</text>
+            <text x="65" y="75" fill="#334155">Cửa thông gió/quạt hút đạt tối thiểu 1% diện tích mặt bằng để tản nhiệt máy.</text>
           </g>
         </g>
       </g>
@@ -919,105 +873,98 @@
   }
 
   // ==========================================================================================
-  // MASTER SVG: BẢN VẼ TỔNG HỢP KHỔ A3 (CHUẨN 07 MẶT CẮT KỸ THUẬT TRÊN CÙNG 1 KHUNG BẢN VẼ)
+  // MASTER BẢN VẼ A3 TỔNG HỢP (ĐẦY ĐỦ 07 MẶT CẮT KỸ THUẬT + KHUNG TÊN A3 CHUẨN KỸ SƯ)
   // ==========================================================================================
   function generateMasterShopDrawingSvgA3(specs) {
     return `
-      <svg id="shopDrawingMainSvg" viewBox="0 0 1600 1100" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" class="bg-white font-sans text-slate-900 select-none">
+      <svg id="shopDrawingMainSvg" viewBox="0 0 1600 1130" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" class="bg-white select-none" style="font-family: 'Roboto', Arial, 'Segoe UI', sans-serif !important;">
         ${getCadDefs()}
 
-        <!-- NỀN TRẮNG & LƯỚI TỌA ĐỘ BẢN VẼ -->
-        <rect x="0" y="0" width="1600" height="1100" fill="#ffffff"/>
+        <!-- NỀN TRẮNG BẢN VẼ -->
+        <rect x="0" y="0" width="1600" height="1130" fill="#ffffff"/>
 
-        <!-- KHUNG VIỀN BẢN VẼ A3 CHUẨN XÂY DỰNG -->
-        <rect x="15" y="15" width="1570" height="1070" fill="none" stroke="#0f172a" stroke-width="3"/>
-        <rect x="20" y="20" width="1560" height="1060" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+        <!-- KHUNG VIỀN NGOÀI BẢN VẼ A3 CHUẨN XÂY DỰNG -->
+        <rect x="15" y="15" width="1570" height="1100" fill="none" stroke="#0f172a" stroke-width="3"/>
+        <rect x="20" y="20" width="1560" height="1090" fill="none" stroke="#0f172a" stroke-width="1.2"/>
 
         <!-- BANNER HEADER CHÍNH -->
         <g id="headerBanner" transform="translate(20, 20)">
-          <rect x="0" y="0" width="1560" height="50" fill="#0f2766" stroke="#0f172a" stroke-width="1"/>
-          <text x="30" y="32" fill="#fbbf24" font-size="16" font-weight="900" letter-spacing="1">
+          <rect x="0" y="0" width="1560" height="48" fill="#0f2766" stroke="#0f172a" stroke-width="1"/>
+          <text x="30" y="30" fill="#fbbf24" font-size="16" font-weight="900" letter-spacing="1">
             SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
           </text>
-          <text x="460" y="32" fill="#93c5fd" font-size="11" font-weight="700">
+          <text x="470" y="30" fill="#93c5fd" font-size="11" font-weight="700">
             HỒ SƠ BẢN VẼ SHOP DRAWING THIẾT KẾ THI CÔNG HỐ THANG BÊ TÔNG CỐT THÉP (07 MẶT CẮT TIÊU CHUẨN)
           </text>
-          <text x="1330" y="32" fill="#fbbf24" font-size="11" font-weight="900">
+          <text x="1330" y="30" fill="#fbbf24" font-size="11" font-weight="900">
             HOTLINE: 0914.587.575
           </text>
         </g>
 
-        <!-- HÀNG TRÊN: BẢN VẼ 1 + BẢN VẼ 2 + BẢN VẼ 3 + BẢN VẼ 4 -->
-        <!-- 1. Mặt bằng hố thang (Typical & Floor) -->
-        <g transform="translate(30, 80)">
-          <rect x="0" y="0" width="370" height="240" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing1_HoistwayPlan(specs, false)}
+        <!-- HÀNG 1: BẢN VẼ 01 + BẢN VẼ 02 + BẢN VẼ 03 + BẢN VẼ 04 -->
+        <g transform="translate(30, 78)">
+          <rect x="0" y="0" width="370" height="245" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing1_HoistwayPlan(specs)}
         </g>
 
-        <!-- 2. Chờ thô cửa tầng -->
-        <g transform="translate(415, 80)">
-          <rect x="0" y="0" width="370" height="240" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing2_RoughDoorOpening(specs, false)}
+        <g transform="translate(415, 78)">
+          <rect x="0" y="0" width="370" height="245" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing2_RoughDoorOpening(specs)}
         </g>
 
-        <!-- 3. Cửa tầng hoàn thiện -->
-        <g transform="translate(800, 80)">
-          <rect x="0" y="0" width="370" height="240" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing3_FinishedDoor(specs, false)}
+        <g transform="translate(800, 78)">
+          <rect x="0" y="0" width="370" height="245" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing3_FinishedDoor(specs)}
         </g>
 
-        <!-- 4. Mặt bằng lắp thang -->
-        <g transform="translate(1185, 80)">
-          <rect x="0" y="0" width="385" height="280" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing4_ElevatorInstallationPlan(specs, false)}
+        <g transform="translate(1185, 78)">
+          <rect x="0" y="0" width="385" height="285" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing4_ElevatorInstallationPlan(specs)}
         </g>
 
-        <!-- HÀNG DƯỚI: BẢN VẼ 5 + BẢN VẼ 6 + BẢN VẼ 7 + KHUNG TÊN VÀ BẢNG LỰC -->
-        <!-- 5. Mặt bằng dầm đặt máy kéo đỉnh hố thang -->
+        <!-- HÀNG 2: BẢN VẼ 05 + BẢN VẼ 06 + BẢN VẼ 07 + BẢNG PHẢN LỰC -->
         <g transform="translate(30, 335)">
-          <rect x="0" y="0" width="370" height="300" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing5_MachineBeamsPlan(specs, false)}
+          <rect x="0" y="0" width="370" height="305" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing5_MachineBeamsPlan(specs)}
         </g>
 
-        <!-- 6. Mặt cắt đứng hố thang -->
         <g transform="translate(415, 335)">
-          <rect x="0" y="0" width="370" height="340" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing6_VerticalSection(specs, false)}
+          <rect x="0" y="0" width="370" height="345" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing6_VerticalSection(specs)}
         </g>
 
-        <!-- 7. Mặt cắt đỉnh Tum KT phóng to -->
         <g transform="translate(800, 335)">
-          <rect x="0" y="0" width="370" height="340" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
-          ${renderDrawing7_MachineRoomDetail(specs, false)}
+          <rect x="0" y="0" width="370" height="345" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+          ${renderDrawing7_MachineRoomDetail(specs)}
         </g>
 
-        <!-- BẢNG LỰC PHẢN LỰC & QUY CHUẨN XÂY DỰNG -->
+        <!-- BẢNG PHẢN LỰC R1-R4 & YÊU CẦU NGHIỆM THU -->
         <g transform="translate(1185, 375)">
           ${renderSpecsAndReactions(specs)}
         </g>
 
-        <!-- KHUNG TÊN KỸ THUẬT TIÊU CHUẨN A3 (GÓC DƯỚI PHẢI) -->
-        <g transform="translate(1185, 690)">
+        <!-- KHUNG TÊN KỸ THUẬT TIÊU CHUẨN A3 -->
+        <g transform="translate(1185, 695)">
           ${renderCadTitleBlock(specs, "BẢN VẼ TỔNG HỢP 07 MẶT CẮT THI CÔNG HỐ THANG", "STTM-A3-FULL", "A3")}
         </g>
 
-        <!-- THÔNG TIN PHỤ DƯỚI ĐÁY BẢN VẼ -->
+        <!-- HÀNG ĐÁY: BẢNG THÔNG SỐ ĐỒNG BỘ THIẾT BỊ -->
         <g transform="translate(30, 650)">
-          <rect x="0" y="0" width="755" height="190" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8" rx="4"/>
+          <rect x="0" y="0" width="755" height="200" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8" rx="4"/>
           <text x="20" y="24" fill="#0f172a" font-size="11" font-weight="900">
-            HỆ THỐNG THÔNG SỐ ĐỒNG BỘ THIẾT BỊ THANG MÁY:
+            HỆ THỐNG THÔNG SỐ ĐỒNG BỘ THIẾT BỊ THANG MÁY (SPECIFICATIONS):
           </text>
           
-          <g transform="translate(20, 35)" font-size="8.5" fill="#334155">
+          <g transform="translate(20, 36)" font-size="8.5" fill="#334155">
             <text x="0" y="16">• Tải trọng định mức: <tspan font-weight="900" fill="#0f172a">${specs.cap} KG (${specs.persons} người)</tspan></text>
             <text x="260" y="16">• Tốc độ vận hành: <tspan font-weight="900" fill="#0f172a">${specs.speed} m/s (60 m/phút)</tspan></text>
             <text x="510" y="16">• Số điểm dừng: <tspan font-weight="900" fill="#0f172a">${specs.Stops} Stops / ${specs.Stops} Doors</tspan></text>
 
-            <text x="0" y="38">• Kích thước lọt lòng: <tspan font-weight="900" fill="#0f172a">W${specs.W} x D${specs.D} mm</tspan></text>
+            <text x="0" y="38">• Kích thước lọt lòng hố: <tspan font-weight="900" fill="#0f172a">W${specs.W} x D${specs.D} mm</tspan></text>
             <text x="260" y="38">• Kích thước Cabin: <tspan font-weight="900" fill="#0f172a">CW${specs.CW} x CD${specs.CD} x CH${specs.CH} mm</tspan></text>
             <text x="510" y="38">• Cửa tầng / Cabin: <tspan font-weight="900" fill="#0f172a">CO${specs.CO} x DH${specs.DH} mm (Mở tim)</tspan></text>
 
-            <text x="0" y="60">• Chiều sâu PIT: <tspan font-weight="900" fill="#dc2626">${specs.Pit} mm</tspan> (Chống thấm 1.0m)</text>
+            <text x="0" y="60">• Chiều sâu hố PIT: <tspan font-weight="900" fill="#dc2626">${specs.Pit} mm</tspan> (Chống thấm 1.0m)</text>
             <text x="260" y="60">• Chiều cao OH tầng tum: <tspan font-weight="900" fill="#dc2626">${specs.Oh} mm</tspan></text>
             <text x="510" y="60">• Móc cẩu nóc Tum R4: <tspan font-weight="900" fill="#dc2626">2.0 Tấn (∅20 gai)</tspan></text>
 
@@ -1029,7 +976,7 @@
             <text x="260" y="104">• Ray dẫn hướng Đối trọng: <tspan font-weight="900" fill="#0f172a">Ray đặc T50 / T75</tspan></text>
             <text x="510" y="104">• Tiếp địa an toàn: <tspan font-weight="900" fill="#0f172a">Hệ thống cọc tiếp địa R ≤ 4Ω</tspan></text>
 
-            <text x="0" y="128" fill="#dc2626" font-weight="bold">
+            <text x="0" y="130" fill="#dc2626" font-weight="bold">
               LƯU Ý THI CÔNG: Chủ đầu tư và Nhà thầu xây dựng đối chiếu kích thước hố thực tế trước khi đổ dầm sàn và dầm giằng giữ ray.
             </text>
           </g>
@@ -1040,17 +987,16 @@
 
   // ==========================================================================================
   // XUẤT TẬP HỒ SƠ 8 TRANG A4 ĐÓNG QUYỂN (PRINT BOOKLET)
-  // Mỗi trang gồm 1 bản vẽ riêng biệt phóng to sắc nét + Khung tên A4 + Tiêu chuẩn thi công
   // ==========================================================================================
   function generateMultiPageA4Html(specs) {
     var defs = getCadDefs();
 
-    function wrapA4Page(title, drawingNo, contentHtml) {
+    function wrapA4Page(title, drawingNo, contentHtml, pageNum) {
       return `
         <div class="a4-page">
           <div class="a4-header">
             <div class="brand">SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC</div>
-            <div class="sub">HỒ SƠ BẢN VẼ KỸ THUẬT SHOP DRAWING • HOTLINE KỸ SƯ TRƯỞNG: 0914.587.575</div>
+            <div class="sub">HỒ SƠ BẢN VẼ SHOP DRAWING KỸ THUẬT • HOTLINE: 0914.587.575 • TRANG ${pageNum}/8</div>
           </div>
           
           <div class="a4-drawing-content">
@@ -1058,7 +1004,7 @@
           </div>
 
           <div class="a4-footer">
-            <svg viewBox="0 0 360 150" width="360" height="150" class="footer-title-block">
+            <svg viewBox="0 0 370 155" width="370" height="155" class="footer-title-block">
               ${defs}
               ${renderCadTitleBlock(specs, title, drawingNo, "A4")}
             </svg>
@@ -1067,18 +1013,18 @@
       `;
     }
 
-    // Trang 1: Trang bìa & Bảng thông số chung + Bảng lực R1-R4
+    // Trang 1: Trang bìa hồ sơ kỹ thuật & Bảng thông số chung
     var page1Content = `
-      <div style="padding: 20px; font-family: sans-serif; color: #0f172a;">
-        <div style="text-align: center; border-bottom: 2px solid #0f2766; padding-bottom: 15px; margin-bottom: 20px;">
-          <h1 style="color: #0f2766; font-size: 20px; margin: 0 0 5px; font-weight: 900;">SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC</h1>
-          <h2 style="color: #dc2626; font-size: 15px; margin: 0 0 5px; font-weight: 900;">HỒ SƠ THIẾT KẾ THI CÔNG HỐ THANG BÊ TÔNG CỐT THÉP</h2>
-          <p style="color: #64748b; font-size: 11px; margin: 0;">ÁP DỤNG QUY CHUẨN KỸ THUẬT QUỐC GIA QCVN 02:2019/BLĐTBXH</p>
+      <div style="padding: 25px; font-family: 'Roboto', Arial, sans-serif; color: #0f172a;">
+        <div style="text-align: center; border-bottom: 2.5px solid #0f2766; padding-bottom: 16px; margin-bottom: 22px;">
+          <h1 style="color: #0f2766; font-size: 22px; margin: 0 0 6px; font-weight: 900; letter-spacing: 0.5px;">SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC</h1>
+          <h2 style="color: #dc2626; font-size: 16px; margin: 0 0 6px; font-weight: 900;">HỒ SƠ THIẾT KẾ THI CÔNG HỐ THANG BÊ TÔNG CỐT THÉP</h2>
+          <p style="color: #64748b; font-size: 11px; margin: 0; font-weight: 700;">ÁP DỤNG QUY CHUẨN KỸ THUẬT QUỐC GIA QCVN 02:2019/BLĐTBXH & TCVN 6395:2008</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-          <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; font-size: 11px; line-height: 1.8;">
-            <div style="font-weight: 900; color: #0f2766; border-bottom: 1px solid #e2e8f0; margin-bottom: 8px; padding-bottom: 4px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px;">
+          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 14px; font-size: 11.5px; line-height: 1.8;">
+            <div style="font-weight: 900; color: #0f2766; border-bottom: 1.5px solid #e2e8f0; margin-bottom: 10px; padding-bottom: 5px;">
               THÔNG SỐ KỸ THUẬT HỆ THỐNG
             </div>
             <div>• Tải trọng định mức: <strong>${specs.cap} KG (${specs.persons} người)</strong></div>
@@ -1092,23 +1038,23 @@
             <div>• Động cơ: <strong>Fuji / Torin PMSM không hộp số</strong></div>
           </div>
 
-          <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 12px; font-size: 11px; line-height: 1.8;">
-            <div style="font-weight: 900; color: #dc2626; border-bottom: 1px solid #e2e8f0; margin-bottom: 8px; padding-bottom: 4px;">
+          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 14px; font-size: 11.5px; line-height: 1.8;">
+            <div style="font-weight: 900; color: #dc2626; border-bottom: 1.5px solid #e2e8f0; margin-bottom: 10px; padding-bottom: 5px;">
               BẢNG PHẢN LỰC TÁC ĐỘNG KẾT CẤU (KN)
             </div>
             <div>• Lực đáy ray Cabin (R1): <strong style="color:#0f172a;">${specs.R1} kN</strong> (Khi phanh gấp)</div>
             <div>• Lực đáy ray Tạ (R2): <strong style="color:#0f172a;">${specs.R2} kN</strong> (Khi tạ chạm đệm)</div>
             <div>• Lực dầm bệ máy (R3): <strong style="color:#0f172a;">${specs.R3} kN</strong> (Tải trọng động sàn)</div>
             <div>• Móc pa-lăng tum (R4): <strong style="color:#dc2626;">${specs.R4} kN (2.0 Tấn)</strong></div>
-            <div style="margin-top: 10px; font-style: italic; color: #64748b; font-size: 10px;">
+            <div style="margin-top: 12px; font-style: italic; color: #64748b; font-size: 10px;">
               * Căn cứ để Kỹ sư kết cấu tính toán móng, đài cọc và dầm sàn đỡ thang máy.
             </div>
           </div>
         </div>
 
-        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 12px; font-size: 11px; line-height: 1.6;">
-          <div style="font-weight: 900; color: #991b1b; margin-bottom: 6px;">DANH MỤC 07 MẶT CẮT KỸ THUẬT TRONG HỒ SƠ:</div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 10.5px;">
+        <div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 8px; padding: 14px; font-size: 11px; line-height: 1.7;">
+          <div style="font-weight: 900; color: #991b1b; margin-bottom: 8px; font-size: 12px;">DANH MỤC 07 BẢN VẼ KỸ THUẬT TRONG HỒ SƠ:</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
             <div>1. Mặt bằng hố thang (Điển hình & Sàn tầng)</div>
             <div>5. Mặt bằng dầm đặt máy kéo đỉnh hố</div>
             <div>2. Chờ thô cửa tầng (Mặt đứng + Cắt 1-1, 2-2)</div>
@@ -1122,26 +1068,13 @@
       </div>
     `;
 
-    // Trang 2: Bản vẽ 1
-    var page2Content = `<svg viewBox="0 0 380 250" width="100%" height="auto">${defs}${renderDrawing1_HoistwayPlan(specs, true)}</svg>`;
-
-    // Trang 3: Bản vẽ 2
-    var page3Content = `<svg viewBox="0 0 380 260" width="100%" height="auto">${defs}${renderDrawing2_RoughDoorOpening(specs, true)}</svg>`;
-
-    // Trang 4: Bản vẽ 3
-    var page4Content = `<svg viewBox="0 0 380 260" width="100%" height="auto">${defs}${renderDrawing3_FinishedDoor(specs, true)}</svg>`;
-
-    // Trang 5: Bản vẽ 4
-    var page5Content = `<svg viewBox="0 0 380 290" width="100%" height="auto">${defs}${renderDrawing4_ElevatorInstallationPlan(specs, true)}</svg>`;
-
-    // Trang 6: Bản vẽ 5
-    var page6Content = `<svg viewBox="0 0 380 300" width="100%" height="auto">${defs}${renderDrawing5_MachineBeamsPlan(specs, true)}</svg>`;
-
-    // Trang 7: Bản vẽ 6
-    var page7Content = `<svg viewBox="0 0 380 340" width="100%" height="auto">${defs}${renderDrawing6_VerticalSection(specs, true)}</svg>`;
-
-    // Trang 8: Bản vẽ 7
-    var page8Content = `<svg viewBox="0 0 380 330" width="100%" height="auto">${defs}${renderDrawing7_MachineRoomDetail(specs, true)}</svg>`;
+    var page2Content = `<svg viewBox="0 0 370 245" width="100%" height="auto">${defs}${renderDrawing1_HoistwayPlan(specs)}</svg>`;
+    var page3Content = `<svg viewBox="0 0 370 245" width="100%" height="auto">${defs}${renderDrawing2_RoughDoorOpening(specs)}</svg>`;
+    var page4Content = `<svg viewBox="0 0 370 245" width="100%" height="auto">${defs}${renderDrawing3_FinishedDoor(specs)}</svg>`;
+    var page5Content = `<svg viewBox="0 0 385 285" width="100%" height="auto">${defs}${renderDrawing4_ElevatorInstallationPlan(specs)}</svg>`;
+    var page6Content = `<svg viewBox="0 0 370 305" width="100%" height="auto">${defs}${renderDrawing5_MachineBeamsPlan(specs)}</svg>`;
+    var page7Content = `<svg viewBox="0 0 370 345" width="100%" height="auto">${defs}${renderDrawing6_VerticalSection(specs)}</svg>`;
+    var page8Content = `<svg viewBox="0 0 370 345" width="100%" height="auto">${defs}${renderDrawing7_MachineRoomDetail(specs)}</svg>`;
 
     return `
       <!DOCTYPE html>
@@ -1149,41 +1082,50 @@
       <head>
         <meta charset="utf-8">
         <title>Hồ Sơ Bản Vẽ Shop Drawing (Tập A4 8 Trang) - Siêu Thị Thang Máy Toàn Quốc</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
         <style>
+          * {
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, 'Segoe UI', sans-serif !important;
+          }
           @page {
             size: A4 portrait;
-            margin: 8mm;
+            margin: 6mm;
           }
           @media print {
             body { margin: 0; padding: 0; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .a4-page { page-break-after: always; width: 100%; height: 98vh; display: flex; flex-direction: column; justify-content: space-between; border: none !important; }
+            .a4-page { page-break-after: always; width: 100%; height: 98vh; display: flex; flex-direction: column; justify-content: space-between; border: none !important; box-shadow: none !important; }
           }
           body {
             margin: 0;
             padding: 15px;
-            background: #e2e8f0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #cbd5e1;
+            font-family: 'Roboto', Arial, sans-serif;
           }
           .a4-page {
             background: #fff;
             max-width: 210mm;
             min-height: 297mm;
             margin: 0 auto 20px;
-            padding: 10mm;
-            box-sizing: border-box;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            padding: 8mm;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #94a3b8;
           }
           .a4-header {
             border-bottom: 2px solid #0f2766;
             padding-bottom: 6px;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
           }
           .a4-header .brand {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 900;
             color: #0f2766;
           }
@@ -1198,6 +1140,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            padding: 5px;
           }
           .a4-footer {
             display: flex;
@@ -1205,26 +1148,26 @@
             margin-top: 10px;
           }
           .footer-title-block {
-            max-width: 360px;
+            max-width: 370px;
             height: auto;
           }
         </style>
       </head>
       <body>
-        ${wrapA4Page("TỔNG QUAN HỒ SƠ & THÔNG SỐ KỸ THUẬT", "STTM-A4-01", page1Content)}
-        ${wrapA4Page("MẶT BẰNG HỐ THANG (ĐIỂN HÌNH & SÀN TẦNG)", "STTM-A4-02", page2Content)}
-        ${wrapA4Page("CHỜ THÔ CỬA TẦNG (OPEN 1200x2400 & CẮT 1-1, 2-2)", "STTM-A4-03", page3Content)}
-        ${wrapA4Page("CỬA TẦNG HOÀN THIỆN & HỘP NÚT BẤM LOP 1200", "STTM-A4-04", page4Content)}
-        ${wrapA4Page("MẶT BẰNG LẮP THANG (CABIN, ĐỐI TRỌNG & RAY)", "STTM-A4-05", page5Content)}
-        ${wrapA4Page("MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ THANG", "STTM-A4-06", page6Content)}
-        ${wrapA4Page("MẶT CẮT ĐỨNG GIẾNG THANG (PIT, TẦNG, DẦM GIẰNG)", "STTM-A4-07", page7Content)}
-        ${wrapA4Page("MẶT CẮT ĐỈNH TUM KT / PHÒNG MÁY PHÓNG TO", "STTM-A4-08", page8Content)}
+        ${wrapA4Page("TỔNG QUAN HỒ SƠ & THÔNG SỐ KỸ THUẬT", "STTM-A4-01", page1Content, 1)}
+        ${wrapA4Page("MẶT BẰNG HỐ THANG (ĐIỂN HÌNH & SÀN TẦNG)", "STTM-A4-02", page2Content, 2)}
+        ${wrapA4Page("CHỜ THÔ CỬA TẦNG (OPEN 1200x2400 & CẮT 1-1, 2-2)", "STTM-A4-03", page3Content, 3)}
+        ${wrapA4Page("CỬA TẦNG HOÀN THIỆN & HỘP NÚT BẤM LOP 1200", "STTM-A4-04", page4Content, 4)}
+        ${wrapA4Page("MẶT BẰNG LẮP THANG (CABIN, ĐỐI TRỌNG & RAY)", "STTM-A4-05", page5Content, 5)}
+        ${wrapA4Page("MẶT BẰNG DẦM ĐẶT MÁY KÉO ĐỈNH HỐ THANG", "STTM-A4-06", page6Content, 6)}
+        ${wrapA4Page("MẶT CẮT ĐỨNG GIẾNG THANG (PIT, TẦNG, DẦM GIẰNG)", "STTM-A4-07", page7Content, 7)}
+        ${wrapA4Page("MẶT CẮT ĐỈNH TUM KT / PHÒNG MÁY PHÓNG TO", "STTM-A4-08", page8Content, 8)}
 
         <script>
           window.onload = function() {
             setTimeout(function() {
               window.print();
-            }, 500);
+            }, 600);
           };
         </script>
       </body>
@@ -1234,8 +1177,6 @@
 
   // ==========================================================================================
   // MODAL XEM TRƯỚC VÀ ĐIỀU HƯỚNG BẢN VẼ TRÊN GIAO DIỆN WEB
-  // Cho phép: Xem Bản Tổng Hợp A3 HOẶC Xem từng mặt cắt riêng biệt (1 đến 7)
-  // Nút In PDF A3, In Tập A4 (8 Trang), Tải SVG, Gửi Zalo
   // ==========================================================================================
   window.openShopDrawingPdfModal = function (customW, customD, customPit, customOh, customStops, customCap) {
     var W = customW || (document.getElementById('inputWidth') ? document.getElementById('inputWidth').value : (document.getElementById('homeInputW') ? document.getElementById('homeInputW').value : 1800));
@@ -1337,7 +1278,6 @@
 
     document.body.appendChild(modal);
 
-    // Lưu các biến toàn cục cho view switcher
     window._currentSpecs = specs;
     window._masterSvgA3 = masterSvgA3;
   };
@@ -1347,7 +1287,6 @@
     var specs = window._currentSpecs;
     if (!specs) return;
 
-    // Reset styles nút tab
     document.querySelectorAll('.tab-view-btn').forEach(function (btn) {
       btn.className = 'tab-view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0';
     });
@@ -1365,51 +1304,51 @@
       container.innerHTML = window._masterSvgA3;
     } else if (viewId === 'mc1') {
       container.innerHTML = `
-        <svg viewBox="0 0 400 240" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 380 250" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing1_HoistwayPlan(specs, true)}
+          ${renderDrawing1_HoistwayPlan(specs)}
         </svg>
       `;
     } else if (viewId === 'mc2') {
       container.innerHTML = `
-        <svg viewBox="0 0 380 250" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 380 250" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing2_RoughDoorOpening(specs, true)}
+          ${renderDrawing2_RoughDoorOpening(specs)}
         </svg>
       `;
     } else if (viewId === 'mc3') {
       container.innerHTML = `
-        <svg viewBox="0 0 380 260" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 380 250" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing3_FinishedDoor(specs, true)}
+          ${renderDrawing3_FinishedDoor(specs)}
         </svg>
       `;
     } else if (viewId === 'mc4') {
       container.innerHTML = `
-        <svg viewBox="0 0 380 290" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 390 290" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing4_ElevatorInstallationPlan(specs, true)}
+          ${renderDrawing4_ElevatorInstallationPlan(specs)}
         </svg>
       `;
     } else if (viewId === 'mc5') {
       container.innerHTML = `
-        <svg viewBox="0 0 380 300" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 380 310" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing5_MachineBeamsPlan(specs, true)}
+          ${renderDrawing5_MachineBeamsPlan(specs)}
         </svg>
       `;
     } else if (viewId === 'mc6') {
       container.innerHTML = `
-        <svg viewBox="0 0 380 340" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 380 350" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing6_VerticalSection(specs, true)}
+          ${renderDrawing6_VerticalSection(specs)}
         </svg>
       `;
     } else if (viewId === 'mc7') {
       container.innerHTML = `
-        <svg viewBox="0 0 380 330" width="100%" height="auto" class="bg-white p-4">
+        <svg viewBox="0 0 380 350" width="100%" height="auto" class="bg-white p-4" style="font-family: 'Roboto', Arial, sans-serif !important;">
           ${defs}
-          ${renderDrawing7_MachineRoomDetail(specs, true)}
+          ${renderDrawing7_MachineRoomDetail(specs)}
         </svg>
       `;
     }
@@ -1428,18 +1367,25 @@
       <head>
         <meta charset="utf-8">
         <title>Bản Vẽ Kỹ Thuật Shop Drawing A3 (07 Mặt Cắt) - Siêu Thị Thang Máy Toàn Quốc</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
         <style>
+          * {
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, 'Segoe UI', sans-serif !important;
+          }
           @page {
             size: A3 landscape;
-            margin: 5mm;
+            margin: 4mm;
           }
           @media print {
             body { margin: 0; padding: 0; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .page-container { width: 100%; height: 98vh; display: flex; align-items: center; justify-content: center; }
             svg { width: 100%; height: 100%; max-height: 98vh; }
           }
-          body { margin: 0; padding: 10px; background: #cbd5e1; font-family: sans-serif; }
-          .page-container { background: #fff; max-width: 1600px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+          body { margin: 0; padding: 10px; background: #cbd5e1; font-family: 'Roboto', Arial, sans-serif; }
+          .page-container { background: #fff; max-width: 1600px; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         </style>
       </head>
       <body>
@@ -1448,7 +1394,7 @@
         </div>
         <script>
           window.onload = function() {
-            setTimeout(function() { window.print(); }, 400);
+            setTimeout(function() { window.print(); }, 500);
           };
         </script>
       </body>
