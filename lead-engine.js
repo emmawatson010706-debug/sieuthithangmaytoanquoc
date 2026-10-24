@@ -17,7 +17,7 @@
     }
   }
 
-  // 2. Gửi dữ liệu khách hàng về Email qua FormSubmit AJAX (Tối ưu chống ngắt dòng Gmail)
+  // 2. Gửi dữ liệu khách hàng về Email qua FormSubmit AJAX (Tối ưu tuyệt đối không ngắt dòng)
   function sendLeadToEmail(lead) {
     var subjectTitle = '🚨 [KHÁCH HÀNG MỚI] ' + (lead.name || 'Khách') + ' - ' + lead.phone + ' - ' + (lead.province || lead.address || '34 Tỉnh');
     
@@ -31,7 +31,7 @@
       'Nhu cầu dịch vụ': lead.type || 'Tư vấn dự toán thang máy',
       'Thông số chi tiết': lead.details || 'Mặc định',
       'Thời gian gửi': new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
-      'Trang web': 'https://sieuthithangmaytoanquoc.vercel.app'
+      'Nguồn': 'Sàn Siêu Thị Thang Máy Toàn Quốc'
     };
 
     return fetch('https://formsubmit.co/ajax/' + ADMIN_EMAIL, {
@@ -60,7 +60,7 @@
     // 3.2 Gửi ngầm về Email
     sendLeadToEmail(leadData);
 
-    // 3.3 Hiển thị thông báo thành công & Tùy chọn mở Zalo
+    // 3.3 Hiển thị thông báo thành công & Tự động chuyển tiếp Zalo
     showSuccessLeadModal(leadData);
 
     if (typeof onSuccess === 'function') {
@@ -68,12 +68,12 @@
     }
   };
 
-  // 4. Modal chúc mừng & kết nối Zalo Kỹ Sư Trưởng
+  // 4. Modal chúc mừng & Tự động kết nối Zalo Kỹ Sư Trưởng
   function showSuccessLeadModal(lead) {
     var existingModal = document.getElementById('sttm-success-modal');
     if (existingModal) existingModal.remove();
 
-    var zaloMsg = 'Chào Kỹ Sư Trưởng, tôi là ' + (lead.name || 'Khách hàng') + ' (SĐT: ' + lead.phone + ') ở ' + (lead.province || lead.address || 'công trình') + '. Tôi vừa gửi yêu cầu trên website: ' + (lead.details || lead.type) + '. Nhờ Kỹ Sư gửi giúp tôi bản vẽ CAD và bảng báo giá chi tiết nhé!';
+    var zaloMsg = 'Chào Kỹ Sư Trưởng, tôi là ' + (lead.name || 'Khách hàng') + ' (SĐT: ' + lead.phone + ') ở ' + (lead.province || lead.address || 'công trình') + '. Tôi vừa gửi yêu cầu: ' + (lead.details || lead.type) + '. Nhờ Kỹ Sư gửi giúp tôi bản vẽ CAD và bảng báo giá chi tiết nhé!';
     var zaloUrl = 'https://zalo.me/' + ADMIN_PHONE + '?text=' + encodeURIComponent(zaloMsg);
 
     var modal = document.createElement('div');
@@ -88,7 +88,7 @@
         <div class="space-y-1.5">
           <h3 class="text-xl font-black text-gold-400 uppercase tracking-tight">Gửi Yêu Cầu Thành Công!</h3>
           <p class="text-xs text-slate-300">
-            Hệ thống đã chuyển thông tin của quý khách tới <strong class="text-white">Kỹ Sư Trưởng (0914.587.575)</strong>.
+            Hệ thống đã gửi dữ liệu về Email quản trị và đang chuyển tiếp tới <strong class="text-white">Zalo Kỹ Sư Trưởng (0914.587.575)</strong>...
           </p>
         </div>
 
@@ -100,18 +100,30 @@
         </div>
 
         <div class="space-y-2 pt-2">
-          <a href="${zaloUrl}" target="_blank" class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white text-xs font-black rounded-xl shadow-lg flex items-center justify-center gap-2 transition transform active:scale-95">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.08L2 22l5.09-1.35C8.54 21.49 10.22 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-            MỞ ZALO CHAT VỚI KỸ SƯ TRƯỞNG NGAY
+          <a id="sttm-zalo-auto-btn" href="${zaloUrl}" target="_blank" class="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 via-sky-600 to-blue-700 hover:from-blue-500 hover:to-sky-500 text-white text-xs font-black rounded-xl shadow-lg flex items-center justify-center gap-2 transition transform active:scale-95 animate-pulse">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.08L2 22l5.09-1.35C8.54 21.49 10.22 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+            BẤM ĐỂ MỞ ZALO NHẬN BÁO GIÁ NGAY
           </a>
-          <button onclick="document.getElementById('sttm-success-modal').remove()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">
-            Đóng cửa sổ này
+          <button onclick="document.getElementById('sttm-success-modal').remove()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs font-bold rounded-xl transition">
+            Đóng cửa sổ
           </button>
         </div>
       </div>
     `;
 
     document.body.appendChild(modal);
+
+    // Tự động chuyển tiếp sang Zalo sau 1.2 giây
+    setTimeout(function () {
+      try {
+        var zaloBtn = document.getElementById('sttm-zalo-auto-btn');
+        if (zaloBtn) {
+          window.open(zaloUrl, '_blank');
+        }
+      } catch (err) {
+        console.log('Popup auto blocked, user will click button');
+      }
+    }, 1200);
   }
 
   // 5. Popup Nhận Báo Giá Nhanh 30s (Quick Lead Modal)
