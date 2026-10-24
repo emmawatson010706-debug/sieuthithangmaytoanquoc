@@ -416,8 +416,31 @@
   <script>
     function handleSurveyBooking(e) {
       e.preventDefault();
-      document.getElementById('surveySuccessMsg').classList.remove('hidden');
-      document.getElementById('surveySuccessMsg').scrollIntoView({ behavior: 'smooth' });
+      var name = document.getElementById('custName') ? document.getElementById('custName').value.trim() : '';
+      var phone = document.getElementById('custPhone') ? document.getElementById('custPhone').value.trim() : '';
+      var address = document.getElementById('custAddress') ? document.getElementById('custAddress').value.trim() : '';
+      var status = document.getElementById('custStatus') ? document.getElementById('custStatus').value : '';
+      var stops = document.getElementById('custStops') ? document.getElementById('custStops').value : '';
+      var cap = document.getElementById('custCapacity') ? document.getElementById('custCapacity').value : '';
+      var note = document.getElementById('custNote') ? document.getElementById('custNote').value.trim() : '';
+
+      var details = 'Hiện trạng: ' + status + ' • Số tầng: ' + stops + ' • Tải trọng: ' + cap + (note ? (' • Ghi chú: ' + note) : '');
+
+      var successMsg = document.getElementById('surveySuccessMsg');
+      if (successMsg) {
+        successMsg.classList.remove('hidden');
+        successMsg.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      if (window.sttmSubmitLead) {
+        window.sttmSubmitLead({
+          type: 'Đặt Lịch Khảo Sát Hố Thang',
+          name: name,
+          phone: phone,
+          address: address,
+          details: details
+        });
+      }
     }
   </script>
 
@@ -447,5 +470,7 @@
   </nav>
   <!-- PWA Install & Offline Support -->
   <script src="pwa-install.js" defer></script>
+  <!-- Lead Engine & Notification System -->
+  <script src="lead-engine.js" defer></script>
 </body>
 </html>

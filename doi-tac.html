@@ -444,12 +444,33 @@
   <script>
     function handleSupplierSubmit(e) {
       e.preventDefault();
-      document.getElementById('suppSuccessMsg').classList.remove('hidden');
+      var company = document.getElementById('suppCompany') ? document.getElementById('suppCompany').value.trim() : '';
+      var phone = document.getElementById('suppPhone') ? document.getElementById('suppPhone').value.trim() : '';
+      var province = document.getElementById('suppProvince') ? document.getElementById('suppProvince').value : '';
+      var product = document.getElementById('suppProduct') ? document.getElementById('suppProduct').value : '';
+      var capacity = document.getElementById('suppCapacity') ? document.getElementById('suppCapacity').value : '';
+
+      var details = 'Công ty: ' + company + ' • Sản phẩm: ' + product + ' • Năng lực: ' + capacity;
+
+      var successMsg = document.getElementById('suppSuccessMsg');
+      if (successMsg) successMsg.classList.remove('hidden');
+
+      if (window.sttmSubmitLead) {
+        window.sttmSubmitLead({
+          type: 'Đăng Ký Nhà Cung Cấp / Đối Tác Tỉnh',
+          name: company,
+          phone: phone,
+          province: province,
+          details: details
+        });
+      }
       e.target.reset();
     }
   </script>
 
   <!-- PWA Install & Offline Support -->
   <script src="pwa-install.js" defer></script>
+  <!-- Lead Engine & Notification System -->
+  <script src="lead-engine.js" defer></script>
 </body>
 </html>

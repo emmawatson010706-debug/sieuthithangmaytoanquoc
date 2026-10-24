@@ -1408,16 +1408,15 @@
       const Pit = document.getElementById('inputPit').value;
       const Oh = document.getElementById('inputOh').value;
       const Stops = document.getElementById('inputStops').value;
-      const price = document.getElementById('priceEstimateBig').innerText;
+      const price = document.getElementById('priceEstimateBig') ? document.getElementById('priceEstimateBig').innerText : '';
+      const details = `Hố thang ${W}x${D}mm • PIT ${Pit}mm • OH ${Oh}mm • ${Stops} tầng • Giá dự toán: ${price}`;
 
-      const message = `Chào Kỹ Sư Trưởng! Tôi vừa tạo bản vẽ thang máy trên web sieuthithangmaytoanquoc.com:
-- Kích thước hố: Rộng ${W}mm x Sâu ${D}mm
-- Hố PIT: ${Pit}mm | Tum OH: ${Oh}mm | Số tầng: ${Stops} tầng
-- Dự toán web tính: ${price}
-Nhờ Kỹ Sư Trưởng kiểm tra bản vẽ kết cấu và tư vấn phương án thi công giúp tôi!`;
-
-      const encoded = encodeURIComponent(message);
-      window.open(`https://zalo.me/0914587575?text=${encoded}`, '_blank');
+      if (window.openQuickLeadModal) {
+        window.openQuickLeadModal('Gửi File Bản Vẽ CAD & Báo Giá Qua Zalo', details);
+      } else {
+        const message = `Chào Kỹ Sư Trưởng 0914.587.575! Tôi cần tư vấn CAD: ${details}`;
+        window.open(`https://zalo.me/0914587575?text=${encodeURIComponent(message)}`, '_blank');
+      }
     }
 
     function saveCurrentEstimate() {
@@ -1455,5 +1454,7 @@ Nhờ Kỹ Sư Trưởng kiểm tra bản vẽ kết cấu và tư vấn phươn
   </nav>
   <!-- PWA Install & Offline Support -->
   <script src="pwa-install.js" defer></script>
+  <!-- Lead Engine & Notification System -->
+  <script src="lead-engine.js" defer></script>
 </body>
 </html>

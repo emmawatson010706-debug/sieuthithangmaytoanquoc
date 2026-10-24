@@ -763,6 +763,7 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <button type="button" onclick="homeSendZalo()" class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 text-white font-black px-4 py-3 sm:px-6 sm:py-3.5 rounded-xl text-xs sm:text-sm uppercase tracking-wide text-center shadow-lg transition block leading-snug">💬 Nhận Báo Giá & CAD Qua Zalo (30s)</button>
           <a href="dat-hang.html" class="w-full sm:w-auto bg-gradient-to-r from-accent-red to-orange-600 hover:opacity-95 text-white font-black px-4 py-3 sm:px-6 sm:py-3.5 rounded-xl text-xs sm:text-sm uppercase tracking-wide text-center shadow-lg transition block leading-snug">
             📐 Đặt Lịch Khảo Sát Hố Thang (Miễn Phí)
           </a>
@@ -1037,7 +1038,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 pt-8 mt-8 border-t border-slate-800 text-center text-slate-500 text-[11px]">
-      © 2026 Siêu thị Thương Mại Thang Máy Toàn Quốc - sieuthithangmaytoanquoc.com - Hotline Admin: 0914.587.575. All rights reserved.
+      © 2026 Siêu thị Thương Mại Thang Máy Toàn Quốc - sieuthithangmaytoanquoc.com - Hotline Admin: 0914.587.575. All rights reserved. • <button onclick="window.openAdminLeadManager()" class="text-slate-600 hover:text-gold-400 font-mono text-[10px] ml-1 underline">🔐 Quản lý Lead (Ctrl+Shift+L)</button>
     </div>
   </footer>
 
@@ -1574,15 +1575,15 @@
       const Pit = document.getElementById('homeInputPit').value;
       const Oh = document.getElementById('homeInputOh').value;
       const Stops = document.getElementById('homeInputStops').value;
-      const price = document.getElementById('estimatedPriceText').innerText;
+      const price = document.getElementById('estimatedPriceText') ? document.getElementById('estimatedPriceText').innerText : '';
+      const details = `Hố thang ${W}x${D}mm • PIT ${Pit}mm • OH ${Oh}mm • ${Stops} tầng • Giá dự toán: ${price}`;
 
-      const message = `Chào Kỹ Sư Trưởng 0914.587.575! Tôi vừa cấu hình bản vẽ thang máy trên trang chủ sieuthithangmaytoanquoc.com:
-- Kích thước lọt lòng: Rộng ${W}mm x Sâu ${D}mm
-- Hố PIT: ${Pit}mm | Tum OH: ${Oh}mm | Số tầng: ${Stops} tầng
-- Dự toán web tính: ${price}
-Nhờ Kỹ Sư Trưởng kiểm tra bản vẽ kết cấu và tư vấn giúp tôi!`;
-
-      window.open(`https://zalo.me/0914587575?text=${encodeURIComponent(message)}`, '_blank');
+      if (window.openQuickLeadModal) {
+        window.openQuickLeadModal('Gửi Bản Vẽ CAD & Báo Giá Qua Zalo', details);
+      } else {
+        const message = `Chào Kỹ Sư Trưởng 0914.587.575! Tôi cần tư vấn: ${details}`;
+        window.open(`https://zalo.me/0914587575?text=${encodeURIComponent(message)}`, '_blank');
+      }
     }
 
     function selectPackage(type, stops, cap, motor) {
@@ -1643,5 +1644,7 @@ Nhờ Kỹ Sư Trưởng kiểm tra bản vẽ kết cấu và tư vấn giúp t
   </nav>
   <!-- PWA Install & Offline Support -->
   <script src="pwa-install.js" defer></script>
+  <!-- Lead Engine & Notification System -->
+  <script src="lead-engine.js" defer></script>
 </body>
 </html>
