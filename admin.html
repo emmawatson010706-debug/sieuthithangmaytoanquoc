@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quản Trị Hệ Thống - Siêu Thị Thương Mại Thang Máy Toàn Quốc</title>
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -90,9 +90,7 @@
               👁️
             </button>
           </div>
-          <p class="text-[10px] text-slate-400 mt-1.5">
-            * Mật khẩu mặc định: <span class="text-gold-400 font-mono font-bold">0914587575</span> (Có thể đổi bất kỳ lúc nào trong cài đặt).
-          </p>
+
         </div>
 
         <div id="loginErrorMsg" class="hidden bg-red-950/80 border border-red-500/60 text-red-200 text-xs p-3 rounded-xl text-center font-bold">
@@ -148,6 +146,15 @@
             <span>📰</span>
             <span class="hidden md:inline">Xem Tạp Chí Ngoài Web</span>
           </a>
+
+          <button 
+            onclick="openPasswordModal()" 
+            class="bg-navy-800 hover:bg-navy-700 text-gold-300 border border-gold-500/40 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow transition"
+            title="Đổi mật khẩu quản trị"
+          >
+            <span>🔑</span>
+            <span class="hidden sm:inline">Đổi Mật Khẩu</span>
+          </button>
 
           <button 
             onclick="openArticleEditor()" 
@@ -313,6 +320,39 @@
     <footer class="bg-navy-950 border-t border-slate-800 text-slate-500 text-xs py-4 px-4 text-center">
       Hệ thống Quản Trị Độc Quyền • © 2026 Siêu Thị Thương Mại Thang Máy Toàn Quốc • Hotline Kỹ Sư Trưởng: 0914.587.575
     </footer>
+  </div>
+
+  <!-- ==================== MODAL ĐỔI MẬT KHẨU QUẢN TRỊ BẢO MẬT ==================== -->
+  <div id="passwordModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100010] flex items-center justify-center p-4">
+    <div class="bg-navy-900 border border-gold-500/50 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-black text-sm uppercase text-gold-400 flex items-center gap-2">
+          <span>🔑</span> ĐỔI MẬT KHẨU QUẢN TRỊ
+        </h3>
+        <button onclick="closePasswordModal()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div id="pwdModalMsg" class="hidden text-xs p-2.5 rounded-lg border"></div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Mật khẩu hiện tại *</label>
+          <input type="password" id="currentPwdInput" class="w-full bg-navy-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-gold-500" placeholder="Nhập mật khẩu hiện tại...">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Mật khẩu mới (tối thiểu 6 ký tự) *</label>
+          <input type="password" id="newPwdInput" class="w-full bg-navy-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-gold-500" placeholder="Nhập mật khẩu mới...">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Xác nhận mật khẩu mới *</label>
+          <input type="password" id="confirmPwdInput" class="w-full bg-navy-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-gold-500" placeholder="Nhập lại mật khẩu mới...">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closePasswordModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">Hủy</button>
+        <button onclick="saveNewPassword()" class="px-5 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-navy-950 text-xs font-black transition">LƯU MẬT KHẨU MỚI</button>
+      </div>
+    </div>
   </div>
 
   <!-- ==================== 3. MODAL SOẠN THẢO / SỬA BÀI VIẾT (FULL ARTICLE EDITOR) ==================== -->
@@ -559,11 +599,25 @@
 
   <!-- JAVASCRIPT XỬ LÝ TOÀN BỘ NGHIỆP VỤ ADMIN -->
   <script>
-    // 1. Quản lý Mật Khẩu & Phiên Đăng Nhập
-    const DEFAULT_ADMIN_PASS = "0914587575";
+    // 1. Quản lý Mật Khẩu & Phiên Đăng Nhập (Bảo Mật Bằng SHA-256 & Chống Brute Force)
+    const DEFAULT_ADMIN_HASH = "9fe435fbe8deb3899d7a6c22e584b7f97c0c659cc726d85c04d388cc24b22b22";
 
-    function getAdminPassword() {
-      return localStorage.getItem('sttm_admin_pwd') || DEFAULT_ADMIN_PASS;
+    async function sha256Hex(text) {
+      const msgBuffer = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function getAdminHash() {
+      const oldPlain = localStorage.getItem('sttm_admin_pwd');
+      if (oldPlain) {
+        const hashedOld = await sha256Hex(oldPlain);
+        localStorage.setItem('sttm_admin_hash', hashedOld);
+        localStorage.removeItem('sttm_admin_pwd');
+        return hashedOld;
+      }
+      return localStorage.getItem('sttm_admin_hash') || DEFAULT_ADMIN_HASH;
     }
 
     function checkAuth() {
@@ -578,19 +632,46 @@
       }
     }
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const entered = document.getElementById('adminPasswordInput').value.trim();
-      const currentPass = getAdminPassword();
+    let loginAttempts = parseInt(sessionStorage.getItem('sttm_login_fails') || '0', 10);
+    let lockUntil = parseInt(sessionStorage.getItem('sttm_login_locked_until') || '0', 10);
 
-      if (entered === currentPass) {
+    async function handleLogin(e) {
+      e.preventDefault();
+      const now = Date.now();
+      const err = document.getElementById('loginErrorMsg');
+
+      if (lockUntil > now) {
+        const remainSec = Math.ceil((lockUntil - now) / 1000);
+        err.innerText = `⚠️ Nhập sai quá nhiều lần. Tạm khóa bảo mật trong ${remainSec}s. Vui lòng thử lại sau!`;
+        err.classList.remove('hidden');
+        return;
+      }
+
+      const entered = document.getElementById('adminPasswordInput').value.trim();
+      if (!entered) return;
+
+      const enteredHash = await sha256Hex(entered);
+      const targetHash = await getAdminHash();
+
+      if (enteredHash === targetHash) {
         sessionStorage.setItem('sttm_admin_auth', 'true');
-        document.getElementById('loginErrorMsg').classList.add('hidden');
+        sessionStorage.removeItem('sttm_login_fails');
+        sessionStorage.removeItem('sttm_login_locked_until');
+        err.classList.add('hidden');
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('adminApp').classList.remove('hidden');
         loadArticles();
       } else {
-        document.getElementById('loginErrorMsg').classList.remove('hidden');
+        loginAttempts++;
+        sessionStorage.setItem('sttm_login_fails', loginAttempts.toString());
+        if (loginAttempts >= 5) {
+          lockUntil = Date.now() + 5 * 60 * 1000;
+          sessionStorage.setItem('sttm_login_locked_until', lockUntil.toString());
+          err.innerText = '⚠️ Bạn đã nhập sai 5 lần! Để đảm bảo an toàn, hệ thống tạm khóa 5 phút.';
+        } else {
+          err.innerText = `⚠️ Mật khẩu không chính xác! (Còn ${5 - loginAttempts} lần thử)`;
+        }
+        err.classList.remove('hidden');
       }
     }
 
@@ -602,6 +683,71 @@
     function togglePasswordVisibility() {
       const input = document.getElementById('adminPasswordInput');
       input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    // Quản lý Modal Đổi Mật Khẩu
+    function openPasswordModal() {
+      document.getElementById('currentPwdInput').value = '';
+      document.getElementById('newPwdInput').value = '';
+      document.getElementById('confirmPwdInput').value = '';
+      const msg = document.getElementById('pwdModalMsg');
+      if (msg) msg.classList.add('hidden');
+      document.getElementById('passwordModal').classList.remove('hidden');
+    }
+
+    function closePasswordModal() {
+      document.getElementById('passwordModal').classList.add('hidden');
+    }
+
+    async function saveNewPassword() {
+      const currentVal = document.getElementById('currentPwdInput').value.trim();
+      const newVal = document.getElementById('newPwdInput').value.trim();
+      const confirmVal = document.getElementById('confirmPwdInput').value.trim();
+      const msg = document.getElementById('pwdModalMsg');
+
+      if (!msg) return;
+
+      const currentHash = await sha256Hex(currentVal);
+      const targetHash = await getAdminHash();
+
+      if (currentHash !== targetHash) {
+        msg.className = "text-xs p-2.5 rounded-lg bg-red-500/20 text-red-300 border border-red-500/30";
+        msg.innerText = "❌ Mật khẩu hiện tại không chính xác!";
+        msg.classList.remove('hidden');
+        return;
+      }
+      if (!newVal || newVal.length < 6) {
+        msg.className = "text-xs p-2.5 rounded-lg bg-red-500/20 text-red-300 border border-red-500/30";
+        msg.innerText = "❌ Mật khẩu mới phải từ 6 ký tự trở lên!";
+        msg.classList.remove('hidden');
+        return;
+      }
+      if (newVal !== confirmVal) {
+        msg.className = "text-xs p-2.5 rounded-lg bg-red-500/20 text-red-300 border border-red-500/30";
+        msg.innerText = "❌ Xác nhận mật khẩu mới không khớp!";
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const newHash = await sha256Hex(newVal);
+      localStorage.setItem('sttm_admin_hash', newHash);
+      msg.className = "text-xs p-2.5 rounded-lg bg-green-500/20 text-green-300 border border-green-500/30";
+      msg.innerText = "✅ Đổi mật khẩu thành công!";
+      msg.classList.remove('hidden');
+      setTimeout(() => {
+        closePasswordModal();
+      }, 1200);
+    }
+
+    // Helper XSS Sanitization
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     // 2. Tải & Quản lý Danh Sách Bài Viết
@@ -669,34 +815,41 @@
         if (filterCat !== 'all' && catSlug !== filterCat) return;
 
         renderedCount++;
+        const safeTitle = escapeHTML(art.title || '');
+        const safeSummary = escapeHTML(art.summary || '');
+        const safeCategory = escapeHTML(art.category || 'KỸ THUẬT');
+        const safeAuthor = escapeHTML(art.author || 'Kỹ Sư Trưởng');
+        const safeReadTime = escapeHTML(art.read_time || '10 phút');
+        const safeDate = escapeHTML(art.date || '24/10/2026');
+
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-navy-950/40 transition';
         tr.innerHTML = `
-          <td class="p-3 text-center font-bold text-gold-400 font-mono">#${id}</td>
+          <td class="p-3 text-center font-bold text-gold-400 font-mono">#${escapeHTML(id)}</td>
           <td class="p-3 text-center">
             <div class="w-16 h-10 rounded-lg overflow-hidden bg-slate-900 border border-slate-700 mx-auto">
-              <img src="${art.image || 'images/cabin_1.png'}" alt="Thumb" class="w-full h-full object-cover">
+              <img src="${escapeHTML(art.image || 'images/cabin_1.png')}" alt="Thumb" class="w-full h-full object-cover">
             </div>
           </td>
           <td class="p-3">
             <div class="font-bold text-white text-xs hover:text-gold-400 transition leading-snug line-clamp-2">
-              ${art.title}
+              ${safeTitle}
             </div>
             <div class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
-              ${art.summary || ''}
+              ${safeSummary}
             </div>
           </td>
           <td class="p-3">
             <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-navy-800 text-gold-300 border border-gold-500/30 whitespace-nowrap">
-              ${art.category || 'KỸ THUẬT'}
+              ${safeCategory}
             </span>
           </td>
           <td class="p-3 text-slate-300 hidden md:table-cell">
-            <div class="font-semibold truncate max-w-[120px]">${art.author || 'Kỹ Sư Trưởng'}</div>
-            <div class="text-[10px] text-slate-500 truncate max-w-[120px]">${art.read_time || '10 phút'}</div>
+            <div class="font-semibold truncate max-w-[120px]">${safeAuthor}</div>
+            <div class="text-[10px] text-slate-500 truncate max-w-[120px]">${safeReadTime}</div>
           </td>
           <td class="p-3 text-center text-slate-400 text-[11px] hidden sm:table-cell whitespace-nowrap">
-            ${art.date || '24/10/2026'}
+            ${safeDate}
           </td>
           <td class="p-3 text-center whitespace-nowrap">
             <div class="flex items-center justify-center gap-1.5">

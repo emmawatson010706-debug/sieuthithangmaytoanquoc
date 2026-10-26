@@ -791,6 +791,17 @@
       });
     }
 
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag));
+    }
+
     function submitComment() {
       const name = document.getElementById('commentName').value.trim();
       const phone = document.getElementById('commentPhone').value.trim();
@@ -801,21 +812,25 @@
         return;
       }
 
+      const safeName = escapeHTML(name);
+      const safePhone = escapeHTML(phone);
+      const safeContent = escapeHTML(content);
+
       const commentsList = document.getElementById('commentsList');
       const newComment = document.createElement('div');
       newComment.className = "p-3 bg-white border border-slate-200 rounded-lg space-y-2 animate-pulse";
       newComment.innerHTML = `
         <div class="flex items-center justify-between">
-          <span class="font-bold text-navy-950">${name} (${phone || 'Chủ nhà'})</span>
+          <span class="font-bold text-navy-950">${safeName} (${safePhone || 'Chủ nhà'})</span>
           <span class="text-[11px] text-green-600 font-bold">Vừa gửi</span>
         </div>
-        <p class="text-slate-700">"${content}"</p>
+        <p class="text-slate-700">"${safeContent}"</p>
         <div class="p-2.5 bg-amber-50 rounded border-l-2 border-gold-600 text-slate-700 text-[11px] space-y-1">
           <div class="font-bold text-navy-950 flex items-center gap-1">
             <span>👨‍💼</span> Kỹ Sư Trưởng Nguyễn Văn An (0914.587.575):
           </div>
           <p>
-            "Cảm ơn ${name}! Câu hỏi kỹ thuật của bạn đã được chuyển thẳng tới máy Kỹ Sư Trưởng. Đội ngũ kỹ sư sẽ gọi điện hoặc kết nối Zalo qua số điện thoại để gửi phương án giải quyết cụ thể nhé!"
+            "Cảm ơn ${safeName}! Câu hỏi kỹ thuật của bạn đã được chuyển thẳng tới máy Kỹ Sư Trưởng. Đội ngũ kỹ sư sẽ gọi điện hoặc kết nối Zalo qua số điện thoại để gửi phương án giải quyết cụ thể nhé!"
           </p>
         </div>
       `;

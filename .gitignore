@@ -3,6 +3,12 @@
 __pycache__/
 *.pyc
 
+# Secrets & Environment
+.env
+.env*.local
+*.pem
+*.key
+
 # OS & Logs
 .DS_Store
 Thumbs.db
