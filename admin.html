@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="vi" class="w-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Trị Hệ Thống - Siêu Thị Thương Mại Thang Máy Toàn Quốc</title>
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            },
+            navy: {
+              800: '#0f2766',
+              900: '#0a1945',
+              950: '#050c26',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0b132b;
+      color: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #f59e0b;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- ==================== 1. MÀN HÌNH ĐĂNG NHẬP BẢO MẬT (CHỈ MỘT MÌNH ANH) ==================== -->
+  <div id="loginScreen" class="fixed inset-0 bg-navy-950/95 backdrop-blur-xl z-[99999] flex items-center justify-center p-4">
+    <div class="bg-navy-900 border border-gold-500/40 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-36 h-36 bg-gold-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      
+      <div class="text-center space-y-3 mb-6">
+        <div class="w-14 h-14 bg-gradient-to-br from-gold-400 to-amber-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-lg shadow-gold-500/20 text-navy-950 font-black">
+          🛡️
+        </div>
+        <div>
+          <h2 class="text-lg font-black text-gold-400 uppercase tracking-wide">TRUNG TÂM QUẢN TRỊ ADMIN</h2>
+          <p class="text-xs text-slate-300 mt-1 font-semibold">Siêu Thị Thương Mại Thang Máy Toàn Quốc</p>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          Khu vực bảo mật dành riêng cho Kỹ Sư Trưởng quản lý, biên tập bài viết và hình ảnh hệ thống.
+        </p>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Mật Khẩu Quản Trị:</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="adminPasswordInput" 
+              placeholder="Nhập mật khẩu quản trị..." 
+              autocomplete="current-password"
+              required
+              class="w-full bg-navy-950 border border-slate-700 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition"
+            >
+            <button 
+              type="button" 
+              onclick="togglePasswordVisibility()" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs px-2 py-1"
+            >
+              👁️
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1.5">
+            * Mật khẩu mặc định: <span class="text-gold-400 font-mono font-bold">0914587575</span> (Có thể đổi bất kỳ lúc nào trong cài đặt).
+          </p>
+        </div>
+
+        <div id="loginErrorMsg" class="hidden bg-red-950/80 border border-red-500/60 text-red-200 text-xs p-3 rounded-xl text-center font-bold">
+          ❌ Mật khẩu không chính xác! Vui lòng thử lại.
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full bg-gradient-to-r from-gold-500 via-amber-500 to-gold-600 hover:from-gold-400 hover:to-amber-500 text-navy-950 font-black py-3 rounded-xl text-sm uppercase tracking-wider shadow-lg transition active:scale-98"
+        >
+          ĐĂNG NHẬP QUẢN TRỊ →
+        </button>
+
+        <div class="text-center pt-2">
+          <a href="index.html" class="text-xs text-slate-400 hover:text-gold-400 transition">
+            ← Quay lại trang chủ Siêu Thị Thang Máy
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 2. GIAO DIỆN CHÍNH QUẢN TRỊ ADMIN (SAU KHI ĐĂNG NHẬP) ==================== -->
+  <div id="adminApp" class="hidden flex-1 flex flex-col">
+
+    <!-- TOP HEADER ADMIN -->
+    <header class="bg-navy-950 border-b border-slate-800 text-white sticky top-0 z-40 shadow-xl">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-gold-400 to-amber-600 rounded-xl flex items-center justify-center font-black text-navy-950 shadow">
+            ST
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-black text-sm text-gold-400 uppercase tracking-tight">TRANG QUẢN TRỊ BÀI VIẾT</h1>
+              <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Kỹ Sư Trưởng Online
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-400 hidden sm:block">Siêu Thị Thương Mại Thang Máy Toàn Quốc (sieuthithangmaytoanquoc.com)</p>
+          </div>
+        </div>
+
+        <!-- Quick Actions & User -->
+        <div class="flex items-center gap-2">
+          <a 
+            href="tap-chi.html" 
+            target="_blank" 
+            class="bg-navy-900 hover:bg-navy-800 text-slate-200 hover:text-white border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
+          >
+            <span>📰</span>
+            <span class="hidden md:inline">Xem Tạp Chí Ngoài Web</span>
+          </a>
+
+          <button 
+            onclick="openArticleEditor()" 
+            class="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black px-3.5 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-md transition active:scale-95"
+          >
+            <span>➕</span>
+            <span>ĐĂNG BÀI MỚI</span>
+          </button>
+
+          <button 
+            onclick="handleLogout()" 
+            class="bg-slate-800 hover:bg-red-900 text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition"
+            title="Đăng xuất"
+          >
+            🚪 Thoát
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto px-4 py-6 w-full flex-1 space-y-6">
+
+      <!-- STATS SUMMARY CARDS -->
+      <section class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-navy-900/90 border border-slate-800 rounded-xl p-4 shadow">
+          <div class="text-slate-400 text-xs font-bold uppercase">Tổng Số Bài Viết</div>
+          <div id="statTotalArticles" class="text-2xl sm:text-3xl font-black text-gold-400 mt-1">8</div>
+          <div class="text-[10px] text-slate-400 mt-1">Sẵn sàng hiển thị công khai</div>
+        </div>
+
+        <div class="bg-navy-900/90 border border-slate-800 rounded-xl p-4 shadow">
+          <div class="text-slate-400 text-xs font-bold uppercase">Chuyên Mục Hoạt Động</div>
+          <div id="statTotalCategories" class="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">6</div>
+          <div class="text-[10px] text-slate-400 mt-1">Hố PIT, Động cơ, An toàn, Báo giá...</div>
+        </div>
+
+        <div class="bg-navy-900/90 border border-slate-800 rounded-xl p-4 shadow">
+          <div class="text-slate-400 text-xs font-bold uppercase">Tổng Lượt Đọc</div>
+          <div id="statTotalViews" class="text-2xl sm:text-3xl font-black text-sky-400 mt-1">21.8k</div>
+          <div class="text-[10px] text-slate-400 mt-1">Độc giả từ 34 tỉnh thành</div>
+        </div>
+
+        <div class="bg-navy-900/90 border border-slate-800 rounded-xl p-4 shadow">
+          <div class="text-slate-400 text-xs font-bold uppercase">Đồng Bộ Dữ Liệu</div>
+          <div class="flex items-center gap-1.5 mt-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-bold text-slate-200">Trực Tiếp (Active)</span>
+          </div>
+          <div class="text-[10px] text-slate-400 mt-1">Lưu tự động vào trình duyệt</div>
+        </div>
+      </section>
+
+      <!-- DATA SYNC & ACTIONS TOOLBAR -->
+      <section class="bg-navy-900/80 border border-slate-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 shadow">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold text-gold-400 uppercase tracking-wider flex items-center gap-1.5 mr-2">
+            <span>⚙️</span> TIỆN ÍCH DỮ LIỆU:
+          </span>
+
+          <button 
+            onclick="exportArticlesDataFile()" 
+            class="bg-navy-950 hover:bg-slate-800 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
+          >
+            <span>📥</span> Xuất File articles-data.js
+          </button>
+
+          <button 
+            onclick="backupToJson()" 
+            class="bg-navy-950 hover:bg-slate-800 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
+          >
+            <span>💾</span> Tải Bản Sao Lưu (JSON)
+          </button>
+
+          <label class="bg-navy-950 hover:bg-slate-800 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <span>📤</span> Phục Hồi Dữ Liệu
+            <input type="file" id="importJsonInput" accept=".json" class="hidden" onchange="importFromJson(event)">
+          </label>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button 
+            onclick="resetToDefaultArticles()" 
+            class="text-xs text-red-400 hover:text-red-300 hover:underline px-2 py-1 font-bold"
+          >
+            Khôi phục bài viết gốc
+          </button>
+        </div>
+      </section>
+
+      <!-- ARTICLES MANAGEMENT TABLE & SEARCH -->
+      <section class="bg-navy-900/90 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+        
+        <!-- Table Header & Search Filter Bar -->
+        <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-navy-950/60">
+          <div class="flex items-center gap-2">
+            <span class="text-base text-gold-400">📚</span>
+            <h3 class="font-black text-sm uppercase text-slate-200">DANH SÁCH BÀI VIẾT TRÊN HỆ THỐNG</h3>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Search Input -->
+            <div class="relative flex-1 sm:w-64">
+              <input 
+                type="text" 
+                id="searchTableInput" 
+                placeholder="Tìm tiêu đề bài viết..." 
+                oninput="renderArticlesTable()"
+                class="w-full bg-navy-950 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-gold-500 outline-none"
+              >
+              <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs">🔍</span>
+            </div>
+
+            <!-- Category Filter Select -->
+            <select 
+              id="filterCategorySelect" 
+              onchange="renderArticlesTable()" 
+              class="bg-navy-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:border-gold-500 outline-none font-semibold"
+            >
+              <option value="all">Tất cả chuyên mục</option>
+              <option value="ho-thang">Kỹ Thuật Hố PIT & OH</option>
+              <option value="dong-co">Công Nghệ Động Cơ</option>
+              <option value="an-toan">Quy Chuẩn An Toàn</option>
+              <option value="khuyen-cao">Cảnh Báo Thị Trường</option>
+              <option value="xu-huong">Kiến Trúc Thang Kính</option>
+              <option value="bao-gia">Báo Giá & Chi Phí</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead class="bg-navy-950 text-slate-400 uppercase font-black tracking-wider text-[11px] border-b border-slate-800">
+              <tr>
+                <th class="p-3 w-16 text-center">ID</th>
+                <th class="p-3 w-24 text-center">Ảnh Bìa</th>
+                <th class="p-3">Tiêu Đề Bài Viết</th>
+                <th class="p-3 w-36">Chuyên Mục</th>
+                <th class="p-3 w-32 hidden md:table-cell">Tác Giả</th>
+                <th class="p-3 w-28 text-center hidden sm:table-cell">Ngày Đăng</th>
+                <th class="p-3 w-36 text-center">Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody id="articlesTableBody" class="divide-y divide-slate-800 text-slate-300">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyTableState" class="hidden p-8 text-center space-y-2">
+          <div class="text-3xl">📭</div>
+          <div class="font-bold text-slate-300 text-sm">Không tìm thấy bài viết nào phù hợp</div>
+          <p class="text-xs text-slate-500">Hãy thử đổi từ khóa tìm kiếm hoặc bấm "Đăng Bài Mới" để tạo bài viết đầu tiên.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER ADMIN -->
+    <footer class="bg-navy-950 border-t border-slate-800 text-slate-500 text-xs py-4 px-4 text-center">
+      Hệ thống Quản Trị Độc Quyền • © 2026 Siêu Thị Thương Mại Thang Máy Toàn Quốc • Hotline Kỹ Sư Trưởng: 0914.587.575
+    </footer>
+  </div>
+
+  <!-- ==================== 3. MODAL SOẠN THẢO / SỬA BÀI VIẾT (FULL ARTICLE EDITOR) ==================== -->
+  <div id="editorModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[100000] flex flex-col p-2 sm:p-4 overflow-hidden animate-fade-in font-sans">
+    
+    <div class="bg-navy-900 border border-gold-500/50 rounded-2xl max-w-5xl w-full mx-auto my-auto flex flex-col max-h-[96vh] shadow-2xl overflow-hidden">
+      
+      <!-- Top Modal Bar -->
+      <div class="bg-navy-950 px-5 py-3.5 border-b border-slate-800 flex items-center justify-between gap-3 text-white">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl text-gold-400">✍️</span>
+          <div>
+            <h3 id="editorModalTitle" class="font-black text-sm text-gold-400 uppercase tracking-tight">
+              ĐĂNG BÀI VIẾT MỚI VÀO TẠP CHÍ
+            </h3>
+            <p class="text-[11px] text-slate-400">Chỉnh sửa nội dung, hình ảnh và định dạng chuyên sâu</p>
+          </div>
+        </div>
+
+        <button 
+          onclick="closeArticleEditor()" 
+          class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-red-600 text-white font-bold flex items-center justify-center transition"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Editor Scrollable Body -->
+      <form id="articleForm" onsubmit="saveArticle(event)" class="p-5 overflow-y-auto custom-scrollbar space-y-5 flex-1 text-xs">
+        <input type="hidden" id="editArticleId" value="">
+
+        <!-- HÀNG 1: TIÊU ĐỀ & CHUYÊN MỤC -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-2 space-y-1">
+            <label class="block font-bold text-slate-200 uppercase tracking-wider">Tiêu Đề Bài Viết (*):</label>
+            <input 
+              type="text" 
+              id="inputTitle" 
+              required 
+              placeholder="Nhập tiêu đề bài viết kỹ thuật..."
+              class="w-full bg-navy-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-gold-500 outline-none font-bold"
+            >
+          </div>
+
+          <div class="space-y-1">
+            <label class="block font-bold text-slate-200 uppercase tracking-wider">Chuyên Mục (*):</label>
+            <select 
+              id="inputCategory" 
+              required
+              class="w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-gold-500 outline-none font-bold"
+            >
+              <option value="ho-thang|KỸ THUẬT HỐ THANG">📐 Kỹ Thuật Hố PIT & OH</option>
+              <option value="dong-co|CÔNG NGHỆ ĐỘNG CƠ">⚙️ Công Nghệ Động Cơ PMSM</option>
+              <option value="an-toan|QUY CHUẨN AN TOÀN">🛡️ An Toàn & QCVN 02:2019</option>
+              <option value="khuyen-cao|CẢNH BÁO THỊ TRƯỜNG">⚠️ Cảnh Báo Cắt Giảm Linh Kiện</option>
+              <option value="xu-huong|KIẾN TRÚC & XU HƯỚNG">✨ Thang Máy Kính Biệt Thự</option>
+              <option value="bao-gia|BÁO GIÁ & CHI PHÍ">💰 Bóc Tách Chi Phí 10 Năm</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- HÀNG 2: ẢNH BÌA BÀI VIẾT (TẢI LÊN HOẶC CHỌN SẴN) -->
+        <div class="bg-navy-950 p-4 rounded-xl border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-gold-400 uppercase tracking-wider">
+              🖼️ ẢNH BÌA BÀI VIẾT (COVER IMAGE)
+            </label>
+            <span class="text-[11px] text-slate-400">Khuyến nghị ảnh ngang 16:9 sắc nét</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            
+            <!-- Ô xem trước ảnh -->
+            <div class="md:col-span-4 aspect-[16/10] bg-slate-900 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center">
+              <img id="imagePreview" src="images/cabin_1.png" alt="Xem trước" class="w-full h-full object-cover">
+              <div id="imagePlaceholder" class="hidden text-center text-slate-500 text-xs">Chưa có ảnh</div>
+            </div>
+
+            <!-- Các tùy chọn chọn ảnh -->
+            <div class="md:col-span-8 space-y-3">
+              <!-- 1. Tải ảnh từ máy tính / điện thoại -->
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">Cách 1: Tải ảnh từ thiết bị lên:</label>
+                <input 
+                  type="file" 
+                  id="imageFileInput" 
+                  accept="image/*"
+                  onchange="handleFileUpload(event)"
+                  class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-black file:bg-gold-500 file:text-navy-950 hover:file:bg-gold-400 file:cursor-pointer cursor-pointer bg-slate-900 rounded-lg border border-slate-700"
+                >
+              </div>
+
+              <!-- 2. Nhập link ảnh -->
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">Cách 2: Hoặc nhập đường dẫn ảnh:</label>
+                <input 
+                  type="text" 
+                  id="inputImageUrl" 
+                  placeholder="Ví dụ: images/cabin_2.png hoặc link https://..."
+                  oninput="updateImagePreview(this.value)"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-600 focus:border-gold-500 outline-none"
+                >
+              </div>
+
+              <!-- 3. Chọn nhanh ảnh mẫu có sẵn -->
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-1">Cách 3: Hoặc bấm chọn nhanh ảnh có sẵn trong thư mục:</label>
+                <div class="flex flex-wrap gap-1.5">
+                  <button type="button" onclick="selectSampleImage('images/cabin_1.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Cabin STTM-01</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_2.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Cabin STTM-02</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_3.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Động Cơ Fuji</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_4.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Kiểm Định An Toàn</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_5.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Thang Kính</button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- HÀNG 3: TÁC GIẢ, NGÀY ĐĂNG, THỜI GIAN ĐỌC -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="space-y-1">
+            <label class="block font-bold text-slate-300">Tác Giả:</label>
+            <input 
+              type="text" 
+              id="inputAuthor" 
+              value="Kỹ Sư Trưởng"
+              class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+            >
+          </div>
+          <div class="space-y-1">
+            <label class="block font-bold text-slate-300">Chức Danh Tác Giả:</label>
+            <input 
+              type="text" 
+              id="inputAuthorTitle" 
+              value="Chuyên Gia Thẩm Định Giếng Thang 34 Tỉnh Thành"
+              class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+            >
+          </div>
+          <div class="space-y-1">
+            <label class="block font-bold text-slate-300">Thời Gian Đọc Ước Tính:</label>
+            <input 
+              type="text" 
+              id="inputReadTime" 
+              value="10 phút đọc"
+              class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
+            >
+          </div>
+        </div>
+
+        <!-- HÀNG 4: TÓM TẮT BÀI VIẾT (SUMMARY / EXCERPT) -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-slate-200 uppercase tracking-wider">Tóm Tắt Ngắn Bài Viết (*):</label>
+            <span class="text-[10px] text-slate-400">Hiển thị ở trang danh sách tạp chí</span>
+          </div>
+          <textarea 
+            id="inputSummary" 
+            rows="2" 
+            required 
+            placeholder="Tóm tắt ngắn gọn nội dung bài viết trong 2 - 3 câu..."
+            class="w-full bg-navy-950 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:border-gold-500 outline-none leading-relaxed"
+          ></textarea>
+        </div>
+
+        <!-- HÀNG 5: NỘI DUNG CHI TIẾT BÀI VIẾT (RICH CONTENT) -->
+        <div class="space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <label class="block font-bold text-slate-200 uppercase tracking-wider">
+              📝 Nội Dung Chi Tiết Bài Viết (*):
+            </label>
+            
+            <!-- Quick Formatting Toolbar -->
+            <div class="flex flex-wrap items-center gap-1 bg-navy-950 p-1 rounded-lg border border-slate-700">
+              <button type="button" onclick="insertTag('h2')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[11px] font-bold text-gold-400" title="Thêm tiêu đề mục H2">+ H2</button>
+              <button type="button" onclick="insertTag('h3')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[11px] font-bold text-slate-200" title="Thêm tiêu đề mục nhỏ H3">+ H3</button>
+              <button type="button" onclick="insertTag('p')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[11px] font-bold text-slate-300" title="Thêm đoạn văn">+ Đoạn văn</button>
+              <button type="button" onclick="insertTag('warning')" class="px-2 py-1 bg-red-950 hover:bg-red-900 border border-red-500/40 rounded text-[11px] font-bold text-red-300" title="Thêm hộp cảnh báo đỏ">⚠️ Cảnh Báo</button>
+              <button type="button" onclick="insertTag('note')" class="px-2 py-1 bg-amber-950 hover:bg-amber-900 border border-amber-500/40 rounded text-[11px] font-bold text-gold-300" title="Thêm hộp lưu ý">💡 Lưu Ý</button>
+              <button type="button" onclick="insertTag('ul')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[11px] font-bold text-slate-300" title="Thêm danh sách gạch đầu dòng">• Danh Sách</button>
+            </div>
+          </div>
+
+          <textarea 
+            id="inputContent" 
+            rows="12" 
+            required
+            placeholder="Nhập nội dung bài viết chi tiết tại đây (hỗ trợ văn bản và các thẻ định dạng HTML/H2/H3)..."
+            class="w-full bg-navy-950 border border-slate-700 rounded-xl p-4 font-mono text-xs text-slate-200 placeholder-slate-600 focus:border-gold-500 outline-none leading-relaxed"
+          ></textarea>
+        </div>
+
+        <!-- FOOTER ACTIONS IN MODAL -->
+        <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <button 
+            type="button" 
+            onclick="previewArticleDraft()" 
+            class="bg-navy-950 hover:bg-navy-800 text-slate-300 border border-slate-700 px-4 py-2.5 rounded-xl font-bold transition flex items-center gap-1.5"
+          >
+            <span>👁️</span> Xem Trước Nội Dung
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button 
+              type="button" 
+              onclick="closeArticleEditor()" 
+              class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition"
+            >
+              Hủy Bỏ
+            </button>
+
+            <button 
+              type="submit" 
+              class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black px-6 py-2.5 rounded-xl uppercase tracking-wider shadow-lg transition active:scale-95 flex items-center gap-2"
+            >
+              <span>💾</span>
+              <span id="btnSaveText">LƯU & XUẤT BẢN NGAY</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==================== 4. MODAL XEM TRƯỚC BÀI VIẾT (PREVIEW POPUP) ==================== -->
+  <div id="previewModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-[100001] flex items-center justify-center p-4">
+    <div class="bg-white text-slate-900 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+      <div class="bg-navy-950 text-white px-5 py-3 flex items-center justify-between">
+        <span class="font-bold text-xs text-gold-400 uppercase">Bản Xem Trước Thực Tế (Preview)</span>
+        <button onclick="document.getElementById('previewModal').classList.add('hidden')" class="text-white hover:text-red-400 text-lg font-bold">✕</button>
+      </div>
+      <div id="previewContainer" class="p-6 overflow-y-auto space-y-4">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- LOAD DỮ LIỆU BÀI VIẾT GỐC NẾU CÓ -->
+  <script src="articles-data.js"></script>
+
+  <!-- JAVASCRIPT XỬ LÝ TOÀN BỘ NGHIỆP VỤ ADMIN -->
+  <script>
+    // 1. Quản lý Mật Khẩu & Phiên Đăng Nhập
+    const DEFAULT_ADMIN_PASS = "0914587575";
+
+    function getAdminPassword() {
+      return localStorage.getItem('sttm_admin_pwd') || DEFAULT_ADMIN_PASS;
+    }
+
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem('sttm_admin_auth') === 'true';
+      if (isAuth) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('adminApp').classList.remove('hidden');
+        loadArticles();
+      } else {
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('adminApp').classList.add('hidden');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const entered = document.getElementById('adminPasswordInput').value.trim();
+      const currentPass = getAdminPassword();
+
+      if (entered === currentPass) {
+        sessionStorage.setItem('sttm_admin_auth', 'true');
+        document.getElementById('loginErrorMsg').classList.add('hidden');
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('adminApp').classList.remove('hidden');
+        loadArticles();
+      } else {
+        document.getElementById('loginErrorMsg').classList.remove('hidden');
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('sttm_admin_auth');
+      location.reload();
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('adminPasswordInput');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    // 2. Tải & Quản lý Danh Sách Bài Viết
+    let currentArticles = {};
+
+    function loadArticles() {
+      if (typeof window.getArticlesStore === 'function') {
+        currentArticles = window.getArticlesStore();
+      } else {
+        try {
+          const local = localStorage.getItem('sttm_articles_v1');
+          currentArticles = local ? JSON.parse(local) : (window.DEFAULT_ARTICLES || {});
+        } catch (e) {
+          currentArticles = window.DEFAULT_ARTICLES || {};
+        }
+      }
+      renderArticlesTable();
+      updateStats();
+    }
+
+    function saveCurrentArticles() {
+      if (typeof window.saveArticlesStore === 'function') {
+        window.saveArticlesStore(currentArticles);
+      } else {
+        localStorage.setItem('sttm_articles_v1', JSON.stringify(currentArticles));
+      }
+      updateStats();
+    }
+
+    function updateStats() {
+      const ids = Object.keys(currentArticles);
+      document.getElementById('statTotalArticles').innerText = ids.length;
+
+      const categories = new Set();
+      let totalViews = 0;
+      ids.forEach(id => {
+        const art = currentArticles[id];
+        if (art.category_slug) categories.add(art.category_slug);
+        const v = parseInt((art.views || '0').replace(/[^0-9]/g, '')) || 0;
+        totalViews += v;
+      });
+
+      document.getElementById('statTotalCategories').innerText = categories.size || 6;
+      document.getElementById('statTotalViews').innerText = totalViews > 1000 ? (totalViews / 1000).toFixed(1) + 'k' : totalViews;
+    }
+
+    function renderArticlesTable() {
+      const tbody = document.getElementById('articlesTableBody');
+      const emptyState = document.getElementById('emptyTableState');
+      const searchQuery = (document.getElementById('searchTableInput').value || '').toLowerCase().trim();
+      const filterCat = document.getElementById('filterCategorySelect').value;
+
+      const ids = Object.keys(currentArticles).sort((a, b) => parseInt(b) - parseInt(a));
+      let renderedCount = 0;
+      tbody.innerHTML = '';
+
+      ids.forEach(id => {
+        const art = currentArticles[id];
+        if (!art) return;
+
+        const title = (art.title || '').toLowerCase();
+        const catSlug = art.category_slug || '';
+
+        if (searchQuery && !title.includes(searchQuery)) return;
+        if (filterCat !== 'all' && catSlug !== filterCat) return;
+
+        renderedCount++;
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-navy-950/40 transition';
+        tr.innerHTML = `
+          <td class="p-3 text-center font-bold text-gold-400 font-mono">#${id}</td>
+          <td class="p-3 text-center">
+            <div class="w-16 h-10 rounded-lg overflow-hidden bg-slate-900 border border-slate-700 mx-auto">
+              <img src="${art.image || 'images/cabin_1.png'}" alt="Thumb" class="w-full h-full object-cover">
+            </div>
+          </td>
+          <td class="p-3">
+            <div class="font-bold text-white text-xs hover:text-gold-400 transition leading-snug line-clamp-2">
+              ${art.title}
+            </div>
+            <div class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+              ${art.summary || ''}
+            </div>
+          </td>
+          <td class="p-3">
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-navy-800 text-gold-300 border border-gold-500/30 whitespace-nowrap">
+              ${art.category || 'KỸ THUẬT'}
+            </span>
+          </td>
+          <td class="p-3 text-slate-300 hidden md:table-cell">
+            <div class="font-semibold truncate max-w-[120px]">${art.author || 'Kỹ Sư Trưởng'}</div>
+            <div class="text-[10px] text-slate-500 truncate max-w-[120px]">${art.read_time || '10 phút'}</div>
+          </td>
+          <td class="p-3 text-center text-slate-400 text-[11px] hidden sm:table-cell whitespace-nowrap">
+            ${art.date || '24/10/2026'}
+          </td>
+          <td class="p-3 text-center whitespace-nowrap">
+            <div class="flex items-center justify-center gap-1.5">
+              <a 
+                href="bai-viet.html?id=${id}" 
+                target="_blank" 
+                class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition"
+                title="Xem bài viết thực tế"
+              >
+                👁️
+              </a>
+              <button 
+                onclick="editArticle('${id}')" 
+                class="p-1.5 bg-blue-900/60 hover:bg-blue-600 text-blue-300 hover:text-white rounded-lg transition font-bold"
+                title="Sửa nội dung & ảnh"
+              >
+                ✏️ Sửa
+              </button>
+              <button 
+                onclick="deleteArticle('${id}')" 
+                class="p-1.5 bg-red-950/80 hover:bg-red-600 text-red-300 hover:text-white rounded-lg transition"
+                title="Xóa bài viết này"
+              >
+                🗑️
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      if (renderedCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+
+    // 3. Soạn Thảo, Thêm Mới & Sửa Bài Viết
+    function openArticleEditor(articleId) {
+      const modal = document.getElementById('editorModal');
+      const modalTitle = document.getElementById('editorModalTitle');
+      const editIdInput = document.getElementById('editArticleId');
+      const btnSaveText = document.getElementById('btnSaveText');
+
+      if (articleId && currentArticles[articleId]) {
+        // Chế độ chỉnh sửa
+        const art = currentArticles[articleId];
+        modalTitle.innerText = `CHỈNH SỬA BÀI VIẾT #${articleId}`;
+        editIdInput.value = articleId;
+        btnSaveText.innerText = "CẬP NHẬT THAY ĐỔI";
+
+        document.getElementById('inputTitle').value = art.title || '';
+        document.getElementById('inputSummary').value = art.summary || '';
+        document.getElementById('inputAuthor').value = art.author || 'Kỹ Sư Trưởng';
+        document.getElementById('inputAuthorTitle').value = art.author_title || '';
+        document.getElementById('inputReadTime').value = art.read_time || '10 phút đọc';
+        document.getElementById('inputImageUrl').value = art.image || 'images/cabin_1.png';
+        updateImagePreview(art.image || 'images/cabin_1.png');
+
+        // Khớp chuyên mục
+        const catVal = `${art.category_slug || 'ho-thang'}|${art.category || 'KỸ THUẬT HỐ THANG'}`;
+        const catSelect = document.getElementById('inputCategory');
+        for (let i = 0; i < catSelect.options.length; i++) {
+          if (catSelect.options[i].value.startsWith(art.category_slug)) {
+            catSelect.selectedIndex = i;
+            break;
+          }
+        }
+
+        // Khớp nội dung HTML
+        document.getElementById('inputContent').value = art.content_html ? art.content_html.trim() : '';
+
+      } else {
+        // Chế độ tạo mới
+        modalTitle.innerText = "ĐĂNG BÀI VIẾT MỚI VÀO TẠP CHÍ";
+        editIdInput.value = "";
+        btnSaveText.innerText = "LƯU & XUẤT BẢN NGAY";
+
+        document.getElementById('articleForm').reset();
+        document.getElementById('inputAuthor').value = "Kỹ Sư Trưởng";
+        document.getElementById('inputAuthorTitle').value = "Chuyên Gia Thẩm Định Giếng Thang 34 Tỉnh Thành";
+        document.getElementById('inputReadTime').value = "10 phút đọc";
+        document.getElementById('inputImageUrl').value = "images/cabin_1.png";
+        updateImagePreview('images/cabin_1.png');
+
+        // Mẫu nội dung gợi ý
+        document.getElementById('inputContent').value = `
+<div class="space-y-3">
+  <h2 class="text-lg sm:text-xl font-black text-navy-950 border-b pb-2 flex items-center gap-2">
+    <span class="text-gold-600">1.</span> Tổng Quan Vấn Đề Kỹ Thuật
+  </h2>
+  <p class="text-slate-700 leading-relaxed text-xs sm:text-sm">
+    Nhập nội dung phân tích chi tiết của bạn tại đây...
+  </p>
+  <div class="bg-red-50 border-l-4 border-red-500 p-3.5 rounded-r-lg text-xs space-y-1">
+    <div class="font-black text-red-900 uppercase">Cảnh Báo Kỹ Sư:</div>
+    <p class="text-red-800">
+      Nội dung khuyến nghị an toàn quan trọng...
+    </p>
+  </div>
+</div>
+        `.trim();
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeArticleEditor() {
+      document.getElementById('editorModal').classList.add('hidden');
+    }
+
+    function editArticle(id) {
+      openArticleEditor(id);
+    }
+
+    function deleteArticle(id) {
+      const art = currentArticles[id];
+      if (!art) return;
+
+      const confirmDel = confirm(`⚠️ Bạn có chắc chắn muốn XÓA bài viết này?\n\n"${art.title}"\n\nSau khi xóa, bài viết sẽ không còn hiển thị trên Tạp Chí Thang Máy.`);
+      if (confirmDel) {
+        delete currentArticles[id];
+        saveCurrentArticles();
+        renderArticlesTable();
+        alert('✅ Đã xóa bài viết thành công!');
+      }
+    }
+
+    // 4. Xử lý Ảnh & Preview Ảnh
+    function updateImagePreview(src) {
+      const img = document.getElementById('imagePreview');
+      const placeholder = document.getElementById('imagePlaceholder');
+      if (src && src.trim()) {
+        img.src = src;
+        img.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        img.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    function selectSampleImage(path) {
+      document.getElementById('inputImageUrl').value = path;
+      updateImagePreview(path);
+    }
+
+    function handleFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Giới hạn 3MB
+      if (file.size > 3 * 1024 * 1024) {
+        alert('⚠️ File ảnh quá lớn! Vui lòng chọn ảnh dưới 3MB để tải trang nhanh hơn.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const base64Url = evt.target.result;
+        document.getElementById('inputImageUrl').value = base64Url;
+        updateImagePreview(base64Url);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 5. Thêm nhanh các thẻ HTML hữu ích vào bài viết
+    function insertTag(type) {
+      const textarea = document.getElementById('inputContent');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end) || 'Nội dung mục...';
+      let snippet = '';
+
+      if (type === 'h2') {
+        snippet = `\n<h2 class="text-lg sm:text-xl font-black text-navy-950 border-b pb-2 mt-4 mb-2 flex items-center gap-2">\n  <span class="text-gold-600">▶</span> ${selectedText}\n</h2>\n`;
+      } else if (type === 'h3') {
+        snippet = `\n<h3 class="font-bold text-sm text-navy-900 mt-3 mb-1">\n  ${selectedText}\n</h3>\n`;
+      } else if (type === 'p') {
+        snippet = `\n<p class="text-slate-700 leading-relaxed text-xs sm:text-sm">\n  ${selectedText}\n</p>\n`;
+      } else if (type === 'warning') {
+        snippet = `\n<div class="bg-red-50 border-l-4 border-red-500 p-3.5 rounded-r-lg text-xs space-y-1 my-3">\n  <div class="font-black text-red-900 uppercase">Cảnh Báo Kỹ Thuật:</div>\n  <p class="text-red-800">${selectedText}</p>\n</div>\n`;
+      } else if (type === 'note') {
+        snippet = `\n<div class="bg-amber-50 border-l-4 border-gold-500 p-3.5 rounded-r-lg text-xs space-y-1 my-3 text-amber-950">\n  <div class="font-black text-amber-900 uppercase">Lưu Ý Kỹ Sư:</div>\n  <p>${selectedText}</p>\n</div>\n`;
+      } else if (type === 'ul') {
+        snippet = `\n<ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 list-disc list-inside my-2">\n  <li>${selectedText}</li>\n  <li>Ý bổ sung tiếp theo...</li>\n</ul>\n`;
+      }
+
+      textarea.setRangeText(snippet, start, end, 'end');
+      textarea.focus();
+    }
+
+    // 6. Lưu Bài Viết (Tạo Mới Hoặc Cập Nhật)
+    function saveArticle(e) {
+      e.preventDefault();
+
+      const editId = document.getElementById('editArticleId').value;
+      const title = document.getElementById('inputTitle').value.trim();
+      const catVal = document.getElementById('inputCategory').value.split('|');
+      const catSlug = catVal[0];
+      const catName = catVal[1];
+      const imageUrl = document.getElementById('inputImageUrl').value.trim() || 'images/cabin_1.png';
+      const author = document.getElementById('inputAuthor').value.trim() || 'Kỹ Sư Trưởng';
+      const authorTitle = document.getElementById('inputAuthorTitle').value.trim() || '';
+      const readTime = document.getElementById('inputReadTime').value.trim() || '10 phút đọc';
+      const summary = document.getElementById('inputSummary').value.trim();
+      const contentHtml = document.getElementById('inputContent').value.trim();
+
+      const todayStr = new Date().toLocaleDateString('vi-VN');
+
+      let targetId = editId;
+      if (!targetId) {
+        // Sinh ID tự động (ID lớn nhất + 1)
+        const numericIds = Object.keys(currentArticles).map(Number).filter(n => !isNaN(n));
+        targetId = numericIds.length > 0 ? (Math.max(...numericIds) + 1).toString() : "1";
+      }
+
+      // Xây dựng mục lục TOC đơn giản từ các thẻ h2 trong bài viết
+      const toc = [];
+      const h2Regex = /<h2[^>]*>(?:<span[^>]*>.*?<\/span>)?\s*(.*?)\s*<\/h2>/gi;
+      let match;
+      let partIdx = 1;
+      while ((match = h2Regex.exec(contentHtml)) !== null) {
+        const h2Text = match[1].replace(/<[^>]+>/g, '').trim();
+        if (h2Text) {
+          toc.push({
+            id: `muc-${partIdx}`,
+            title: h2Text
+          });
+          partIdx++;
+        }
+      }
+
+      currentArticles[targetId] = {
+        title: title,
+        category: catName,
+        category_slug: catSlug,
+        image: imageUrl,
+        author: author,
+        author_title: authorTitle,
+        date: todayStr,
+        read_time: readTime,
+        views: currentArticles[targetId]?.views || "1,250 lượt xem",
+        summary: summary,
+        toc: toc.length > 0 ? toc : [
+          { id: "muc-1", title: "1. Chi tiết phân tích kỹ thuật" },
+          { id: "muc-2", title: "2. Khuyến nghị Kỹ Sư Trưởng" }
+        ],
+        content_html: contentHtml
+      };
+
+      saveCurrentArticles();
+      renderArticlesTable();
+      closeArticleEditor();
+
+      alert(`🎉 ĐÃ XUẤT BẢN THÀNH CÔNG BÀI VIẾT #${targetId}!\n\nBài viết đã được lưu vào hệ thống và sẽ xuất hiện ngay trên Tạp Chí Thang Máy.`);
+    }
+
+    // 7. Xem Trước Bài Viết
+    function previewArticleDraft() {
+      const title = document.getElementById('inputTitle').value || 'Tiêu đề bài viết';
+      const image = document.getElementById('inputImageUrl').value || 'images/cabin_1.png';
+      const author = document.getElementById('inputAuthor').value || 'Kỹ Sư Trưởng';
+      const summary = document.getElementById('inputSummary').value || 'Tóm tắt bài viết...';
+      const content = document.getElementById('inputContent').value || '<p>Nội dung đang soạn...</p>';
+
+      const previewContainer = document.getElementById('previewContainer');
+      previewContainer.innerHTML = `
+        <div class="space-y-4">
+          <div class="aspect-[16/9] w-full rounded-xl overflow-hidden bg-slate-900">
+            <img src="${image}" class="w-full h-full object-cover">
+          </div>
+          <h1 class="text-xl sm:text-2xl font-black text-navy-950">${title}</h1>
+          <div class="text-xs text-slate-500 font-bold border-b pb-2">Bởi: ${author} • Vừa xong</div>
+          <div class="bg-amber-50 border-l-4 border-gold-500 p-3 text-xs text-slate-800 font-semibold italic">
+            ${summary}
+          </div>
+          <div class="text-xs sm:text-sm text-slate-800 leading-relaxed border-t pt-4">
+            ${content}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('previewModal').classList.remove('hidden');
+    }
+
+    // 8. Xuất / Nhập / Sao lưu File
+    function exportArticlesDataFile() {
+      const jsCode = '/* Dữ liệu bài viết Tạp Chí Thang Máy Toàn Quốc - Cập nhật tự động */\n' +
+        'window.DEFAULT_ARTICLES = ' + JSON.stringify(currentArticles, null, 2) + ';\n\n' +
+        'window.getArticlesStore = function() {\n' +
+        '  try {\n' +
+        '    var local = localStorage.getItem("sttm_articles_v1");\n' +
+        '    if (local) {\n' +
+        '      var parsed = JSON.parse(local);\n' +
+        '      if (parsed && Object.keys(parsed).length > 0) return parsed;\n' +
+        '    }\n' +
+        '  } catch (e) { console.error("Error reading localStorage:", e); }\n' +
+        '  return window.DEFAULT_ARTICLES || {};\n' +
+        '};\n\n' +
+        'window.saveArticlesStore = function(data) {\n' +
+        '  try {\n' +
+        '    localStorage.setItem("sttm_articles_v1", JSON.stringify(data));\n' +
+        '    return true;\n' +
+        '  } catch (e) { console.error("Error saving localStorage:", e); return false; }\n' +
+        '};\n';
+
+      const blob = new Blob([jsCode], { type: 'application/javascript;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'articles-data.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function backupToJson() {
+      const blob = new Blob([JSON.stringify(currentArticles, null, 2)], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `STTM_SaoLuu_BaiViet_${Date.now()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importFromJson(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (typeof parsed === 'object' && Object.keys(parsed).length > 0) {
+            currentArticles = parsed;
+            saveCurrentArticles();
+            renderArticlesTable();
+            alert('✅ Phục hồi dữ liệu bài viết thành công!');
+          } else {
+            alert('❌ Định dạng file JSON không hợp lệ!');
+          }
+        } catch (err) {
+          alert('❌ Lỗi đọc file JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToDefaultArticles() {
+      const c = confirm('⚠️ Bạn có chắc chắn muốn khôi phục về danh sách 8 bài viết gốc ban đầu không?\nCác bài viết mới thêm sẽ bị xóa.');
+      if (c && window.DEFAULT_ARTICLES) {
+        currentArticles = JSON.parse(JSON.stringify(window.DEFAULT_ARTICLES));
+        saveCurrentArticles();
+        renderArticlesTable();
+        alert('✅ Đã khôi phục về danh mục 8 bài viết gốc ban đầu!');
+      }
+    }
+
+    // Tự động kiểm tra đăng nhập khi mở trang
+    window.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>

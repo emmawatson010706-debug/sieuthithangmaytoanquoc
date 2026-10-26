@@ -87,6 +87,7 @@
   <link rel="apple-touch-icon" href="images/icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="images/icons/icon-512.png">
+  <script src="articles-data.js"></script>
 </head>
 <body class="antialiased flex flex-col min-h-screen pb-16 lg:pb-0 overflow-x-hidden w-full">
 
@@ -491,6 +492,7 @@
           <article data-category="bao-gia" class="article-item lift-card flex flex-col justify-between">
             <div>
               <div class="aspect-[16/10] bg-slate-900 overflow-hidden relative">
+
                 <img src="images/cabin_6.png" alt="Bóc tách chi phí thang máy" class="w-full h-full object-cover">
                 <span class="absolute top-2 left-2 bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase">TÀI CHÍNH & VẬN HÀNH</span>
               </div>
@@ -727,8 +729,54 @@
     </div>
   </footer>
 
-  <!-- SCRIPT LỌC & TÌM KIẾM BÀI VIẾT -->
+  <!-- SCRIPT LỌC & TÌM KIẾM BÀI VIẾT & RENDER ĐỘNG TỪ STORE -->
   <script>
+    function renderArticlesGrid() {
+      const grid = document.getElementById('articlesGrid');
+      if (!grid) return;
+      const articles = (typeof window.getArticlesStore === 'function' ? window.getArticlesStore() : (window.DEFAULT_ARTICLES || {}));
+      const ids = Object.keys(articles);
+      if (ids.length === 0) return;
+
+      grid.innerHTML = '';
+      ids.forEach(id => {
+        const art = articles[id];
+        const catSlug = art.category_slug || 'ho-thang';
+        const card = document.createElement('article');
+        card.setAttribute('data-category', catSlug);
+        card.className = "article-item lift-card flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="aspect-[16/10] bg-slate-900 overflow-hidden relative">
+              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover hover:scale-105 transition duration-500" loading="lazy" onerror="this.onerror=null; this.src='images/cabin_1.png'">
+              <div class="absolute top-2 left-2 bg-navy-950/80 backdrop-blur text-gold-400 text-[10px] font-black px-2 py-0.5 rounded uppercase">
+                ${art.category}
+              </div>
+            </div>
+            <div class="p-4 space-y-2">
+              <div class="text-[11px] text-slate-400">${art.date} • Bởi ${art.author} • ${art.read_time}</div>
+              <h3 class="font-black text-sm text-navy-950 hover:text-gold-600 transition leading-snug">
+                <a href="bai-viet.html?id=${id}">
+                  ${art.title}
+                </a>
+              </h3>
+              <p class="text-slate-600 text-xs leading-relaxed line-clamp-3">
+                ${art.summary}
+              </p>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <a href="bai-viet.html?id=${id}" class="text-gold-600 font-bold text-xs hover:underline inline-flex items-center gap-1">
+              Xem chi tiết &gt;
+            </a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      const countBadge = document.getElementById('articleCountBadge');
+      if (countBadge) countBadge.innerText = ids.length + ' bài';
+    }
+
     function toggleDrawer(open) {
       const drawer = document.getElementById('drawerSidebar');
       const overlay = document.getElementById('drawerOverlay');
@@ -752,10 +800,8 @@
     };
 
     function filterCategory(cat) {
-      // update title
       document.getElementById('currentCategoryTitle').innerText = categoryTitles[cat] || categoryTitles['all'];
       
-      // update buttons style
       document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('bg-gold-500', 'text-navy-950', 'font-black');
         btn.classList.add('bg-navy-800', 'text-slate-200', 'font-bold');
@@ -766,7 +812,6 @@
         activeBtn.classList.add('bg-gold-500', 'text-navy-950', 'font-black');
       }
 
-      // filter items
       const items = document.querySelectorAll('.article-item');
       let count = 0;
       items.forEach(item => {
@@ -796,8 +841,36 @@
       });
       document.getElementById('articleCountBadge').innerText = count + ' bài khớp';
     }
-  </script>
 
+    // Secret trigger: Ctrl + Shift + A opens Admin portal
+    window.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        window.location.href = 'admin.html';
+      }
+    });
+
+    // Secret trigger: Triple click on footer copyright
+    window.addEventListener('DOMContentLoaded', function() {
+      renderArticlesGrid();
+
+      var copyrightEl = document.querySelector('footer .max-w-7xl.mx-auto.px-4.mt-8');
+      if (copyrightEl) {
+        var clickCount = 0;
+        var clickTimer = null;
+        copyrightEl.addEventListener('click', function() {
+          clickCount++;
+          clearTimeout(clickTimer);
+          if (clickCount >= 3) {
+            window.location.href = 'admin.html';
+            clickCount = 0;
+          } else {
+            clickTimer = setTimeout(function() { clickCount = 0; }, 1500);
+          }
+        });
+      }
+    });
+  </script>
 
   <!-- ==================== MOBILE BOTTOM NAVIGATION BAR (CHỈ HIỂN THỊ DƯỚI LG) ==================== -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 w-full z-50 bg-navy-950/95 backdrop-blur-md border-t border-gold-500/40 shadow-2xl grid grid-cols-5 py-1 select-none">
