@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Vẽ Kỹ Thuật Shop Drawing Hố Thang A3/A4 (07 Mặt Cắt) - Siêu Thị Thang Máy Toàn Quốc</title>
+  <meta name="description" content="Xem và xuất bản vẽ kỹ thuật Shop Drawing hố thang máy tiêu chuẩn TCVN 6395 và QCVN 02:2019 khổ A3/A4. Hotline Admin 0914.587.575.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            navy: { 900: '#0f172a', 950: '#020617' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+    }
+    .cad-num {
+      font-family: 'Roboto Mono', Consolas, monospace !important;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff !important; padding: 0 !important; }
+      #cadViewport { box-shadow: none !important; border: none !important; max-width: 100% !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- TOP BAR ĐIỀU KHIỂN & BẬT TẮT VIEW -->
+  <header class="no-print bg-navy-950 border-b border-slate-800 px-4 py-3 sticky top-0 z-50 shadow-xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Logo & Tên hồ sơ -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 text-gold-400 hover:text-white transition">
+          <span class="text-2xl">📐</span>
+          <div>
+            <h1 class="font-black text-sm uppercase tracking-tight text-white flex items-center gap-2">
+              SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
+              <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded font-black tracking-normal">REV 03</span>
+            </h1>
+            <p class="text-[11px] text-slate-400">
+              Bản vẽ Shop Drawing Hố Thang (07 Mặt Cắt Chuẩn TCVN/ISO) • Hotline Admin: <a href="tel:0914587575" class="text-gold-400 font-bold hover:underline">0914.587.575</a>
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Khung điều chỉnh nhanh kích thước -->
+      <div class="flex items-center gap-2 text-xs bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-lg">
+        <label class="text-slate-400 font-bold">Lọt lòng:</label>
+        <span class="text-slate-400 font-bold">W=</span>
+        <input type="number" id="inpW" value="1400" step="50" min="1000" max="2600" class="w-16 bg-slate-800 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-slate-600 text-center" onchange="updateDrawing()">
+        <span class="text-slate-400 font-bold">D=</span>
+        <input type="number" id="inpD" value="1450" step="50" min="1000" max="2600" class="w-16 bg-slate-800 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-slate-600 text-center" onchange="updateDrawing()">
+        <span class="text-slate-400 font-bold">PIT=</span>
+        <input type="number" id="inpPit" value="350" step="50" min="250" max="1500" class="w-14 bg-slate-800 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-slate-600 text-center" onchange="updateDrawing()">
+        <span class="text-slate-400 font-bold">OH=</span>
+        <input type="number" id="inpOh" value="3200" step="50" min="2600" max="4800" class="w-16 bg-slate-800 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-slate-600 text-center" onchange="updateDrawing()">
+        <span class="text-slate-400 font-bold">Tầng=</span>
+        <input type="number" id="inpStops" value="4" min="2" max="15" class="w-12 bg-slate-800 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-slate-600 text-center" onchange="updateDrawing()">
+      </div>
+
+      <!-- Nút in & xuất hồ sơ -->
+      <div class="flex items-center gap-2">
+        <button onclick="printShopDrawingA3()" class="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow-lg transition active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>IN PDF A3 KỸ SƯ</span>
+        </button>
+
+        <button onclick="printShopDrawingA4Booklet()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 shadow-lg transition active:scale-95">
+          <span>📑</span>
+          <span>IN TẬP A4 (8 TRANG)</span>
+        </button>
+
+        <button onclick="downloadShopDrawingSvg()" class="bg-slate-800 hover:bg-slate-700 text-gold-400 border border-gold-500/30 px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1">
+          <span>📥</span> Tải SVG
+        </button>
+
+        <a href="https://zalo.me/0914587575" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1 shadow transition">
+          <span>💬</span> Zalo Admin
+        </a>
+      </div>
+
+    </div>
+
+    <!-- TABS CHUYỂN GÓC NHÌN -->
+    <div class="max-w-7xl mx-auto mt-2 pt-2 border-t border-slate-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-xs">
+      <span class="text-slate-400 font-bold flex-shrink-0 text-[11px]">GÓC NHÌN:</span>
+      <button onclick="switchView('all')" id="btn_all" class="view-btn px-2.5 py-1 rounded bg-amber-500 text-slate-950 font-black flex-shrink-0">
+        📐 Toàn Bộ 07 Mặt Cắt (Khổ A3 Kỹ Sư)
+      </button>
+      <button onclick="switchView('mc1')" id="btn_mc1" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        1. Mặt Bằng Hố Thang
+      </button>
+      <button onclick="switchView('mc2')" id="btn_mc2" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        2. Chờ Thô Cửa Tầng
+      </button>
+      <button onclick="switchView('mc3')" id="btn_mc3" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        3. Cửa Tầng Hoàn Thiện
+      </button>
+      <button onclick="switchView('mc4')" id="btn_mc4" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        4. Mặt Bằng Lắp Thang
+      </button>
+      <button onclick="switchView('mc5')" id="btn_mc5" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        5. Mặt Bằng Dầm Máy
+      </button>
+      <button onclick="switchView('mc6')" id="btn_mc6" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        6. Mặt Cắt Đứng Hố
+      </button>
+      <button onclick="switchView('mc7')" id="btn_mc7" class="view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0">
+        7. Mặt Cắt Đỉnh Tum
+      </button>
+    </div>
+  </header>
+
+  <!-- VÙNG HIỂN THỊ CHÍNH -->
+  <main class="flex-1 p-2 sm:p-6 flex flex-col items-center justify-start overflow-auto">
+    <div id="cadViewport" class="bg-white rounded-xl shadow-2xl p-1 w-full max-w-[1600px] border border-slate-300 overflow-hidden transition-all duration-300">
+      <!-- Master SVG rendered here -->
+    </div>
+  </main>
+
+  <footer class="no-print bg-navy-950 border-t border-slate-800 py-3 text-center text-xs text-slate-400">
+    Hệ thống tạo bản vẽ tự động • Siêu Thị Thương Mại Thang Máy Toàn Quốc • Hotline / Zalo Admin: 0914.587.575
+  </footer>
+
+  <!-- SCRIPT SHOP DRAWING ENGINE CÓ CACHE BUSTER -->
+  <script src="shop-drawing-pdf.js?v=20261026_cad_v3"></script>
+
+  <script>
+    let currentView = 'all';
+
+    function getSpecsFromInputs() {
+      const W = parseInt(document.getElementById('inpW').value) || 1400;
+      const D = parseInt(document.getElementById('inpD').value) || 1450;
+      const Pit = parseInt(document.getElementById('inpPit').value) || 350;
+      const Oh = parseInt(document.getElementById('inpOh').value) || 3200;
+      const Stops = parseInt(document.getElementById('inpStops').value) || 4;
+      const Cap = (W < 1350 ? 300 : (W < 1550 ? 450 : 630));
+      return window.calculateShopDrawingSpecs(W, D, Pit, Oh, Stops, Cap);
+    }
+
+    function updateDrawing() {
+      const specs = getSpecsFromInputs();
+      window._currentSpecs = specs;
+      renderCurrentView();
+    }
+
+    function switchView(viewId) {
+      currentView = viewId;
+      document.querySelectorAll('.view-btn').forEach(b => {
+        b.className = 'view-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-bold flex-shrink-0';
+      });
+      const active = document.getElementById('btn_' + viewId);
+      if (active) {
+        active.className = 'view-btn px-2.5 py-1 rounded bg-amber-500 text-slate-950 font-black flex-shrink-0';
+      }
+      renderCurrentView();
+    }
+
+    function renderCurrentView() {
+      const specs = window._currentSpecs || getSpecsFromInputs();
+      window._currentSpecs = specs;
+      const container = document.getElementById('cadViewport');
+      if (!container || !window.generateMasterShopDrawingSvgA3) return;
+
+      if (currentView === 'all') {
+        container.innerHTML = window.generateMasterShopDrawingSvgA3(specs);
+      } else {
+        // Sử dụng modal switch drawing view logic
+        if (window.switchDrawingView) {
+          // create a temporary container inside modal or render directly
+          const masterSvg = window.generateMasterShopDrawingSvgA3(specs);
+          // extract the specific view or render master
+          container.innerHTML = masterSvg;
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        updateDrawing();
+      }, 100);
+    });
+  </script>
+</body>
+</html>
