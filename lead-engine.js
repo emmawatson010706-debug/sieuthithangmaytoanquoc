@@ -68,12 +68,12 @@
     }
   };
 
-  // 4. Modal chúc mừng & Tự động kết nối Zalo Kỹ Sư Trưởng
+  // 4. Modal chúc mừng & Tự động kết nối Zalo Admin
   function showSuccessLeadModal(lead) {
     var existingModal = document.getElementById('sttm-success-modal');
     if (existingModal) existingModal.remove();
 
-    var zaloMsg = 'Chào Kỹ Sư Trưởng, tôi là ' + (lead.name || 'Khách hàng') + ' (SĐT: ' + lead.phone + ') ở ' + (lead.province || lead.address || 'công trình') + '. Tôi vừa gửi yêu cầu: ' + (lead.details || lead.type) + '. Nhờ Kỹ Sư gửi giúp tôi bản vẽ CAD và bảng báo giá chi tiết nhé!';
+    var zaloMsg = 'Chào Admin, tôi là ' + (lead.name || 'Khách hàng') + ' (SĐT: ' + lead.phone + ') ở ' + (lead.province || lead.address || 'công trình') + '. Tôi vừa gửi yêu cầu: ' + (lead.details || lead.type) + '. Nhờ Kỹ Sư gửi giúp tôi bản vẽ CAD và bảng báo giá chi tiết nhé!';
     var zaloUrl = 'https://zalo.me/' + ADMIN_PHONE + '?text=' + encodeURIComponent(zaloMsg);
 
     var modal = document.createElement('div');
@@ -88,7 +88,7 @@
         <div class="space-y-1.5">
           <h3 class="text-xl font-black text-gold-400 uppercase tracking-tight">Gửi Yêu Cầu Thành Công!</h3>
           <p class="text-xs text-slate-300">
-            Hệ thống đã gửi dữ liệu về Email quản trị và đang chuyển tiếp tới <strong class="text-white">Zalo Kỹ Sư Trưởng (0914.587.575)</strong>...
+            Hệ thống đã gửi dữ liệu về Email quản trị và đang chuyển tiếp tới <strong class="text-white">Zalo Admin (0914.587.575)</strong>...
           </p>
         </div>
 
@@ -143,7 +143,7 @@
             ⚡ Phản hồi trong 15 phút
           </div>
           <h3 class="text-lg font-black text-gold-400 uppercase tracking-tight">${contextTitle || 'Nhận Trọn Bộ Báo Giá & Bản Vẽ CAD'}</h3>
-          <p class="text-xs text-slate-300">Kỹ Sư Trưởng sẽ gửi file CAD bóc tách chi tiết và bảng giá qua Zalo cho bạn.</p>
+          <p class="text-xs text-slate-300">Admin sẽ gửi file CAD bóc tách chi tiết và bảng giá qua Zalo cho bạn.</p>
         </div>
 
         <form id="quickLeadForm" onsubmit="handleQuickLeadSubmit(event)" class="space-y-3.5 text-xs text-left">
@@ -165,7 +165,7 @@
           </div>
 
           <button type="submit" class="w-full py-3 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-xl transition transform active:scale-95">
-            🚀 GỬI YÊU CẦU CHO KỸ SƯ TRƯỞNG NGAY
+            🚀 GỬI YÊU CẦU CHO ADMIN NGAY
           </button>
           
           <div class="text-[11px] text-center text-slate-400">

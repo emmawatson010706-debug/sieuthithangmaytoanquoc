@@ -1,7 +1,7 @@
 // ==========================================================================================
 // HỆ THỐNG XUẤT HỒ SƠ BẢN VẼ SHOP DRAWING KỸ THUẬT HỐ THANG BÊ TÔNG (CHUẨN AUTOCAD CHUYÊN NGHIỆP)
 // Đơn vị thiết kế & bản quyền: SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
-// Hotline Kỹ Sư Trưởng: 0914.587.575 - Website: sieuthithangmaytoanquoc.com
+// Hotline Admin: 0914.587.575 - Website: sieuthithangmaytoanquoc.com
 // Quy chuẩn thiết kế: QCVN 02:2019/BLĐTBXH • TCVN 6395:2008 • Khổ in: A3 Kỹ Sư & Tập A4 8 Trang
 // ==========================================================================================
 
@@ -252,7 +252,7 @@
         <!-- Dòng Cam Kết Hotline & Tiêu Chuẩn Quốc Gia -->
         <rect x="0" y="129" width="370" height="26" fill="#fef3c7" stroke="#f59e0b" stroke-width="0.8"/>
         <text x="185" y="146" fill="#b45309" font-size="8.5" font-weight="900" text-anchor="middle">
-          HOTLINE KỸ SƯ TRƯỞNG: 0914.587.575 • TIÊU CHUẨN QCVN 02:2019/BLĐTBXH
+          HOTLINE ADMIN: 0914.587.575 • TIÊU CHUẨN QCVN 02:2019/BLĐTBXH
         </text>
       </g>
     `;
@@ -1062,7 +1062,7 @@
             <div>3. Cửa tầng hoàn thiện & Hộp LOP</div>
             <div>7. Mặt cắt đỉnh Tum KT / Phòng máy phóng to</div>
             <div>4. Mặt bằng lắp thang (Cabin, Đối trọng, Ray)</div>
-            <div>8. Khung tên kỹ thuật & Xác nhận Kỹ sư trưởng</div>
+            <div>8. Khung tên kỹ thuật & Xác nhận Admin</div>
           </div>
         </div>
       </div>
@@ -1230,7 +1230,7 @@
 
           <!-- GỬI ZALO -->
           <button onclick="sendShopDrawingToZalo('${specs.W}', '${specs.D}', '${specs.Pit}', '${specs.Oh}', '${specs.Stops}', '${specs.cap}')" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg font-bold text-xs flex items-center gap-1.5 shadow transition">
-            <span>💬</span> Gửi Zalo Kỹ Sư Trưởng
+            <span>💬</span> Gửi Zalo Admin
           </button>
 
           <button onclick="document.getElementById('shop-drawing-modal').remove()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-red-600 text-white text-xl font-bold flex items-center justify-center transition leading-none">
@@ -1429,13 +1429,13 @@
     URL.revokeObjectURL(url);
   };
 
-  // GỬI THÔNG TIN VÀ YÊU CẦU FILE BẢN VẼ QUA ZALO KỸ SƯ TRƯỞNG
+  // GỬI THÔNG TIN VÀ YÊU CẦU FILE BẢN VẼ QUA ZALO ADMIN
   window.sendShopDrawingToZalo = function (W, D, Pit, Oh, Stops, Cap) {
     var details = 'Hồ sơ bản vẽ Shop Drawing 7 mặt cắt kỹ thuật: Hố lọt lòng ' + W + 'x' + D + 'mm • PIT: ' + Pit + 'mm • OH: ' + Oh + 'mm • ' + Stops + ' tầng • Tải trọng: ' + Cap + 'kg';
     if (window.openQuickLeadModal) {
       window.openQuickLeadModal('Gửi Trọn Bộ 7 Bản Vẽ Shop Drawing Qua Zalo', details);
     } else {
-      var msg = 'Chào Kỹ Sư Trưởng 0914.587.575! Tôi cần nhận trọn bộ 7 bản vẽ Shop Drawing và hồ sơ tính toán hố thang: ' + details;
+      var msg = 'Chào Admin 0914.587.575! Tôi cần nhận trọn bộ 7 bản vẽ Shop Drawing và hồ sơ tính toán hố thang: ' + details;
       window.open('https://zalo.me/0914587575?text=' + encodeURIComponent(msg), '_blank');
     }
   };

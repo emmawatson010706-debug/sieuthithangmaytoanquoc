@@ -66,7 +66,7 @@
           <p class="text-xs text-slate-300 mt-1 font-semibold">Siêu Thị Thương Mại Thang Máy Toàn Quốc</p>
         </div>
         <p class="text-[11px] text-slate-400">
-          Khu vực bảo mật dành riêng cho Kỹ Sư Trưởng quản lý, biên tập bài viết và hình ảnh hệ thống.
+          Khu vực bảo mật dành riêng cho Admin quản lý, biên tập bài viết và hình ảnh hệ thống.
         </p>
       </div>
 
@@ -129,7 +129,7 @@
             <div class="flex items-center gap-2">
               <h1 class="font-black text-sm text-gold-400 uppercase tracking-tight">TRANG QUẢN TRỊ BÀI VIẾT</h1>
               <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                Kỹ Sư Trưởng Online
+                Admin Online
               </span>
             </div>
             <p class="text-[11px] text-slate-400 hidden sm:block">Siêu Thị Thương Mại Thang Máy Toàn Quốc (sieuthithangmaytoanquoc.com)</p>
@@ -318,7 +318,7 @@
 
     <!-- FOOTER ADMIN -->
     <footer class="bg-navy-950 border-t border-slate-800 text-slate-500 text-xs py-4 px-4 text-center">
-      Hệ thống Quản Trị Độc Quyền • © 2026 Siêu Thị Thương Mại Thang Máy Toàn Quốc • Hotline Kỹ Sư Trưởng: 0914.587.575
+      Hệ thống Quản Trị Độc Quyền • © 2026 Siêu Thị Thương Mại Thang Máy Toàn Quốc • Hotline Admin: 0914.587.575
     </footer>
   </div>
 
@@ -481,7 +481,7 @@
             <input 
               type="text" 
               id="inputAuthor" 
-              value="Kỹ Sư Trưởng"
+              value="Admin"
               class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
             >
           </div>
@@ -818,7 +818,7 @@
         const safeTitle = escapeHTML(art.title || '');
         const safeSummary = escapeHTML(art.summary || '');
         const safeCategory = escapeHTML(art.category || 'KỸ THUẬT');
-        const safeAuthor = escapeHTML(art.author || 'Kỹ Sư Trưởng');
+        const safeAuthor = escapeHTML(art.author || 'Admin');
         const safeReadTime = escapeHTML(art.read_time || '10 phút');
         const safeDate = escapeHTML(art.date || '24/10/2026');
 
@@ -904,7 +904,7 @@
 
         document.getElementById('inputTitle').value = art.title || '';
         document.getElementById('inputSummary').value = art.summary || '';
-        document.getElementById('inputAuthor').value = art.author || 'Kỹ Sư Trưởng';
+        document.getElementById('inputAuthor').value = art.author || 'Admin';
         document.getElementById('inputAuthorTitle').value = art.author_title || '';
         document.getElementById('inputReadTime').value = art.read_time || '10 phút đọc';
         document.getElementById('inputImageUrl').value = art.image || 'images/cabin_1.png';
@@ -930,7 +930,7 @@
         btnSaveText.innerText = "LƯU & XUẤT BẢN NGAY";
 
         document.getElementById('articleForm').reset();
-        document.getElementById('inputAuthor').value = "Kỹ Sư Trưởng";
+        document.getElementById('inputAuthor').value = "Admin";
         document.getElementById('inputAuthorTitle').value = "Chuyên Gia Thẩm Định Giếng Thang 34 Tỉnh Thành";
         document.getElementById('inputReadTime').value = "10 phút đọc";
         document.getElementById('inputImageUrl').value = "images/cabin_1.png";
@@ -1053,7 +1053,7 @@
       const catSlug = catVal[0];
       const catName = catVal[1];
       const imageUrl = document.getElementById('inputImageUrl').value.trim() || 'images/cabin_1.png';
-      const author = document.getElementById('inputAuthor').value.trim() || 'Kỹ Sư Trưởng';
+      const author = document.getElementById('inputAuthor').value.trim() || 'Admin';
       const authorTitle = document.getElementById('inputAuthorTitle').value.trim() || '';
       const readTime = document.getElementById('inputReadTime').value.trim() || '10 phút đọc';
       const summary = document.getElementById('inputSummary').value.trim();
@@ -1097,7 +1097,7 @@
         summary: summary,
         toc: toc.length > 0 ? toc : [
           { id: "muc-1", title: "1. Chi tiết phân tích kỹ thuật" },
-          { id: "muc-2", title: "2. Khuyến nghị Kỹ Sư Trưởng" }
+          { id: "muc-2", title: "2. Khuyến nghị Admin" }
         ],
         content_html: contentHtml
       };
@@ -1113,7 +1113,7 @@
     function previewArticleDraft() {
       const title = document.getElementById('inputTitle').value || 'Tiêu đề bài viết';
       const image = document.getElementById('inputImageUrl').value || 'images/cabin_1.png';
-      const author = document.getElementById('inputAuthor').value || 'Kỹ Sư Trưởng';
+      const author = document.getElementById('inputAuthor').value || 'Admin';
       const summary = document.getElementById('inputSummary').value || 'Tóm tắt bài viết...';
       const content = document.getElementById('inputContent').value || '<p>Nội dung đang soạn...</p>';
 
