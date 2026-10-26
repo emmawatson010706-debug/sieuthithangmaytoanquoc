@@ -2,35 +2,67 @@
 // HỆ THỐNG XUẤT HỒ SƠ BẢN VẼ SHOP DRAWING KỸ THUẬT HỐ THANG BÊ TÔNG (CHUẨN AUTOCAD KỸ SƯ GIỎI)
 // Đơn vị thiết kế & phát hành: SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
 // Hotline Admin: 0914.587.575 - Website: sieuthithangmaytoanquoc.com
-// Quy chuẩn áp dụng: QCVN 02:2019/BLĐTBXH • TCVN 6395:2008 • Bản vẽ Rev 04
+// Quy chuẩn áp dụng: QCVN 02:2019/BLĐTBXH • TCVN 6395:2008 • Bản vẽ Rev 05
 // Khổ in: Master A3 Kỹ Sư & Tập Hồ Sơ A4 (8 Trang Đóng Quyển Cân Đối Chuẩn 100%)
 // ==========================================================================================
 
 (function () {
   'use strict';
 
-  // 1. TÍNH TOÁN THÔNG SỐ ĐỘNG DỰA TRÊN KÍCH THƯỚC ĐẦU VÀO
-  function calculateShopDrawingSpecs(W, D, Pit, Oh, Stops, Capacity) {
+  // 1. TÍNH TOÁN THÔNG SỐ ĐỘNG - ĐỒNG BỘ CHÍNH XÁC 100% VỚI SỐ LIỆU KHÁCH NHẬP TRÊN WEB
+  function calculateShopDrawingSpecs(W, D, Pit, Oh, Stops, Capacity, customCW, customCD, customCO) {
     W = parseInt(W) || 1400;
     D = parseInt(D) || 1450;
     Pit = parseInt(Pit) || 350;
     Oh = parseInt(Oh) || 3200;
     Stops = parseInt(Stops) || 4;
 
-    var cap = parseInt(Capacity) || (W < 1350 ? 300 : (W < 1550 ? 450 : (W < 1850 ? 630 : 800)));
-    var speed = cap <= 450 ? 1.0 : 1.5; // m/s
-    var persons = Math.floor(cap / 75) || (cap <= 450 ? 6 : 9);
+    // Đọc chính xác số liệu hiển thị từ giao diện web (nếu có) để triệt tiêu 100% sai số
+    var webCW = null, webCD = null, webCO = null, webCap = null, webPersons = null;
 
-    // Kích thước Cabin thông thủy chuẩn
-    var CW = Math.max(750, W - 400); 
-    var CD = Math.max(750, D - 550);
+    if (typeof document !== 'undefined') {
+      var elCabin = document.getElementById('calcCabinSize') || document.getElementById('homeCalcCabin');
+      if (elCabin && elCabin.innerText && elCabin.innerText.includes('x')) {
+        var parts = elCabin.innerText.replace(/mm/g, '').split('x');
+        if (parts.length >= 2) {
+          webCW = parseInt(parts[0].trim());
+          webCD = parseInt(parts[1].trim());
+        }
+      }
+
+      var elDoor = document.getElementById('calcDoorSize') || document.getElementById('homeCalcDoor');
+      if (elDoor && elDoor.innerText && elDoor.innerText.includes('x')) {
+        var doorParts = elDoor.innerText.replace(/mm/g, '').split('x');
+        if (doorParts.length >= 1) {
+          webCO = parseInt(doorParts[0].trim());
+        }
+      }
+
+      var elCap = document.getElementById('calcCapacity') || document.getElementById('homeCalcCap');
+      if (elCap && elCap.innerText) {
+        var mCap = elCap.innerText.match(/(\d+)\s*kg/i);
+        if (mCap) webCap = parseInt(mCap[1]);
+        var mPer = elCap.innerText.match(/(\d+)\s*(?:-\s*(\d+))?\s*người/i);
+        if (mPer) webPersons = mPer[2] ? parseInt(mPer[2]) : parseInt(mPer[1]);
+      }
+    }
+
+    // Kích thước Cabin lọt lòng (đồng bộ chuẩn xác với công thức trên thiet-ke-cad.html & index.html)
+    var CW = customCW || webCW || Math.max(750, W - 380);
+    var CD = customCD || webCD || Math.max(750, D - 320);
     var CH = 2200;
 
     // Cửa mở tầng (Center Opening 2 cánh mở tim)
-    var CO = Math.max(650, Math.min(900, Math.round((CW * 0.6) / 50) * 50));
+    var CO = customCO || webCO || Math.min(800, Math.max(600, CW - 150));
     var DH = 2100;
-    var roughDoorW = CO + 400; // Ví dụ 650 + 400 = 1050
-    var roughDoorH = 2400;     // Lỗ chờ thô cao 2400 từ FFL
+    var roughDoorW = CO + 400; // Lỗ chờ thô lọt lòng (tiêu chuẩn CO + 400mm)
+    var roughDoorH = 2400;     // Lỗ chờ thô cao 2400mm từ FFL
+
+    // Tải trọng tính theo diện tích sàn Cabin (TCVN 6395 / EN 81-20)
+    var area = (CW * CD) / 1000000;
+    var cap = parseInt(Capacity) || webCap || (area >= 1.4 ? 630 : (area >= 1.1 ? 450 : (area >= 0.85 ? 350 : 300)));
+    var speed = cap <= 450 ? 1.0 : 1.5; // m/s
+    var persons = webPersons || (cap >= 630 ? 8 : (cap >= 450 ? 6 : (cap >= 350 ? 5 : 3)));
 
     // Phản lực tính toán kết cấu (kN)
     var R1 = (cap * 0.08 + 15).toFixed(1); // Lực đáy ray cabin khi phanh gấp
@@ -286,7 +318,7 @@
         <!-- Hàng 6: GHI CHÚ BẢN QUYỀN & LẦN SỬA ĐỔI -->
         <rect x="0" y="230" width="395" height="50" fill="#ffffff" stroke="#0f172a" stroke-width="0.8"/>
         <text x="12" y="248" fill="#475569" font-size="7.5" font-weight="bold">
-          LẦN BAN HÀNH: REV 04 • BẢN VẼ PHÁT HÀNH CHÍNH THỨC ĐỂ THI CÔNG HỐ THANG
+          LẦN BAN HÀNH: REV 05 • BẢN VẼ PHÁT HÀNH CHÍNH THỨC ĐỂ THI CÔNG HỐ THANG
         </text>
         <text x="12" y="264" fill="#0f172a" font-size="7.5" font-weight="900">
           * ĐỐI CHIẾU THỰC TẾ TRƯỚC KHI ĐỔ BÊ TÔNG SÀN &amp; DẦM GIẰNG GIỮ RAY
@@ -361,10 +393,10 @@
           <text x="332.5" y="30" fill="#0f172a" font-weight="900" class="cad-num" text-anchor="middle">${drawingNo}</text>
         </g>
 
-        <!-- Hàng 5: LẦN BAN HÀNH REV 04 -->
+        <!-- Hàng 5: LẦN BAN HÀNH REV 05 -->
         <rect x="0" y="154" width="380" height="34" fill="#ffffff" stroke="#0f172a" stroke-width="0.8"/>
         <text x="12" y="168" fill="#475569" font-size="7" font-weight="bold">
-          LẦN BAN HÀNH: REV 04 • PHÁT HÀNH CHÍNH THỨC THI CÔNG
+          LẦN BAN HÀNH: REV 05 • PHÁT HÀNH CHÍNH THỨC THI CÔNG
         </text>
         <text x="12" y="180" fill="#0f172a" font-size="7" font-weight="900">
           * ĐỐI CHIẾU THỰC TẾ TRƯỚC KHI ĐỔ BÊ TÔNG SÀN &amp; DẦM GIẰNG
@@ -478,7 +510,6 @@
       <g id="drawing2_roughDoorOpening" class="cad-drawing">
         ${cadTitleBubble(15, 12, "02", "CHỜ THÔ CỬA TẦNG (ROUGH OPENING)", "1/30")}
 
-        <!-- MẶT ĐỨNG LỖ CHỜ THÔ -->
         <g id="roughDoorElevation" transform="translate(25, 45)">
           <rect x="0" y="20" width="16" height="148" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
           <rect x="134" y="20" width="16" height="148" fill="url(#cadConcrete)" stroke="#0f172a" stroke-width="1"/>
@@ -509,7 +540,6 @@
           </text>
         </g>
 
-        <!-- MẶT CẮT 2-2 & 1-1 -->
         <g id="sectionGroup" transform="translate(195, 45)">
           <text x="60" y="10" fill="#0f172a" font-size="8" font-weight="900" text-anchor="middle">MẶT CẮT 2-2 (NGANG)</text>
           
@@ -920,17 +950,18 @@
         <rect x="15" y="15" width="1570" height="1100" fill="none" stroke="#0f172a" stroke-width="3"/>
         <rect x="20" y="20" width="1560" height="1090" fill="none" stroke="#0f172a" stroke-width="1.2"/>
 
+        <!-- BANNER HEADER TRÊN CÙNG KHỔ A3 (CĂN LỀ END TẠI X=1535, KHÔNG TRÀN VIỀN) -->
         <g id="headerBanner" transform="translate(20, 20)">
           <rect x="0" y="0" width="1560" height="46" fill="#ffffff" stroke="#0f172a" stroke-width="1.4"/>
-          <text x="25" y="29" fill="#0f172a" font-size="15" font-weight="900" letter-spacing="0.8">
+          <text x="25" y="29" fill="#0f172a" font-size="14.5" font-weight="900" letter-spacing="0.6">
             SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
           </text>
-          <line x1="430" y1="10" x2="430" y2="36" stroke="#cbd5e1" stroke-width="1"/>
-          <text x="445" y="29" fill="#334155" font-size="11" font-weight="700">
+          <line x1="420" y1="10" x2="420" y2="36" stroke="#cbd5e1" stroke-width="1"/>
+          <text x="435" y="29" fill="#334155" font-size="11" font-weight="700">
             HỒ SƠ BẢN VẼ SHOP DRAWING THIẾT KẾ THI CÔNG HỐ THANG BÊ TÔNG CỐT THÉP (07 MẶT CẮT TIÊU CHUẨN)
           </text>
-          <line x1="1290" y1="10" x2="1290" y2="36" stroke="#cbd5e1" stroke-width="1"/>
-          <text x="1310" y="29" fill="#0f172a" font-size="11.5" font-weight="900" class="cad-num">
+          <line x1="1260" y1="10" x2="1260" y2="36" stroke="#cbd5e1" stroke-width="1"/>
+          <text x="1535" y="29" fill="#0f172a" font-size="11.5" font-weight="900" class="cad-num" text-anchor="end">
             HOTLINE ADMIN: 0914.587.575
           </text>
         </g>
@@ -1147,7 +1178,7 @@
 
   // ==========================================================================================
   // HÀM ĐÓNG GÓI MỘT TRANG A4 BẢN VẼ VECTOR THUẦN TÚY (VIEWBOX 840 x 1188)
-  // ĐẢM BẢO CHÍNH XÁC 100% THEO TỶ LỆ VÀNG KHỔ GIẤY A4 (210mm x 297mm)
+  // SỐ ĐIỆN THOẠI CĂN PHẢI 'END' TẠI X=742 - TUYỆT ĐỐI KHÔNG TRÀN RA NGOÀI
   // ==========================================================================================
   function wrapA4SvgPage(specs, title, drawingNo, contentSvg, pageNum) {
     var defs = getCadDefs();
@@ -1163,18 +1194,28 @@
           <rect x="35" y="35" width="770" height="1118" fill="none" stroke="#0f172a" stroke-width="2.5"/>
           <rect x="40" y="40" width="760" height="1108" fill="none" stroke="#0f172a" stroke-width="1"/>
 
-          <!-- HEADER STRIP TRÊN CÙNG TRANG A4 -->
+          <!-- HEADER STRIP TRÊN CÙNG TRANG A4 (CĂN CHỈNH KHOẢNG CÁCH CHUẨN, KHÔNG TRÀN) -->
           <g id="a4Header" transform="translate(40, 40)">
             <rect x="0" y="0" width="760" height="45" fill="#ffffff" stroke="#0f172a" stroke-width="1.2"/>
-            <text x="20" y="28" fill="#0f172a" font-size="13" font-weight="900" letter-spacing="0.5">
+            
+            <!-- 1. Tên đơn vị thiết kế (Căn trái x=18) -->
+            <text x="18" y="28" fill="#0f172a" font-size="11.5" font-weight="900" letter-spacing="0.3">
               SIÊU THỊ THƯƠNG MẠI THANG MÁY TOÀN QUỐC
             </text>
-            <line x1="390" y1="10" x2="390" y2="35" stroke="#cbd5e1" stroke-width="1"/>
-            <text x="405" y="28" fill="#475569" font-size="10.5" font-weight="700">
+            
+            <!-- Vạch phân cách 1 tại x=330 -->
+            <line x1="330" y1="10" x2="330" y2="35" stroke="#cbd5e1" stroke-width="1"/>
+            
+            <!-- 2. Tên bộ hồ sơ (Căn giữa x=430) -->
+            <text x="430" y="28" fill="#475569" font-size="9" font-weight="700" text-anchor="middle">
               HỒ SƠ BẢN VẼ SHOP DRAWING KỸ THUẬT
             </text>
-            <line x1="630" y1="10" x2="630" y2="35" stroke="#cbd5e1" stroke-width="1"/>
-            <text x="645" y="28" fill="#0f172a" font-size="10" font-weight="900" class="cad-num">
+            
+            <!-- Vạch phân cách 2 tại x=535 -->
+            <line x1="535" y1="10" x2="535" y2="35" stroke="#cbd5e1" stroke-width="1"/>
+            
+            <!-- 3. Số trang & Số điện thoại (CĂN PHẢI 'END' TẠI X=742 - CÁCH MÉP PHẢI 18PX AN TOÀN) -->
+            <text x="742" y="28" fill="#0f172a" font-size="9.5" font-weight="900" class="cad-num" text-anchor="end">
               TRANG ${pageNum}/8 • 0914.587.575
             </text>
           </g>
@@ -1387,12 +1428,12 @@
   // MODAL XEM TRƯỚC VÀ ĐIỀU HƯỚNG BẢN VẼ TRÊN GIAO DIỆN WEB
   // ==========================================================================================
   window.openShopDrawingPdfModal = function (customW, customD, customPit, customOh, customStops, customCap) {
-    var W = customW || (document.getElementById('inputWidth') ? document.getElementById('inputWidth').value : (document.getElementById('homeInputW') ? document.getElementById('homeInputW').value : 1400));
-    var D = customD || (document.getElementById('inputDepth') ? document.getElementById('inputDepth').value : (document.getElementById('homeInputD') ? document.getElementById('homeInputD').value : 1450));
-    var Pit = customPit || (document.getElementById('inputPit') ? document.getElementById('inputPit').value : (document.getElementById('homeInputPit') ? document.getElementById('homeInputPit').value : 350));
-    var Oh = customOh || (document.getElementById('inputOh') ? document.getElementById('inputOh').value : (document.getElementById('homeInputOh') ? document.getElementById('homeInputOh').value : 3200));
-    var Stops = customStops || (document.getElementById('inputStops') ? document.getElementById('inputStops').value : (document.getElementById('homeInputStops') ? document.getElementById('homeInputStops').value : 4));
-    var Cap = customCap || (W < 1350 ? 300 : (W < 1550 ? 450 : 630));
+    var W = customW || (document.getElementById('inputWidth') ? document.getElementById('inputWidth').value : (document.getElementById('homeInputW') ? document.getElementById('homeInputW').value : (document.getElementById('inpW') ? document.getElementById('inpW').value : 1400)));
+    var D = customD || (document.getElementById('inputDepth') ? document.getElementById('inputDepth').value : (document.getElementById('homeInputD') ? document.getElementById('homeInputD').value : (document.getElementById('inpD') ? document.getElementById('inpD').value : 1450)));
+    var Pit = customPit || (document.getElementById('inputPit') ? document.getElementById('inputPit').value : (document.getElementById('homeInputPit') ? document.getElementById('homeInputPit').value : (document.getElementById('inpPit') ? document.getElementById('inpPit').value : 350)));
+    var Oh = customOh || (document.getElementById('inputOh') ? document.getElementById('inputOh').value : (document.getElementById('homeInputOh') ? document.getElementById('homeInputOh').value : (document.getElementById('inpOh') ? document.getElementById('inpOh').value : 3200)));
+    var Stops = customStops || (document.getElementById('inputStops') ? document.getElementById('inputStops').value : (document.getElementById('homeInputStops') ? document.getElementById('homeInputStops').value : (document.getElementById('inpStops') ? document.getElementById('inpStops').value : 4)));
+    var Cap = customCap;
 
     var specs = calculateShopDrawingSpecs(W, D, Pit, Oh, Stops, Cap);
     var masterSvgA3 = generateMasterShopDrawingSvgA3(specs);
@@ -1410,10 +1451,10 @@
           <span class="text-xl text-gold-400 flex-shrink-0">📐</span>
           <div class="min-w-0">
             <h3 class="font-black text-xs sm:text-sm text-gold-400 uppercase tracking-tight truncate">
-              HỒ SƠ BẢN VẼ SHOP DRAWING HỐ THANG BÊ TÔNG (07 MẶT CẮT KỸ THUẬT REV 04)
+              HỒ SƠ BẢN VẼ SHOP DRAWING HỐ THANG BÊ TÔNG (07 MẶT CẮT KỸ THUẬT REV 05)
             </h3>
             <p class="text-[10px] text-slate-300 hidden sm:block">
-              Chuẩn thẩm định kỹ thuật QCVN 02:2019 • Khổ A3 Kỹ Sư &amp; Tập A4 Cân Đối 100% 8 Trang • 0914.587.575
+              Chuẩn thẩm định kỹ thuật QCVN 02:2019 • Đồng bộ chính xác 100% kích thước W=${specs.W} x D=${specs.D} mm • Hotline: 0914.587.575
             </p>
           </div>
         </div>
@@ -1530,7 +1571,14 @@
   // IN BẢN VẼ A3 NGANG (BẢN KỸ SƯ / NHÀ THẦU)
   window.printShopDrawingA3 = function () {
     var specs = window._currentSpecs;
-    if (!specs) return;
+    if (!specs) {
+      var W = document.getElementById('inputWidth') ? document.getElementById('inputWidth').value : (document.getElementById('homeInputW') ? document.getElementById('homeInputW').value : (document.getElementById('inpW') ? document.getElementById('inpW').value : 1400));
+      var D = document.getElementById('inputDepth') ? document.getElementById('inputDepth').value : (document.getElementById('homeInputD') ? document.getElementById('homeInputD').value : (document.getElementById('inpD') ? document.getElementById('inpD').value : 1450));
+      var Pit = document.getElementById('inputPit') ? document.getElementById('inputPit').value : (document.getElementById('homeInputPit') ? document.getElementById('homeInputPit').value : (document.getElementById('inpPit') ? document.getElementById('inpPit').value : 350));
+      var Oh = document.getElementById('inputOh') ? document.getElementById('inputOh').value : (document.getElementById('homeInputOh') ? document.getElementById('homeInputOh').value : (document.getElementById('inpOh') ? document.getElementById('inpOh').value : 3200));
+      var Stops = document.getElementById('inputStops') ? document.getElementById('inputStops').value : (document.getElementById('homeInputStops') ? document.getElementById('homeInputStops').value : (document.getElementById('inpStops') ? document.getElementById('inpStops').value : 4));
+      specs = calculateShopDrawingSpecs(W, D, Pit, Oh, Stops);
+    }
     var masterSvg = generateMasterShopDrawingSvgA3(specs);
 
     var printWindow = window.open('', '_blank');
@@ -1579,7 +1627,14 @@
   // IN TẬP HỒ SƠ 8 TRANG A4 ĐÓNG QUYỂN (DÀNH CHO CHỦ NHÀ / THẨM ĐỊNH)
   window.printShopDrawingA4Booklet = function () {
     var specs = window._currentSpecs;
-    if (!specs) return;
+    if (!specs) {
+      var W = document.getElementById('inputWidth') ? document.getElementById('inputWidth').value : (document.getElementById('homeInputW') ? document.getElementById('homeInputW').value : (document.getElementById('inpW') ? document.getElementById('inpW').value : 1400));
+      var D = document.getElementById('inputDepth') ? document.getElementById('inputDepth').value : (document.getElementById('homeInputD') ? document.getElementById('homeInputD').value : (document.getElementById('inpD') ? document.getElementById('inpD').value : 1450));
+      var Pit = document.getElementById('inputPit') ? document.getElementById('inputPit').value : (document.getElementById('homeInputPit') ? document.getElementById('homeInputPit').value : (document.getElementById('inpPit') ? document.getElementById('inpPit').value : 350));
+      var Oh = document.getElementById('inputOh') ? document.getElementById('inputOh').value : (document.getElementById('homeInputOh') ? document.getElementById('homeInputOh').value : (document.getElementById('inpOh') ? document.getElementById('inpOh').value : 3200));
+      var Stops = document.getElementById('inputStops') ? document.getElementById('inputStops').value : (document.getElementById('homeInputStops') ? document.getElementById('homeInputStops').value : (document.getElementById('inpStops') ? document.getElementById('inpStops').value : 4));
+      specs = calculateShopDrawingSpecs(W, D, Pit, Oh, Stops);
+    }
     var printWindow = window.open('', '_blank');
     printWindow.document.write(generateMultiPageA4Html(specs));
     printWindow.document.close();
