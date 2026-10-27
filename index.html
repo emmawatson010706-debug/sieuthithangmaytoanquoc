@@ -249,6 +249,80 @@
       animation: flashGlow 1.6s ease-in-out infinite;
     }
 
+  
+    /* ==========================================================================
+       ANIMATE UI ENHANCEMENTS: LUXURY SPRING MOTION & INTERACTIVE SIMULATOR
+       ========================================================================== */
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-100%); }
+      35%, 100% { transform: translateX(250%); }
+    }
+    .shimmer-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 45%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg);
+      animation: shimmerSweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseRadar {
+      0% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.75); }
+      70% { box-shadow: 0 0 0 16px rgba(217, 119, 6, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0); }
+    }
+    .pulse-radar {
+      animation: pulseRadar 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Cabin 3D perspective hover */
+    .cabin-card-3d {
+      transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    .cabin-card-3d:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 22px 36px -10px rgba(15, 23, 42, 0.35), 0 0 0 2px rgba(217, 119, 6, 0.5);
+    }
+
+    /* Interactive Elevator Simulator Shaft Styles */
+    .shaft-track {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border: 1px solid rgba(217, 119, 6, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .elevator-cable {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      background: linear-gradient(180deg, #94a3b8 0%, #475569 100%);
+    }
+    .elevator-counterweight {
+      position: absolute;
+      width: 14px;
+      height: 38px;
+      background: linear-gradient(135deg, #475569, #334155);
+      border: 1px solid #94a3b8;
+      border-radius: 3px;
+      transition: top 0.75s cubic-bezier(0.34, 1.35, 0.64, 1);
+    }
+    .elevator-cabin {
+      transition: top 0.75s cubic-bezier(0.34, 1.35, 0.64, 1);
+      will-change: top;
+    }
+    .floor-btn-active {
+      background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+      color: #0f172a !important;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.8) !important;
+      border-color: #fef08a !important;
+      font-weight: 900 !important;
+    }
+
   </style>
 
 
@@ -499,7 +573,7 @@
           </p>
           
           <div class="pt-2 flex flex-wrap gap-3">
-            <button onclick="scrollToEstimator()" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-navy-950 font-black px-4 py-3 sm:px-6 rounded-xl text-xs uppercase shadow-lg transition text-center leading-snug">
+            <button onclick="scrollToEstimator()" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-navy-950 font-black px-4 py-3 sm:px-6 rounded-xl text-xs uppercase shadow-lg transition text-center leading-snug shimmer-btn active:scale-95">
               ⚡ TÍNH DỰ TOÁN BÁO GIÁ TRONG 30S
             </button>
             <a href="tel:0914587575" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-4 py-3 sm:px-5 rounded-xl text-xs backdrop-blur-sm transition flex items-center justify-center gap-2 text-center leading-snug">
@@ -526,28 +600,86 @@
 
       </div>
 
-      <!-- 2 Banner bên cạnh -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+      <!-- CỘT PHẢI: MÔ HÌNH THANG MÁY TƯƠNG TÁC ĐỘNG (INTERACTIVE ELEVATOR SHAFT SIMULATOR) & DOCK LIÊN KẾT -->
+      <div class="rounded-2xl bg-gradient-to-b from-navy-900 via-slate-900 to-navy-950 border border-gold-500/40 p-4 sm:p-5 text-white shadow-2xl flex flex-col justify-between relative overflow-hidden space-y-3.5">
         
-        <div class="rounded-2xl p-5 bg-gradient-to-br from-amber-600 to-gold-700 text-white shadow-lg flex flex-col justify-between">
-          <div>
-            <span class="text-[10px] font-black uppercase bg-black/20 px-2 py-0.5 rounded text-white">DÀNH CHO KIẾN TRÚC SƯ & TỔNG THẦU</span>
-            <h3 class="text-base font-black mt-2 leading-snug">Chiết Khấu Hoa Hồng 10% (15Tr - 40Tr / Cây Thang)</h3>
-            <p class="text-xs text-amber-100 mt-1">Cung cấp trọn bộ CAD, Revit BIM hố thang, dầm giằng cho hồ sơ xin cấp phép xây dựng.</p>
+        <!-- HIỆU ỨNG ÁNH ĐÈN NỀN XANH GOLD -->
+        <div class="absolute -top-10 -right-10 w-44 h-44 bg-gold-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- MÀN HÌNH LED KỸ THUẬT SỐ CỦA THANG MÁY -->
+        <div class="relative z-10 bg-navy-950/95 rounded-xl border border-slate-700/80 p-2.5 flex items-center justify-between shadow-inner">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">LIVE 34 TỈNH</span>
           </div>
-          <a href="/chiet-khau" class="mt-4 text-xs font-black text-navy-950 bg-white py-2 px-3 rounded-lg text-center uppercase tracking-wider hover:bg-amber-100 transition shadow">
-            Xem chính sách hoa hồng KTS &gt;
-          </a>
+          <div class="flex items-center gap-1.5 font-mono text-gold-400 font-black text-xs">
+            <span id="shaftDirArrow" class="text-amber-400 font-bold">▲</span>
+            <span id="shaftFloorLabel">TẦNG 3</span>
+            <span class="text-slate-500 text-[10px]">|</span>
+            <span id="shaftFloorHeight" class="text-slate-300 text-[10px]">9.9m</span>
+          </div>
         </div>
 
-        <div class="rounded-2xl p-5 bg-navy-900 border border-slate-700 text-white shadow-lg flex flex-col justify-between">
-          <div>
-            <span class="text-[10px] font-black uppercase bg-gold-500 text-navy-950 px-2 py-0.5 rounded">HỢP TÁC NHÀ MÁY & TỔNG KHO</span>
-            <h3 class="text-base font-black mt-2 leading-snug">Kêu Gọi Các Hãng & Xưởng Đưa Thang Lên Kệ</h3>
-            <p class="text-xs text-slate-300 mt-1">Kết nối mạng lưới tiêu thụ trực tiếp tới các công trình xây dựng đang triển khai trên 34 tỉnh thành.</p>
+        <!-- KHUNG GIẾNG THANG MÁY KÍNH TRONG SUỐT (5 TẦNG) -->
+        <div id="simShaftWrapper" class="relative z-10 shaft-track rounded-xl h-56 p-2 flex items-stretch justify-between">
+          
+          <!-- THƯỚC ĐO TẦNG BÊN TRÁI -->
+          <div class="flex flex-col justify-between text-[10px] font-mono font-bold text-slate-400 pr-2 border-r border-slate-700/60 select-none">
+            <span class="flex items-center gap-1"><span class="text-amber-400">F5</span> <span class="text-[8px] text-slate-500">OH</span></span>
+            <span class="flex items-center gap-1"><span>F4</span></span>
+            <span class="flex items-center gap-1"><span>F3</span></span>
+            <span class="flex items-center gap-1"><span>F2</span></span>
+            <span class="flex items-center gap-1"><span class="text-amber-400">F1</span> <span class="text-[8px] text-slate-500">PIT</span></span>
           </div>
-          <a href="/doi-tac" class="mt-4 text-xs font-black text-gold-400 border border-gold-500/50 py-2 px-3 rounded-lg text-center uppercase tracking-wider hover:bg-gold-500 hover:text-navy-950 transition">
-            Đăng ký đưa mẫu lên sàn &gt;
+
+          <!-- LÒNG GIẾNG THANG & CABIN KÍNH CHUYỂN ĐỘNG -->
+          <div class="relative flex-1 mx-2 overflow-hidden border-x border-slate-700/40">
+            <!-- Ray dẫn hướng ray cáp -->
+            <div class="elevator-cable left-1/2 -translate-x-1/2 h-full"></div>
+            <!-- Đối trọng chạy ngược chiều -->
+            <div id="simCounterweight" class="elevator-counterweight right-1" style="top: 95px;"></div>
+            
+            <!-- CABIN THANG MÁY KÍNH NGHỆ THUẬT -->
+            <div id="simCabin" class="elevator-cabin absolute left-1/2 -translate-x-1/2 w-28 sm:w-32 h-12 bg-gradient-to-r from-amber-500/25 via-gold-400/35 to-amber-600/25 border-2 border-gold-400/90 rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.5)] backdrop-blur-sm p-1.5 flex items-center justify-between" style="top: 80px;">
+              <div class="w-2 h-full bg-gold-400/70 rounded-sm"></div>
+              <div class="text-center">
+                <div class="text-[9px] font-black text-gold-300 uppercase leading-none">PANORAMIC</div>
+                <div class="text-[8px] text-white/90 font-mono">450kg • 6 người</div>
+              </div>
+              <div class="w-2 h-full bg-gold-400/70 rounded-sm"></div>
+            </div>
+
+            <!-- Tầng đang dừng indicator -->
+            <div class="absolute bottom-1 right-1 text-[8px] text-slate-500 font-mono">1.0 m/s MRL</div>
+          </div>
+
+          <!-- BÀN PHÍM BẤM GỌI TẦNG BÊN PHẢI (INTERACTIVE BUTTONS) -->
+          <div class="flex flex-col justify-between items-center pl-2 border-l border-slate-700/60">
+            <button type="button" onclick="moveSimFloor(5)" id="btnSimFloor5" class="w-6 h-6 rounded-full bg-navy-800 border border-slate-600 text-[10px] font-bold text-slate-300 hover:border-gold-400 active:scale-95 transition flex items-center justify-center">5</button>
+            <button type="button" onclick="moveSimFloor(4)" id="btnSimFloor4" class="w-6 h-6 rounded-full bg-navy-800 border border-slate-600 text-[10px] font-bold text-slate-300 hover:border-gold-400 active:scale-95 transition flex items-center justify-center">4</button>
+            <button type="button" onclick="moveSimFloor(3)" id="btnSimFloor3" class="w-6 h-6 rounded-full bg-navy-800 border border-slate-600 text-[10px] font-bold text-slate-300 hover:border-gold-400 active:scale-95 transition flex items-center justify-center floor-btn-active">3</button>
+            <button type="button" onclick="moveSimFloor(2)" id="btnSimFloor2" class="w-6 h-6 rounded-full bg-navy-800 border border-slate-600 text-[10px] font-bold text-slate-300 hover:border-gold-400 active:scale-95 transition flex items-center justify-center">2</button>
+            <button type="button" onclick="moveSimFloor(1)" id="btnSimFloor1" class="w-6 h-6 rounded-full bg-navy-800 border border-slate-600 text-[10px] font-bold text-slate-300 hover:border-gold-400 active:scale-95 transition flex items-center justify-center">1</button>
+          </div>
+
+        </div>
+
+        <div class="text-[10px] text-center text-slate-400 italic">
+          👆 Bấm nút số tầng để xem cabin trượt và hiển thị thông số hố thang
+        </div>
+
+        <!-- 2 KHỐI TIỆN ÍCH KTS & ĐỐI TÁC GỌN GÀNG, SANG TRỌNG -->
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 text-xs">
+          <a href="/chiet-khau" class="rounded-xl p-2.5 bg-gradient-to-br from-amber-600/90 to-gold-700/90 hover:from-amber-600 hover:to-gold-600 text-white shadow transition group">
+            <div class="text-[9px] font-black uppercase text-amber-200">KTS & TỔNG THẦU</div>
+            <div class="font-bold text-xs mt-0.5 group-hover:text-amber-100">Hoa hồng 10% &gt;</div>
+            <div class="text-[10px] text-amber-200/90 mt-0.5">15Tr - 40Tr / thang</div>
+          </a>
+
+          <a href="/doi-tac" class="rounded-xl p-2.5 bg-navy-800/90 hover:bg-navy-700 border border-slate-700 text-white shadow transition group">
+            <div class="text-[9px] font-black uppercase text-gold-400">XƯỞNG & ĐẠI LÝ</div>
+            <div class="font-bold text-xs mt-0.5 group-hover:text-gold-300">Đưa Thang Lên Sàn &gt;</div>
+            <div class="text-[10px] text-slate-300 mt-0.5">Tiếp cận 34 tỉnh</div>
           </a>
         </div>
 
@@ -1854,7 +1986,7 @@
       const totalMin = basePrice + stopAddon + capAddon + motorAddon;
       const totalMax = totalMin + 40000000;
 
-      document.getElementById('estimatedPriceText').innerText = `${formatVND(totalMin)} - ${formatVND(totalMax)}`;
+      animatePriceCounter(totalMin, totalMax);
       document.getElementById('shaftSizeText').innerText = `${W}mm x ${D}mm`;
       
       const motorNames = { 'fuji': 'Fuji PMSM Nhật Bản', 'montanari': 'Montanari Made in Italy', 'ziehl': 'Ziehl-Abegg Đức' };
@@ -2176,6 +2308,104 @@
   <!-- Lead Engine & Notification System -->
   <script src="lead-engine.js" defer></script>
   <!-- Shop Drawing PDF Exporter -->
-  <script src="shop-drawing-pdf.js?v=20261026_cad_v6" defer></script>
+  <script src="shop-drawing-pdf.js?v=20261026_cad_v6" defer>
+  // =========================================================================
+  // ANIMATE UI: INTERACTIVE ELEVATOR SHAFT SIMULATOR & PRICE COUNTER ENGINE
+  // =========================================================================
+  let currentSimFloor = 3;
+  const simFloorPositions = {
+    5: { cabinTop: 10, weightTop: 170, height: '16.5m', name: 'TẦNG 5 (TUM)' },
+    4: { cabinTop: 45, weightTop: 130, height: '13.2m', name: 'TẦNG 4' },
+    3: { cabinTop: 80, weightTop: 95, height: '9.9m', name: 'TẦNG 3' },
+    2: { cabinTop: 120, weightTop: 55, height: '6.6m', name: 'TẦNG 2' },
+    1: { cabinTop: 160, weightTop: 15, height: '3.3m', name: 'TẦNG 1 (TRỆT)' }
+  };
+
+  function moveSimFloor(floor) {
+    if (floor === currentSimFloor) return;
+    const target = simFloorPositions[floor];
+    if (!target) return;
+    
+    const arrowEl = document.getElementById('shaftDirArrow');
+    const labelEl = document.getElementById('shaftFloorLabel');
+    const heightEl = document.getElementById('shaftFloorHeight');
+    const cabinEl = document.getElementById('simCabin');
+    const weightEl = document.getElementById('simCounterweight');
+
+    if (arrowEl) {
+      arrowEl.innerText = floor > currentSimFloor ? '▲' : '▼';
+      arrowEl.className = floor > currentSimFloor ? 'text-amber-400 font-bold' : 'text-blue-400 font-bold';
+    }
+
+    for (let f = 1; f <= 5; f++) {
+      const btn = document.getElementById('btnSimFloor' + f);
+      if (btn) {
+        if (f === floor) btn.classList.add('floor-btn-active');
+        else btn.classList.remove('floor-btn-active');
+      }
+    }
+
+    if (cabinEl) cabinEl.style.top = target.cabinTop + 'px';
+    if (weightEl) weightEl.style.top = target.weightTop + 'px';
+    if (labelEl) labelEl.innerText = target.name;
+    if (heightEl) heightEl.innerText = target.height;
+
+    currentSimFloor = floor;
+  }
+
+  // Auto idle demo for elevator shaft (every 6 seconds if user not interacting)
+  let simAutoTimer = setInterval(function() {
+    const nextFloor = (currentSimFloor % 5) + 1;
+    moveSimFloor(nextFloor);
+  }, 6500);
+
+  const shaftWrapper = document.getElementById('simShaftWrapper');
+  if (shaftWrapper) {
+    shaftWrapper.addEventListener('mouseenter', function() { clearInterval(simAutoTimer); });
+  }
+
+  // Smooth Price Counter Animation (Odometer Effect)
+  let currentMinPrice = 0;
+  let currentMaxPrice = 0;
+  let priceAnimFrame = null;
+
+  function animatePriceCounter(targetMin, targetMax) {
+    const formatVND = n => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n);
+    const el = document.getElementById('estimatedPriceText');
+    if (!el) return;
+
+    if (currentMinPrice === 0) {
+      currentMinPrice = targetMin;
+      currentMaxPrice = targetMax;
+      el.innerText = `${formatVND(targetMin)} - ${formatVND(targetMax)}`;
+      return;
+    }
+
+    if (priceAnimFrame) cancelAnimationFrame(priceAnimFrame);
+    const start = performance.now();
+    const startMin = currentMinPrice;
+    const startMax = currentMaxPrice;
+    const duration = 400; // 400ms smooth spring transition
+
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Spring ease-out curve
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const curMin = Math.round(startMin + (targetMin - startMin) * ease);
+      const curMax = Math.round(startMax + (targetMax - startMax) * ease);
+      el.innerText = `${formatVND(curMin)} - ${formatVND(curMax)}`;
+
+      if (progress < 1) {
+        priceAnimFrame = requestAnimationFrame(step);
+      } else {
+        currentMinPrice = targetMin;
+        currentMaxPrice = targetMax;
+      }
+    }
+    priceAnimFrame = requestAnimationFrame(step);
+  }
+
+</script>
 </body>
 </html>
