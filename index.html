@@ -621,117 +621,109 @@
         </div>
 
         <!-- KHUNG GIẾNG THANG MÁY KÍNH TRONG SUỐT (5 TẦNG) -->
-        <div id="simShaftWrapper" class="relative z-10 shaft-track rounded-xl h-60 p-2.5 flex items-stretch justify-between bg-slate-950/80 border border-gold-500/50 shadow-inner">
+        <div id="simShaftWrapper" class="relative z-10 shaft-track rounded-xl h-60 p-2 flex items-stretch justify-between bg-slate-950/90 border border-gold-500/60 shadow-2xl">
           
           <!-- THƯỚC ĐO TẦNG BÊN TRÁI -->
           <div class="flex flex-col justify-between text-[10px] font-mono font-bold text-slate-400 pr-2 border-r border-slate-700/60 select-none py-1">
-            <span class="flex items-center gap-1"><span class="text-amber-400">F5</span> <span class="text-[8px] text-slate-500">OH</span></span>
-            <span class="flex items-center gap-1"><span>F4</span></span>
-            <span class="flex items-center gap-1"><span>F3</span></span>
-            <span class="flex items-center gap-1"><span>F2</span></span>
-            <span class="flex items-center gap-1"><span class="text-amber-400">F1</span> <span class="text-[8px] text-slate-500">PIT</span></span>
+            <span class="flex items-center gap-1"><span class="text-amber-400 font-black">F5</span> <span class="text-[8px] text-slate-500">OH</span></span>
+            <span class="flex items-center gap-1"><span class="text-slate-300">F4</span></span>
+            <span class="flex items-center gap-1"><span class="text-slate-300">F3</span></span>
+            <span class="flex items-center gap-1"><span class="text-slate-300">F2</span></span>
+            <span class="flex items-center gap-1"><span class="text-amber-400 font-black">F1</span> <span class="text-[8px] text-slate-500">PIT</span></span>
           </div>
 
           <!-- LÒNG GIẾNG THANG & CABIN KÍNH CHUYỂN ĐỘNG -->
-          <div class="relative flex-1 h-full mx-2 overflow-hidden border-x border-slate-700/50 bg-navy-950/40 rounded">
-            <!-- Ray dẫn hướng ray cáp -->
-            <div class="elevator-cable left-1/2 -translate-x-1/2 h-full"></div>
-            <!-- Đối trọng chạy ngược chiều -->
-            <div id="simCounterweight" class="elevator-counterweight right-1" style="top: 88px; transition: top 0.65s cubic-bezier(0.34, 1.35, 0.64, 1); will-change: top;"></div>
+          <div class="relative flex-1 h-full mx-2 overflow-hidden border-x border-slate-700/60 bg-navy-950/60 rounded">
+            <!-- Ray cáp treo trung tâm -->
+            <div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gradient-to-b from-slate-400 via-slate-600 to-slate-800 z-0"></div>
+            <!-- Đối trọng thép chạy ngược chiều -->
+            <div id="simCounterweight" class="absolute right-1 w-3 h-10 bg-gradient-to-b from-slate-400 to-slate-700 border border-slate-400 rounded-sm shadow z-10" style="top: 0px; transform: translateY(82px); transition: transform 0.65s cubic-bezier(0.34, 1.4, 0.64, 1); will-change: transform;"></div>
             
-            <!-- CABIN THANG MÁY KÍNH NGHỆ THUẬT -->
-            <div id="simCabin" class="elevator-cabin absolute left-1/2 -translate-x-1/2 w-28 sm:w-32 h-12 bg-gradient-to-r from-amber-500/30 via-gold-400/40 to-amber-600/30 border-2 border-gold-400 rounded-lg shadow-[0_0_20px_rgba(245,158,11,0.6)] backdrop-blur-sm p-1.5 flex items-center justify-between cursor-pointer" style="top: 82px; transition: top 0.65s cubic-bezier(0.34, 1.35, 0.64, 1); will-change: top;">
-              <div class="w-2 h-full bg-gold-400/80 rounded-sm"></div>
+            <!-- CABIN THANG MÁY KÍNH NGHỆ THUẬT CHUYỂN ĐỘNG THEO TRANSFORM GPU -->
+            <div id="simCabin" onclick="moveSimFloor((window.currentSimFloor % 5) + 1)" title="Bấm vào cabin để đổi tầng" class="absolute left-1/2 w-28 sm:w-32 h-12 bg-gradient-to-r from-amber-500/35 via-gold-400/45 to-amber-600/35 border-2 border-gold-400 rounded-lg shadow-[0_0_20px_rgba(245,158,11,0.7)] backdrop-blur-sm p-1.5 flex items-center justify-between cursor-pointer z-10" style="top: 0px; transform: translate(-50%, 82px); transition: transform 0.65s cubic-bezier(0.34, 1.4, 0.64, 1); will-change: transform;">
+              <div class="w-2 h-full bg-gold-400/90 rounded-sm"></div>
               <div class="text-center select-none">
                 <div class="text-[9px] font-black text-gold-300 uppercase leading-none">PANORAMIC</div>
                 <div class="text-[8px] text-white font-mono mt-0.5">450kg • 6 người</div>
               </div>
-              <div class="w-2 h-full bg-gold-400/80 rounded-sm"></div>
+              <div class="w-2 h-full bg-gold-400/90 rounded-sm"></div>
             </div>
 
             <!-- Tầng đang dừng indicator -->
-            <div class="absolute bottom-1 right-1 text-[8px] text-slate-500 font-mono">1.0 m/s MRL</div>
+            <div class="absolute bottom-1 right-1 text-[8px] text-slate-500 font-mono z-0">1.0 m/s MRL</div>
           </div>
 
           <!-- BÀN PHÍM BẤM GỌI TẦNG BÊN PHẢI (INTERACTIVE BUTTONS) -->
           <div class="flex flex-col justify-between items-center pl-2 border-l border-slate-700/60 py-0.5 z-20">
-            <button type="button" onclick="window.moveSimFloor(5)" id="btnSimFloor5" class="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">5</button>
-            <button type="button" onclick="window.moveSimFloor(4)" id="btnSimFloor4" class="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">4</button>
-            <button type="button" onclick="window.moveSimFloor(3)" id="btnSimFloor3" class="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-gradient-to-r from-amber-500 to-gold-400 text-navy-950 font-black text-xs border-2 border-yellow-200 shadow-[0_0_12px_rgba(245,158,11,0.9)] flex items-center justify-center cursor-pointer scale-110 transition select-none">3</button>
-            <button type="button" onclick="window.moveSimFloor(2)" id="btnSimFloor2" class="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">2</button>
-            <button type="button" onclick="window.moveSimFloor(1)" id="btnSimFloor1" class="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">1</button>
+            <button type="button" onclick="moveSimFloor(5)" id="btnSimFloor5" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">5</button>
+            <button type="button" onclick="moveSimFloor(4)" id="btnSimFloor4" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">4</button>
+            <button type="button" onclick="moveSimFloor(3)" id="btnSimFloor3" class="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-gold-400 text-navy-950 font-black text-xs border-2 border-yellow-200 shadow-[0_0_12px_rgba(245,158,11,0.9)] flex items-center justify-center cursor-pointer scale-110 transition select-none">3</button>
+            <button type="button" onclick="moveSimFloor(2)" id="btnSimFloor2" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">2</button>
+            <button type="button" onclick="moveSimFloor(1)" id="btnSimFloor1" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none">1</button>
           </div>
 
         </div>
 
         <div class="text-[10px] text-center text-gold-300/90 font-medium">
-          👆 Bấm vào số tầng 1, 2, 3, 4, 5 để xem cabin trượt thực tế
+          👆 Bấm vào số tầng 1, 2, 3, 4, 5 để xem cabin lướt thực tế
         </div>
 
-        <!-- SCRIPT ĐIỀU KHIỂN THANG MÁY CHẠY NGAY TẠI CHỖ (ZERO DELAY) -->
         <script>
-          (function() {
-            window.currentSimFloor = 3;
-            var targets = {
-              5: { top: 8, wTop: 165, h: '16.5m', name: 'TẦNG 5 (TUM)' },
-              4: { top: 46, wTop: 125, h: '13.2m', name: 'TẦNG 4' },
-              3: { top: 84, wTop: 88, h: '9.9m', name: 'TẦNG 3' },
-              2: { top: 122, wTop: 50, h: '6.6m', name: 'TẦNG 2' },
-              1: { top: 160, wTop: 12, h: '3.3m', name: 'TẦNG 1 (TRỆT)' }
-            };
+          // =========================================================================
+          // BULLETPROOF TRANSFORM-BASED ELEVATOR SIMULATOR ENGINE
+          // =========================================================================
+          window.currentSimFloor = 3;
 
-            window.moveSimFloor = function(floor) {
-              floor = parseInt(floor, 10);
-              var t = targets[floor];
-              if (!t) return;
+          var simTargets = {
+            5: { y: 6, wy: 155, h: '16.5m', name: 'TẦNG 5 (TUM)' },
+            4: { y: 44, wy: 118, h: '13.2m', name: 'TẦNG 4' },
+            3: { y: 82, wy: 82, h: '9.9m', name: 'TẦNG 3' },
+            2: { y: 120, wy: 45, h: '6.6m', name: 'TẦNG 2' },
+            1: { y: 158, wy: 6, h: '3.3m', name: 'TẦNG 1 (TRỆT)' }
+          };
 
-              var arrow = document.getElementById('shaftDirArrow');
-              var label = document.getElementById('shaftFloorLabel');
-              var height = document.getElementById('shaftFloorHeight');
-              var cabin = document.getElementById('simCabin');
-              var weight = document.getElementById('simCounterweight');
+          function moveSimFloor(floor) {
+            floor = parseInt(floor, 10);
+            if (!simTargets[floor]) return;
 
-              if (arrow) {
-                arrow.innerText = floor >= window.currentSimFloor ? '▲' : '▼';
-                arrow.className = floor >= window.currentSimFloor ? 'text-amber-400 font-bold' : 'text-blue-400 font-bold';
-              }
-              if (label) label.innerText = t.name;
-              if (height) height.innerText = t.h;
+            var t = simTargets[floor];
+            var oldFloor = window.currentSimFloor || 3;
 
-              if (cabin) {
-                cabin.style.top = t.top + 'px';
-              }
-              if (weight) {
-                weight.style.top = t.wTop + 'px';
-              }
+            var arrow = document.getElementById('shaftDirArrow');
+            var label = document.getElementById('shaftFloorLabel');
+            var height = document.getElementById('shaftFloorHeight');
+            var cabin = document.getElementById('simCabin');
+            var weight = document.getElementById('simCounterweight');
 
-              for (var f = 1; f <= 5; f++) {
-                var b = document.getElementById('btnSimFloor' + f);
-                if (b) {
-                  if (f === floor) {
-                    b.className = 'w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-gradient-to-r from-amber-500 to-gold-400 text-navy-950 font-black text-xs border-2 border-yellow-200 shadow-[0_0_12px_rgba(245,158,11,0.9)] flex items-center justify-center cursor-pointer scale-110 transition select-none';
-                  } else {
-                    b.className = 'w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none';
-                  }
+            if (arrow) {
+              arrow.innerText = floor >= oldFloor ? '▲' : '▼';
+              arrow.className = floor >= oldFloor ? 'text-amber-400 font-bold' : 'text-blue-400 font-bold';
+            }
+            if (label) label.innerText = t.name;
+            if (height) height.innerText = t.h;
+
+            if (cabin) {
+              cabin.style.transform = 'translate(-50%, ' + t.y + 'px)';
+            }
+            if (weight) {
+              weight.style.transform = 'translateY(' + t.wy + 'px)';
+            }
+
+            for (var f = 1; f <= 5; f++) {
+              var btn = document.getElementById('btnSimFloor' + f);
+              if (btn) {
+                if (f === floor) {
+                  btn.className = 'w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-gold-400 text-navy-950 font-black text-xs border-2 border-yellow-200 shadow-[0_0_14px_rgba(245,158,11,0.95)] flex items-center justify-center cursor-pointer scale-110 transition select-none';
+                } else {
+                  btn.className = 'w-8 h-8 rounded-full bg-navy-800 border border-slate-600 text-slate-300 hover:border-gold-400 text-xs font-bold active:scale-95 flex items-center justify-center cursor-pointer transition select-none';
                 }
               }
+            }
 
-              window.currentSimFloor = floor;
-            };
+            window.currentSimFloor = floor;
+          }
 
-            // Bind click event listeners explicitly
-            document.addEventListener('DOMContentLoaded', function() {
-              [1, 2, 3, 4, 5].forEach(function(f) {
-                var btn = document.getElementById('btnSimFloor' + f);
-                if (btn) {
-                  btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.moveSimFloor(f);
-                  });
-                }
-              });
-            });
-          })();
+          window.moveSimFloor = moveSimFloor;
         </script>
         <!-- 2 KHỐI TIỆN ÍCH KTS & ĐỐI TÁC GỌN GÀNG, SANG TRỌNG -->
         <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 text-xs">
@@ -2375,65 +2367,6 @@
   <!-- Shop Drawing PDF Exporter -->
   <script src="shop-drawing-pdf.js?v=20261026_cad_v6" defer></script>
   <script>
-  // =========================================================================
-  // ANIMATE UI: INTERACTIVE ELEVATOR SHAFT SIMULATOR & PRICE COUNTER ENGINE
-  // =========================================================================
-  let currentSimFloor = 3;
-  const simFloorPositions = {
-    5: { cabinTop: 10, weightTop: 170, height: '16.5m', name: 'TẦNG 5 (TUM)' },
-    4: { cabinTop: 45, weightTop: 130, height: '13.2m', name: 'TẦNG 4' },
-    3: { cabinTop: 80, weightTop: 95, height: '9.9m', name: 'TẦNG 3' },
-    2: { cabinTop: 120, weightTop: 55, height: '6.6m', name: 'TẦNG 2' },
-    1: { cabinTop: 160, weightTop: 15, height: '3.3m', name: 'TẦNG 1 (TRỆT)' }
-  };
-
-  window.moveSimFloor = function(floor) {
-    moveSimFloor(floor);
-  };
-
-  function moveSimFloor(floor) {
-    if (floor === currentSimFloor) return;
-    const target = simFloorPositions[floor];
-    if (!target) return;
-    
-    const arrowEl = document.getElementById('shaftDirArrow');
-    const labelEl = document.getElementById('shaftFloorLabel');
-    const heightEl = document.getElementById('shaftFloorHeight');
-    const cabinEl = document.getElementById('simCabin');
-    const weightEl = document.getElementById('simCounterweight');
-
-    if (arrowEl) {
-      arrowEl.innerText = floor > currentSimFloor ? '▲' : '▼';
-      arrowEl.className = floor > currentSimFloor ? 'text-amber-400 font-bold' : 'text-blue-400 font-bold';
-    }
-
-    for (let f = 1; f <= 5; f++) {
-      const btn = document.getElementById('btnSimFloor' + f);
-      if (btn) {
-        if (f === floor) btn.classList.add('floor-btn-active');
-        else btn.classList.remove('floor-btn-active');
-      }
-    }
-
-    if (cabinEl) cabinEl.style.top = target.cabinTop + 'px';
-    if (weightEl) weightEl.style.top = target.weightTop + 'px';
-    if (labelEl) labelEl.innerText = target.name;
-    if (heightEl) heightEl.innerText = target.height;
-
-    currentSimFloor = floor;
-  }
-
-  // Auto idle demo for elevator shaft (every 6 seconds if user not interacting)
-  let simAutoTimer = setInterval(function() {
-    const nextFloor = (currentSimFloor % 5) + 1;
-    moveSimFloor(nextFloor);
-  }, 6500);
-
-  const shaftWrapper = document.getElementById('simShaftWrapper');
-  if (shaftWrapper) {
-    shaftWrapper.addEventListener('mouseenter', function() { clearInterval(simAutoTimer); });
-  }
-
   // Smooth Price Counter Animation (Odometer Effect)
   let currentMinPrice = 0;
   let currentMaxPrice = 0;
