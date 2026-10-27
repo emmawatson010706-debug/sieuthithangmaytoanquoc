@@ -2308,7 +2308,8 @@
   <!-- Lead Engine & Notification System -->
   <script src="lead-engine.js" defer></script>
   <!-- Shop Drawing PDF Exporter -->
-  <script src="shop-drawing-pdf.js?v=20261026_cad_v6" defer>
+  <script src="shop-drawing-pdf.js?v=20261026_cad_v6" defer></script>
+  <script>
   // =========================================================================
   // ANIMATE UI: INTERACTIVE ELEVATOR SHAFT SIMULATOR & PRICE COUNTER ENGINE
   // =========================================================================
@@ -2319,6 +2320,10 @@
     3: { cabinTop: 80, weightTop: 95, height: '9.9m', name: 'TẦNG 3' },
     2: { cabinTop: 120, weightTop: 55, height: '6.6m', name: 'TẦNG 2' },
     1: { cabinTop: 160, weightTop: 15, height: '3.3m', name: 'TẦNG 1 (TRỆT)' }
+  };
+
+  window.moveSimFloor = function(floor) {
+    moveSimFloor(floor);
   };
 
   function moveSimFloor(floor) {
