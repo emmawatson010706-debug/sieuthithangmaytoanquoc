@@ -105,7 +105,7 @@
         </button>
 
         <div class="text-center pt-2">
-          <a href="index.html" class="text-xs text-slate-400 hover:text-gold-400 transition">
+          <a href="/" class="text-xs text-slate-400 hover:text-gold-400 transition">
             ← Quay lại trang chủ Siêu Thị Thang Máy
           </a>
         </div>
@@ -139,7 +139,7 @@
         <!-- Quick Actions & User -->
         <div class="flex items-center gap-2">
           <a 
-            href="tap-chi.html" 
+            href="/tap-chi" 
             target="_blank" 
             class="bg-navy-900 hover:bg-navy-800 text-slate-200 hover:text-white border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5"
           >
@@ -427,7 +427,7 @@
             
             <!-- Ô xem trước ảnh -->
             <div class="md:col-span-4 aspect-[16/10] bg-slate-900 border border-slate-700 rounded-xl overflow-hidden relative flex items-center justify-center">
-              <img id="imagePreview" src="images/cabin_1.png" alt="Xem trước" class="w-full h-full object-cover">
+              <img id="imagePreview" src="images/cabin_1.webp" alt="Xem trước" class="w-full h-full object-cover">
               <div id="imagePlaceholder" class="hidden text-center text-slate-500 text-xs">Chưa có ảnh</div>
             </div>
 
@@ -451,7 +451,7 @@
                 <input 
                   type="text" 
                   id="inputImageUrl" 
-                  placeholder="Ví dụ: images/cabin_2.png hoặc link https://..."
+                  placeholder="Ví dụ: images/cabin_2.webp hoặc link https://..."
                   oninput="updateImagePreview(this.value)"
                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-600 focus:border-gold-500 outline-none"
                 >
@@ -461,11 +461,11 @@
               <div>
                 <label class="block text-[10px] text-slate-400 mb-1">Cách 3: Hoặc bấm chọn nhanh ảnh có sẵn trong thư mục:</label>
                 <div class="flex flex-wrap gap-1.5">
-                  <button type="button" onclick="selectSampleImage('images/cabin_1.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Cabin STTM-01</button>
-                  <button type="button" onclick="selectSampleImage('images/cabin_2.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Cabin STTM-02</button>
-                  <button type="button" onclick="selectSampleImage('images/cabin_3.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Động Cơ Fuji</button>
-                  <button type="button" onclick="selectSampleImage('images/cabin_4.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Kiểm Định An Toàn</button>
-                  <button type="button" onclick="selectSampleImage('images/cabin_5.png')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Thang Kính</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_1.webp')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Cabin STTM-01</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_2.webp')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Cabin STTM-02</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_3.webp')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Động Cơ Fuji</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_4.webp')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Kiểm Định An Toàn</button>
+                  <button type="button" onclick="selectSampleImage('images/cabin_5.webp')" class="px-2 py-1 bg-slate-800 hover:bg-gold-600 hover:text-navy-950 text-[10px] rounded font-bold transition">Thang Kính</button>
                 </div>
               </div>
 
@@ -828,7 +828,7 @@
           <td class="p-3 text-center font-bold text-gold-400 font-mono">#${escapeHTML(id)}</td>
           <td class="p-3 text-center">
             <div class="w-16 h-10 rounded-lg overflow-hidden bg-slate-900 border border-slate-700 mx-auto">
-              <img src="${escapeHTML(art.image || 'images/cabin_1.png')}" alt="Thumb" class="w-full h-full object-cover">
+              <img src="${escapeHTML(art.image || 'images/cabin_1.webp')}" alt="Thumb" class="w-full h-full object-cover">
             </div>
           </td>
           <td class="p-3">
@@ -854,7 +854,7 @@
           <td class="p-3 text-center whitespace-nowrap">
             <div class="flex items-center justify-center gap-1.5">
               <a 
-                href="bai-viet.html?id=${id}" 
+                href="/bai-viet?id=${id}" 
                 target="_blank" 
                 class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition"
                 title="Xem bài viết thực tế"
@@ -907,8 +907,8 @@
         document.getElementById('inputAuthor').value = art.author || 'Admin';
         document.getElementById('inputAuthorTitle').value = art.author_title || '';
         document.getElementById('inputReadTime').value = art.read_time || '10 phút đọc';
-        document.getElementById('inputImageUrl').value = art.image || 'images/cabin_1.png';
-        updateImagePreview(art.image || 'images/cabin_1.png');
+        document.getElementById('inputImageUrl').value = art.image || 'images/cabin_1.webp';
+        updateImagePreview(art.image || 'images/cabin_1.webp');
 
         // Khớp chuyên mục
         const catVal = `${art.category_slug || 'ho-thang'}|${art.category || 'KỸ THUẬT HỐ THANG'}`;
@@ -933,8 +933,8 @@
         document.getElementById('inputAuthor').value = "Admin";
         document.getElementById('inputAuthorTitle').value = "Chuyên Gia Thẩm Định Giếng Thang 34 Tỉnh Thành";
         document.getElementById('inputReadTime').value = "10 phút đọc";
-        document.getElementById('inputImageUrl').value = "images/cabin_1.png";
-        updateImagePreview('images/cabin_1.png');
+        document.getElementById('inputImageUrl').value = "images/cabin_1.webp";
+        updateImagePreview('images/cabin_1.webp');
 
         // Mẫu nội dung gợi ý
         document.getElementById('inputContent').value = `
@@ -1052,7 +1052,7 @@
       const catVal = document.getElementById('inputCategory').value.split('|');
       const catSlug = catVal[0];
       const catName = catVal[1];
-      const imageUrl = document.getElementById('inputImageUrl').value.trim() || 'images/cabin_1.png';
+      const imageUrl = document.getElementById('inputImageUrl').value.trim() || 'images/cabin_1.webp';
       const author = document.getElementById('inputAuthor').value.trim() || 'Admin';
       const authorTitle = document.getElementById('inputAuthorTitle').value.trim() || '';
       const readTime = document.getElementById('inputReadTime').value.trim() || '10 phút đọc';
@@ -1112,7 +1112,7 @@
     // 7. Xem Trước Bài Viết
     function previewArticleDraft() {
       const title = document.getElementById('inputTitle').value || 'Tiêu đề bài viết';
-      const image = document.getElementById('inputImageUrl').value || 'images/cabin_1.png';
+      const image = document.getElementById('inputImageUrl').value || 'images/cabin_1.webp';
       const author = document.getElementById('inputAuthor').value || 'Admin';
       const summary = document.getElementById('inputSummary').value || 'Tóm tắt bài viết...';
       const content = document.getElementById('inputContent').value || '<p>Nội dung đang soạn...</p>';
