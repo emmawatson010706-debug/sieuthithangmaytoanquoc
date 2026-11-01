@@ -1,13 +1,13 @@
 {
-  "name": "Siêu Thị Thang Máy Toàn Quốc",
+  "name": "Siêu Thị Thương Mại Thang Máy Toàn Quốc",
   "short_name": "Thang Máy TQ",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#dc2626",
+  "background_color": "#0a1945",
+  "theme_color": "#0a1945",
   "orientation": "portrait-primary",
-  "description": "Siêu thị thương mại thang máy toàn quốc 34 tỉnh thành - Dự toán báo giá & Bản vẽ kỹ thuật CAD",
+  "description": "Siêu thị thương mại thang máy toàn quốc 34 tỉnh thành - Dự toán báo giá & Bản vẽ kỹ thuật CAD trực tuyến",
   "icons": [
     {
       "src": "images/icons/icon-192.png",
@@ -22,5 +22,9 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["business", "utilities", "productivity"]
+  "categories": [
+    "business",
+    "utilities",
+    "productivity"
+  ]
 }
