@@ -850,7 +850,12 @@
 
     function getArticleId() {
       const params = new URLSearchParams(window.location.search);
-      const id = params.get('id') || '1';
+      let id = params.get('id');
+      if (!id) {
+        const match = window.location.pathname.match(/\/bai-viet\/(\d+)/);
+        if (match) id = match[1];
+      }
+      if (!id) id = '1';
       if (id && articlesData[id]) {
         return id;
       }
